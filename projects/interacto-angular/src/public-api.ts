@@ -2,6 +2,5 @@
  * Public API Surface of interacto-angular
  */
 
-export * from './lib/interacto-angular.service';
-export * from './lib/interacto-angular.component';
+export * from './lib/directives/clicks-binder.directive';
 export * from './lib/interacto-angular.module';

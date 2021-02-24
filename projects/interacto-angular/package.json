@@ -1,9 +1,10 @@
 {
   "name": "interacto-angular",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "peerDependencies": {
     "@angular/common": "^9.1.13",
-    "@angular/core": "^9.1.13"
+    "@angular/core": "^9.1.13",
+    "interacto": "^5.4.1"
   },
   "dependencies": {
     "tslib": "^1.10.0"
