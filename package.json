@@ -1,14 +1,46 @@
 {
   "name": "interacto-angular",
-  "version": "1.0.0",
+  "description": "Front-end framework for processing user interface events in Angular",
+  "version": "1.0.0-beta.1",
+  "author": "Arnaud Blouin",
+  "keywords": [
+    "event processing",
+    "user interaction",
+    "user interface",
+    "ui",
+    "undo",
+    "redo",
+    "front-end",
+    "framework",
+    "touch",
+    "dnd",
+    "drag and drop",
+    "typescript",
+    "Angular"
+  ],
+  "bugs": {
+    "url": "https://github.com/interacto/interacto-angular/issues"
+  },
+  "homepage": "https://github.com/interacto/interacto-angular",
+  "repository": "https://github.com/interacto/interacto-angular.git",
+  "license": "GPL-3.0",
+  "main": "./dist/interacto-angular/bundles/interacto-angular.umd.js",
+  "module": "./dist/interacto-angular/fesm2015/interacto-angular.js",
+  "types": "./dist/interacto-angular/interacto-angular.d.ts",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "npm run clean && ng build",
+    "build-prod": "npm run clean && ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "clean": "rm -rf dist",
+    "test-publish": "npm pack"
   },
+  "files": [
+    "dist/"
+  ],
   "peerDependencies": {
     "interacto": "^5.4.1"
   },
