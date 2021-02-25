@@ -31,4 +31,4 @@ export function commandsRegistryFactory(): CommandsRegistry {
     useFactory: commandsRegistryFactory
   }],
 })
-export class InteractoAngularModule { }
+export class InteractoModule { }
