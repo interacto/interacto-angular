@@ -1,5 +1,5 @@
 import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
-import {clicksBinder} from 'interacto';
+import {Bindings} from 'interacto';
 
 /**
  * The clicks directive uses this data structure for starting the
@@ -21,12 +21,14 @@ export interface ClicksDirectiveData {
   selector: '[ioClicks]'
 })
 export class ClicksBinderDirective {
-  constructor(private element: ElementRef, private viewContainerRef: ViewContainerRef) {
+  constructor(private element: ElementRef,
+              private viewContainerRef: ViewContainerRef,
+              private bindings: Bindings) {
   }
 
   @Input()
   set ioClicks(data: ClicksDirectiveData) {
-    const partialBinder = clicksBinder(data.count).on(this.element);
+    const partialBinder = this.bindings.clicksBinder(data.count).on(this.element);
 
     (this.viewContainerRef as any)._view.component[data.fn](partialBinder);
   }

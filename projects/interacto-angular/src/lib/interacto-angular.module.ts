@@ -1,14 +1,11 @@
 import {NgModule} from '@angular/core';
 import {ClicksBinderDirective} from './directives/clicks-binder.directive';
-import {CommandsRegistry, UndoHistory} from 'interacto';
 import {ButtonBinderDirective} from './directives/button-binder.directive';
+import {Bindings, BindingsImpl, UndoHistory} from 'interacto';
 
-export function undoHistoryFactory(): UndoHistory {
-  return UndoHistory.getInstance();
-}
 
-export function commandsRegistryFactory(): CommandsRegistry {
-  return CommandsRegistry.getInstance();
+export function undoHistoryFactory(ctx: Bindings): UndoHistory {
+  return ctx.undoHistory;
 }
 
 
@@ -24,11 +21,14 @@ export function commandsRegistryFactory(): CommandsRegistry {
     ClicksBinderDirective
   ],
   providers: [{
-    provide: UndoHistory,
-    useFactory: undoHistoryFactory
+    provide: Bindings,
+    useClass: BindingsImpl
   }, {
-    provide: CommandsRegistry,
-    useFactory: commandsRegistryFactory
+    provide: UndoHistory,
+    useFactory: undoHistoryFactory,
+    deps: [
+      Bindings
+    ]
   }],
 })
 export class InteractoModule { }

@@ -1,11 +1,13 @@
 import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
-import {buttonBinder, Interaction, InteractionBinder, WidgetData} from 'interacto';
+import {Bindings, Interaction, InteractionBinder, WidgetData} from 'interacto';
 
 @Directive({
   selector: '[ioButton]'
 })
 export class ButtonBinderDirective {
-  constructor(private element: ElementRef, private viewContainerRef: ViewContainerRef) {
+  constructor(private element: ElementRef,
+              private viewContainerRef: ViewContainerRef,
+              private bindings: Bindings) {
   }
 
   @Input()
@@ -17,6 +19,6 @@ export class ButtonBinderDirective {
     // If we call fn directly, the 'this' used in fn is unknown.
     // Tries with binding fn with the component failed.
     // So we get the name of fn
-    (this.viewContainerRef as any)._view.component[fn.name](buttonBinder().on(this.element));
+    (this.viewContainerRef as any)._view.component[fn.name](this.bindings.buttonBinder().on(this.element));
   }
 }
