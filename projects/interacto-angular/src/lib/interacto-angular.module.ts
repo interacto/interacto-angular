@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {ClicksBinderDirective} from './directives/clicks-binder.directive';
-import {ButtonBinderDirective} from './directives/button-binder.directive';
 import {Bindings, BindingsImpl, UndoHistory} from 'interacto';
 import {UndoBinderDirective} from './directives/undo-binder.directive';
 import {RedoBinderDirective} from './directives/redo-binder.directive';
+import {WidgetBinderDirective} from './directives/widget-binder.directive';
 
 
 export function undoHistoryFactory(ctx: Bindings): UndoHistory {
@@ -13,15 +13,14 @@ export function undoHistoryFactory(ctx: Bindings): UndoHistory {
 
 @NgModule({
   declarations: [
-    ButtonBinderDirective,
+    WidgetBinderDirective,
     ClicksBinderDirective,
     UndoBinderDirective,
     RedoBinderDirective
   ],
-  imports: [
-  ],
+  imports: [],
   exports: [
-    ButtonBinderDirective,
+    WidgetBinderDirective,
     ClicksBinderDirective,
     UndoBinderDirective,
     RedoBinderDirective
@@ -37,4 +36,5 @@ export function undoHistoryFactory(ctx: Bindings): UndoHistory {
     ]
   }],
 })
-export class InteractoModule { }
+export class InteractoModule {
+}
