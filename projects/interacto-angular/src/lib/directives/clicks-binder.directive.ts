@@ -29,8 +29,6 @@ export class ClicksBinderDirective {
   @Input()
   set ioClicks(data: ClicksDirectiveData) {
     const partialBinder = this.bindings.clicksBinder(data.count).on(this.element);
-    const componentFn = (this.viewContainerRef as any)._hostLView[8][data.fn];
-
-    componentFn(partialBinder);
+    (this.viewContainerRef as any)._hostLView[8][data.fn](partialBinder);
   }
 }

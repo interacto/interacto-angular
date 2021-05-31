@@ -16,14 +16,16 @@ export class WidgetBinderDirective {
     if (fn === undefined) {
       throw new Error('The callback function provided to the button directive does not exist in the component');
     }
-    const componentFn = (this.viewContainerRef as any)._hostLView[8][fn.name];
     // If we call fn directly, the 'this' used in fn is unknown.
     // Tries with binding fn with the component failed.
     // So we get the name of fn
     const elt = this.element.nativeElement;
 
+    // Warning: to avoid 'this is undefined' at run time, we cannot factorise the component in a variable
+    // Do not know why
+
     if (elt instanceof HTMLButtonElement) {
-      componentFn(this.bindings.buttonBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.buttonBinder().on(elt));
       return;
     }
 
@@ -31,23 +33,23 @@ export class WidgetBinderDirective {
       switch (elt.type) {
         case 'checkbox':
         case 'radio':
-          componentFn(this.bindings.checkboxBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.checkboxBinder().on(elt));
           return;
 
         case 'color':
-          componentFn(this.bindings.checkboxBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.checkboxBinder().on(elt));
           return;
 
         case 'date':
-          componentFn(this.bindings.dateBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.dateBinder().on(elt));
           return;
 
         case 'number':
-          componentFn(this.bindings.spinnerBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.spinnerBinder().on(elt));
           return;
 
         case 'text':
-          componentFn(this.bindings.textInputBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.textInputBinder().on(elt));
           return;
       }
 
@@ -55,17 +57,17 @@ export class WidgetBinderDirective {
     }
 
     if (elt instanceof HTMLSelectElement) {
-      componentFn(this.bindings.comboBoxBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.comboBoxBinder().on(elt));
       return;
     }
 
     if (elt instanceof HTMLAnchorElement) {
-      componentFn(this.bindings.hyperlinkBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.hyperlinkBinder().on(elt));
       return;
     }
 
     if (elt instanceof HTMLTextAreaElement) {
-      componentFn(this.bindings.textInputBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.textInputBinder().on(elt));
       return;
     }
 
