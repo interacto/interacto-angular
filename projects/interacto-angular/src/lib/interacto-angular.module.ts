@@ -10,6 +10,10 @@ export function undoHistoryFactory(ctx: Bindings): UndoHistory {
   return ctx.undoHistory;
 }
 
+export function bindingsFactory(): Bindings {
+  return new BindingsImpl();
+}
+
 
 @NgModule({
   declarations: [
@@ -27,7 +31,7 @@ export function undoHistoryFactory(ctx: Bindings): UndoHistory {
   ],
   providers: [{
     provide: Bindings,
-    useClass: BindingsImpl
+    useFactory: bindingsFactory,
   }, {
     provide: UndoHistory,
     useFactory: undoHistoryFactory,
