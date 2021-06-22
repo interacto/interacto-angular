@@ -1,30 +1,27 @@
 import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialPointsBinder} from 'interacto';
+import {Bindings, PartialKeyBinder} from 'interacto';
 
 @Directive({
-  selector: '[ioClicks]'
+  selector: '[ioKeyPress]'
 })
-export class ClicksBinderDirective {
+export class KeyPressBinderDirective {
   constructor(private element: ElementRef,
               private viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
   }
 
-  /**
-   * The expected number of clicks.
-   */
   @Input()
-  count = 2;
+  modifierAccepted = true;
 
   /**
-   * Starts the creation of a binding using the clicks interaction.
+   * Starts the creation of a binding using the key pressure interaction.
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClicks(fn: (partialBinder: PartialPointsBinder | undefined) => void)  {
+  set ioKeyPress(fn: (partialBinder: PartialKeyBinder | undefined) => void)  {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
-    const partialBinder = this.bindings.clicksBinder(this.count).on(this.element);
+    const partialBinder = this.bindings.keyPressBinder(this.modifierAccepted).on(this.element);
     (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
   }
 }
