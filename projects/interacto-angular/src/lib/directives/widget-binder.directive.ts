@@ -12,7 +12,8 @@ export class WidgetBinderDirective {
 
   @Input()
   set ioWidget(fn:
-     (partialBinder: InteractionBinder<Interaction<WidgetData<HTMLElement>>, WidgetData<HTMLElement>> | undefined) => void) {
+      (partialBinder: InteractionBinder<Interaction<WidgetData<HTMLElement>>, WidgetData<HTMLElement>>, widget: HTMLElement
+       | undefined) => void) {
     if (fn === undefined) {
       throw new Error('The callback function provided to the button directive does not exist in the component');
     }
@@ -25,7 +26,7 @@ export class WidgetBinderDirective {
     // Do not know why
 
     if (elt instanceof HTMLButtonElement) {
-      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.buttonBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.buttonBinder().on(elt), elt);
       return;
     }
 
@@ -33,23 +34,23 @@ export class WidgetBinderDirective {
       switch (elt.type) {
         case 'checkbox':
         case 'radio':
-          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.checkboxBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.checkboxBinder().on(elt), elt);
           return;
 
         case 'color':
-          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.checkboxBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.checkboxBinder().on(elt), elt);
           return;
 
         case 'date':
-          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.dateBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.dateBinder().on(elt), elt);
           return;
 
         case 'number':
-          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.spinnerBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.spinnerBinder().on(elt), elt);
           return;
 
         case 'text':
-          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.textInputBinder().on(elt));
+          (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.textInputBinder().on(elt), elt);
           return;
       }
 
@@ -57,17 +58,17 @@ export class WidgetBinderDirective {
     }
 
     if (elt instanceof HTMLSelectElement) {
-      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.comboBoxBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.comboBoxBinder().on(elt), elt);
       return;
     }
 
     if (elt instanceof HTMLAnchorElement) {
-      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.hyperlinkBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.hyperlinkBinder().on(elt), elt);
       return;
     }
 
     if (elt instanceof HTMLTextAreaElement) {
-      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.textInputBinder().on(elt));
+      (this.viewContainerRef as any)._hostLView[8][fn.name](this.bindings.textInputBinder().on(elt), elt);
       return;
     }
 
