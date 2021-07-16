@@ -19,6 +19,9 @@
       "interacto-angular": [
         "dist/interacto-angular/interacto-angular",
         "dist/interacto-angular"
+      ],
+      "@angular/*": [
+        "./node_modules/@angular/*"
       ]
     }
   },
