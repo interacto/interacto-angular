@@ -1,13 +1,13 @@
 import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointSrcTgtBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioDragLock]'
 })
-export class DragLockBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+export class DragLockBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -17,6 +17,6 @@ export class DragLockBinderDirective {
   @Input()
   set ioDragLock(fn: (partialBinder: PartialPointSrcTgtBinder | undefined) => void)  {
     const partialBinder = this.bindings.dragLockBinder().on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name][fn.name](partialBinder);
   }
 }

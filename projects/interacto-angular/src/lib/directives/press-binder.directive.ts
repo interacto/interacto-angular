@@ -1,13 +1,13 @@
 import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioPress]'
 })
-export class PressBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+export class PressBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -17,6 +17,6 @@ export class PressBinderDirective {
   @Input()
   set ioPress(fn: (partialBinder: PartialPointBinder | undefined) => void)  {
     const partialBinder = this.bindings.pressBinder().on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name][fn.name](partialBinder);
   }
 }

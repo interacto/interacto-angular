@@ -1,14 +1,15 @@
 import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialMultiTouchBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioMultiTouch]'
 })
-export class MultiTouchBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
+export class MultiTouchBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -27,6 +28,6 @@ export class MultiTouchBinderDirective {
   set ioMultiTouch(fn: (partialBinder: PartialMultiTouchBinder | undefined) => void)  {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
     const partialBinder = this.bindings.multiTouchBinder(this.nbTouches).on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name](partialBinder);
   }
 }

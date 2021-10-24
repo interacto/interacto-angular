@@ -1,14 +1,15 @@
 import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTapBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioTap]'
 })
-export class TapBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
+export class TapBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -26,6 +27,6 @@ export class TapBinderDirective {
   set ioTap(fn: (partialBinder: PartialTapBinder | undefined) => void)  {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
     const partialBinder = this.bindings.tapBinder(this.nbTaps).on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name](partialBinder);
   }
 }

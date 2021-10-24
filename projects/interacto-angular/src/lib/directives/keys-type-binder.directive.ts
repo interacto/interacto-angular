@@ -1,13 +1,13 @@
 import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialKeysBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioKeysType]'
 })
-export class KeysTypeBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+export class KeysTypeBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -17,6 +17,6 @@ export class KeysTypeBinderDirective {
   @Input()
   set ioKeysType(fn: (partialBinder: PartialKeysBinder | undefined) => void)  {
     const partialBinder = this.bindings.keysTypeBinder().on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name][fn.name](partialBinder);
   }
 }

@@ -1,14 +1,15 @@
 import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTouchSrcTgtBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioSwipe]'
 })
-export class SwipeBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
+export class SwipeBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -43,6 +44,6 @@ export class SwipeBinderDirective {
   set ioSwipe(fn: (partialBinder: PartialTouchSrcTgtBinder | undefined) => void)  {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
     const partialBinder = this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.pxTolerance).on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name](partialBinder);
   }
 }

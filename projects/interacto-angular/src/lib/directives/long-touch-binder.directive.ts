@@ -1,14 +1,15 @@
 import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTouchBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioLongTouch]'
 })
-export class LongTouchBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
+export class LongTouchBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -26,6 +27,6 @@ export class LongTouchBinderDirective {
   set ioLongTouch(fn: (partialBinder: PartialTouchBinder | undefined) => void)  {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
     const partialBinder = this.bindings.longTouchBinder(this.duration).on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name](partialBinder);
   }
 }

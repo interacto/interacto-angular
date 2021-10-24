@@ -1,13 +1,13 @@
 import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioClick]'
 })
-export class ClickBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+export class ClickBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -16,7 +16,6 @@ export class ClickBinderDirective {
    */
   @Input()
   set ioClick(fn: (partialBinder: PartialPointBinder | undefined) => void)  {
-    const partialBinder = this.bindings.clickBinder().on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name](this.bindings.clickBinder().on(this.element));
   }
 }

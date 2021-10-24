@@ -1,14 +1,15 @@
 import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialUpdatePointBinder} from 'interacto';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioLongPress]'
 })
-export class LongPressBinderDirective {
-  constructor(private element: ElementRef,
-              private viewContainerRef: ViewContainerRef,
+export class LongPressBinderDirective extends InteractoBinderDirective {
+  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
+    super(element, viewContainerRef);
   }
 
   /**
@@ -26,6 +27,6 @@ export class LongPressBinderDirective {
   set ioLongPress(fn: (partialBinder: PartialUpdatePointBinder | undefined) => void)  {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
     const partialBinder = this.bindings.longPressBinder(this.duration).on(this.element);
-    (this.viewContainerRef as any)._hostLView[8][fn.name](partialBinder);
+    this.getComponent(fn.name)[fn.name](partialBinder);
   }
 }
