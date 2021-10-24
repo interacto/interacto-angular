@@ -72,6 +72,7 @@ export class WidgetBinderDirective {
       return;
     }
 
-    throw new Error(`Cannot create a binder on this element: ${elt.prototype.name}`);
+    throw new Error(`Cannot create a binder on this element: ${elt.prototype?.name ?? '[prototype is undefined]'}.
+Make sure you use Angular [ioWidget] and not template *ioWidget`);
   }
 }
