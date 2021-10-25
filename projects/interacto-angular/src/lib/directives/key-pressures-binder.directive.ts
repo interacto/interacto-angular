@@ -23,9 +23,9 @@ export class KeysPressBinderDirective extends InteractoBinderDirective {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.keysPressBinder().onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.keysDownBinder().onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.keysPressBinder().on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.keysDownBinder().on(this.element));
     }
   }
 }

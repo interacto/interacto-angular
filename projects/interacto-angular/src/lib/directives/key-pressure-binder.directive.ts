@@ -28,9 +28,9 @@ export class KeyPressBinderDirective extends InteractoBinderDirective {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.keyPressBinder(this.modifierAccepted).onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.keyDownBinder(this.modifierAccepted).onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.keyPressBinder(this.modifierAccepted).on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.keyDownBinder(this.modifierAccepted).on(this.element));
     }
   }
 }

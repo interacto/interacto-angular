@@ -40,6 +40,12 @@ export class SwipeBinderDirective extends InteractoBinderDirective {
   pxTolerance = 20;
 
   /**
+   * The number of touches required to start the interaction
+   */
+  @Input()
+  nbTouches = 1;
+
+  /**
    * Starts the creation of a binding using the swipe interaction.
    * @param fn - The function of the component that will be called to configure the binding.
    */
@@ -51,10 +57,12 @@ export class SwipeBinderDirective extends InteractoBinderDirective {
 
     if (this.onDyn) {
       this.getComponent(fnName)[fnName](
-        this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.pxTolerance).onDynamic(this.element));
+        this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance)
+          .onDynamic(this.element));
     }else {
       this.getComponent(fnName)[fnName](
-        this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.pxTolerance).on(this.element));
+        this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance)
+          .on(this.element));
     }
   }
 }

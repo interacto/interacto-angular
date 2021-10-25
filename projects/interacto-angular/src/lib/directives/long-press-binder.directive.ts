@@ -32,9 +32,9 @@ export class LongPressBinderDirective extends InteractoBinderDirective {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.longPressBinder(this.duration).onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.longMouseDownBinder(this.duration).onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.longPressBinder(this.duration).on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.longMouseDownBinder(this.duration).on(this.element));
     }
   }
 }

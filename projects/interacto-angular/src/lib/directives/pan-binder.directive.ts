@@ -34,6 +34,12 @@ export class PanBinderDirective extends InteractoBinderDirective {
   pxTolerance = 20;
 
   /**
+   * The number of touches required to start the interaction
+   */
+  @Input()
+  nbTouches = 1;
+
+  /**
    * Starts the creation of a binding using the pan interaction.
    * @param fn - The function of the component that will be called to configure the binding.
    */
@@ -43,9 +49,11 @@ export class PanBinderDirective extends InteractoBinderDirective {
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.panBinder(this.horizontal, this.minLength, this.pxTolerance).onDynamic(this.element));
+      this.getComponent(fnName)[fnName](
+        this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.panBinder(this.horizontal, this.minLength, this.pxTolerance).on(this.element));
+      this.getComponent(fnName)[fnName](
+        this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).on(this.element));
     }
   }
 }

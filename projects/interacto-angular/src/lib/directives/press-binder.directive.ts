@@ -23,9 +23,9 @@ export class PressBinderDirective extends InteractoBinderDirective {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.pressBinder().onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.mouseDownBinder().onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.pressBinder().on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.mouseDownBinder().on(this.element));
     }
   }
 }
