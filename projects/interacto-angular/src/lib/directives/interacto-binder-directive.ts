@@ -7,6 +7,14 @@ export abstract class InteractoBinderDirective {
   protected constructor(protected element: ElementRef, protected viewContainerRef: ViewContainerRef) {
   }
 
+  // tslint:disable-next-line:ban-types
+  protected checkFnName(fn: Function | undefined): string {
+    if (fn === undefined) {
+      throw new Error('The callback function provided to the button directive does not exist in the component');
+    }
+    return fn.name;
+  }
+
   /**
    * Finds the host component. Hack...
    * @param fnName The name of the function to call for building the binding

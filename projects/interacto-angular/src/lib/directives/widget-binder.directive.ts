@@ -1,22 +1,24 @@
-import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, Interaction, InteractionBinder, WidgetData} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioWidget]'
 })
 export class WidgetBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+  constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
+              private bindings: Bindings) {
     super(element, viewContainerRef);
   }
 
   @Input()
   set ioWidget(fn:
-      (partialBinder: InteractionBinder<Interaction<WidgetData<HTMLElement>>, WidgetData<HTMLElement>>,
-       widget: HTMLElement | undefined) => void | undefined) {
-    if (fn === undefined) {
-      throw new Error('The callback function provided to the button directive does not exist in the component');
-    }
+                 (partialBinder: InteractionBinder<Interaction<WidgetData<HTMLElement>>, WidgetData<HTMLElement>>,
+                  widget: HTMLElement | undefined) => void) {
+    const fnName = this.checkFnName(fn);
 
     // If we call fn directly, the 'this' used in fn is unknown.
     // Tries with binding fn with the component failed.
@@ -24,7 +26,8 @@ export class WidgetBinderDirective extends InteractoBinderDirective {
     const elt = this.element.nativeElement;
 
     if (elt instanceof HTMLButtonElement) {
-      this.getComponent(fn.name)[fn.name](this.bindings.buttonBinder().on(elt), elt);
+      const binder = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.buttonBinder().on(elt);
+      this.getComponent(fnName)[fnName](binder, elt);
       return;
     }
 
@@ -32,23 +35,28 @@ export class WidgetBinderDirective extends InteractoBinderDirective {
       switch (elt.type) {
         case 'checkbox':
         case 'radio':
-          this.getComponent(fn.name)[fn.name](this.bindings.checkboxBinder().on(elt), elt);
+          const bCB = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.checkboxBinder().on(elt);
+          this.getComponent(fnName)[fnName](bCB, elt);
           return;
 
         case 'color':
-          this.getComponent(fn.name)[fn.name](this.bindings.checkboxBinder().on(elt), elt);
+          const bCol = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.colorPickerBinder().on(elt);
+          this.getComponent(fnName)[fnName](bCol, elt);
           return;
 
         case 'date':
-          this.getComponent(fn.name)[fn.name](this.bindings.dateBinder().on(elt), elt);
+          const bDate = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.dateBinder().on(elt);
+          this.getComponent(fnName)[fnName](bDate, elt);
           return;
 
         case 'number':
-          this.getComponent(fn.name)[fn.name](this.bindings.spinnerBinder().on(elt), elt);
+          const bNum = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.spinnerBinder().on(elt);
+          this.getComponent(fnName)[fnName](bNum, elt);
           return;
 
         case 'text':
-          this.getComponent(fn.name)[fn.name](this.bindings.textInputBinder().on(elt), elt);
+          const bTxt = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.textInputBinder().on(elt);
+          this.getComponent(fnName)[fnName](bTxt, elt);
           return;
       }
 
@@ -56,17 +64,20 @@ export class WidgetBinderDirective extends InteractoBinderDirective {
     }
 
     if (elt instanceof HTMLSelectElement) {
-      this.getComponent(fn.name)[fn.name](this.bindings.comboBoxBinder().on(elt), elt);
+      const binder = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.comboBoxBinder().on(elt);
+      this.getComponent(fnName)[fnName](binder, elt);
       return;
     }
 
     if (elt instanceof HTMLAnchorElement) {
-      this.getComponent(fn.name)[fn.name](this.bindings.hyperlinkBinder().on(elt), elt);
+      const binder = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.hyperlinkBinder().on(elt);
+      this.getComponent(fnName)[fnName](binder, elt);
       return;
     }
 
     if (elt instanceof HTMLTextAreaElement) {
-      this.getComponent(fn.name)[fn.name](this.bindings.textInputBinder().on(elt), elt);
+      const binder = this.onDyn ? this.bindings.buttonBinder().onDynamic(elt) : this.bindings.textInputBinder().on(elt);
+      this.getComponent(fnName)[fnName](binder, elt);
       return;
     }
 

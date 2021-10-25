@@ -1,12 +1,15 @@
-import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTouchBinder} from 'interacto';
+import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioLongTouch]'
 })
 export class LongTouchBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
+  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -24,9 +27,14 @@ export class LongTouchBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongTouch(fn: (partialBinder: PartialTouchBinder | undefined) => void)  {
+  set ioLongTouch(fn: (partialBinder: PartialTouchBinder | undefined) => void | undefined)  {
+    const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
-    const partialBinder = this.bindings.longTouchBinder(this.duration).on(this.element);
-    this.getComponent(fn.name)[fn.name](partialBinder);
+
+    if (this.onDyn) {
+      this.getComponent(fnName)[fnName](this.bindings.longTouchBinder(this.duration).onDynamic(this.element));
+    }else {
+      this.getComponent(fnName)[fnName](this.bindings.longTouchBinder(this.duration).on(this.element));
+    }
   }
 }

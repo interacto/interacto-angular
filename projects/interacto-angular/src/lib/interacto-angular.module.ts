@@ -19,6 +19,7 @@ import {PanBinderDirective} from './directives/pan-binder.directive';
 import {PressBinderDirective} from './directives/press-binder.directive';
 import {SwipeBinderDirective} from './directives/swipe-binder.directive';
 import {TapBinderDirective} from './directives/tap-binder.directive';
+import {OnDynamicDirective} from './directives/on-dynamic.directive';
 
 
 export function undoHistoryFactory(ctx: Bindings): UndoHistory {
@@ -50,7 +51,8 @@ export function bindingsFactory(): Bindings {
     PanBinderDirective,
     PressBinderDirective,
     SwipeBinderDirective,
-    TapBinderDirective
+    TapBinderDirective,
+    OnDynamicDirective
   ],
   imports: [],
   exports: [
@@ -72,7 +74,8 @@ export function bindingsFactory(): Bindings {
     PanBinderDirective,
     PressBinderDirective,
     SwipeBinderDirective,
-    TapBinderDirective
+    TapBinderDirective,
+    OnDynamicDirective
   ],
   providers: [{
     provide: Bindings,

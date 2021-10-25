@@ -1,12 +1,15 @@
-import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTouchSrcTgtBinder} from 'interacto';
+import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioPan]'
 })
 export class PanBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
+  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -36,8 +39,13 @@ export class PanBinderDirective extends InteractoBinderDirective {
    */
   @Input()
   set ioPan(fn: (partialBinder: PartialTouchSrcTgtBinder | undefined) => void)  {
+    const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
-    const partialBinder = this.bindings.panBinder(this.horizontal, this.minLength, this.pxTolerance).on(this.element);
-    this.getComponent(fn.name)[fn.name](partialBinder);
+
+    if (this.onDyn) {
+      this.getComponent(fnName)[fnName](this.bindings.panBinder(this.horizontal, this.minLength, this.pxTolerance).onDynamic(this.element));
+    }else {
+      this.getComponent(fnName)[fnName](this.bindings.panBinder(this.horizontal, this.minLength, this.pxTolerance).on(this.element));
+    }
   }
 }

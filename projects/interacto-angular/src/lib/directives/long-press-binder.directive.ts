@@ -1,12 +1,15 @@
-import {ChangeDetectorRef, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialUpdatePointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioLongPress]'
 })
 export class LongPressBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef,
+  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -24,9 +27,14 @@ export class LongPressBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongPress(fn: (partialBinder: PartialUpdatePointBinder | undefined) => void)  {
+  set ioLongPress(fn: (partialBinder: PartialUpdatePointBinder | undefined) => void | undefined)  {
+    const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
-    const partialBinder = this.bindings.longPressBinder(this.duration).on(this.element);
-    this.getComponent(fn.name)[fn.name](partialBinder);
+
+    if (this.onDyn) {
+      this.getComponent(fnName)[fnName](this.bindings.longPressBinder(this.duration).onDynamic(this.element));
+    }else {
+      this.getComponent(fnName)[fnName](this.bindings.longPressBinder(this.duration).on(this.element));
+    }
   }
 }

@@ -1,12 +1,16 @@
-import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialKeysBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioKeysType]'
 })
 export class KeysTypeBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
+              private bindings: Bindings) {
     super(element, viewContainerRef);
   }
 
@@ -15,8 +19,13 @@ export class KeysTypeBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeysType(fn: (partialBinder: PartialKeysBinder | undefined) => void)  {
-    const partialBinder = this.bindings.keysTypeBinder().on(this.element);
-    this.getComponent(fn.name)[fn.name][fn.name](partialBinder);
+  set ioKeysType(fn: (partialBinder: PartialKeysBinder | undefined) => void | undefined)  {
+    const fnName = this.checkFnName(fn);
+
+    if (this.onDyn) {
+      this.getComponent(fnName)[fnName](this.bindings.keysTypeBinder().onDynamic(this.element));
+    }else {
+      this.getComponent(fnName)[fnName](this.bindings.keysTypeBinder().on(this.element));
+    }
   }
 }

@@ -1,12 +1,16 @@
-import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointSrcTgtBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioDragLock]'
 })
 export class DragLockBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
+              private bindings: Bindings) {
     super(element, viewContainerRef);
   }
 
@@ -15,8 +19,13 @@ export class DragLockBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDragLock(fn: (partialBinder: PartialPointSrcTgtBinder | undefined) => void)  {
-    const partialBinder = this.bindings.dragLockBinder().on(this.element);
-    this.getComponent(fn.name)[fn.name][fn.name](partialBinder);
+  set ioDragLock(fn: (partialBinder: PartialPointSrcTgtBinder | undefined) => void | undefined)  {
+    const fnName = this.checkFnName(fn);
+
+    if (this.onDyn) {
+      this.getComponent(fnName)[fnName](this.bindings.dragLockBinder().onDynamic(this.element));
+    }else {
+      this.getComponent(fnName)[fnName](this.bindings.dragLockBinder().on(this.element));
+    }
   }
 }

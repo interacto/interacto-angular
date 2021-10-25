@@ -1,12 +1,16 @@
-import {Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioPress]'
 })
 export class PressBinderDirective extends InteractoBinderDirective {
-  constructor(element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+              element: ElementRef,
+              viewContainerRef: ViewContainerRef,
+              private bindings: Bindings) {
     super(element, viewContainerRef);
   }
 
@@ -16,7 +20,12 @@ export class PressBinderDirective extends InteractoBinderDirective {
    */
   @Input()
   set ioPress(fn: (partialBinder: PartialPointBinder | undefined) => void)  {
-    const partialBinder = this.bindings.pressBinder().on(this.element);
-    this.getComponent(fn.name)[fn.name][fn.name](partialBinder);
+    const fnName = this.checkFnName(fn);
+
+    if (this.onDyn) {
+      this.getComponent(fnName)[fnName](this.bindings.pressBinder().onDynamic(this.element));
+    }else {
+      this.getComponent(fnName)[fnName](this.bindings.pressBinder().on(this.element));
+    }
   }
 }
