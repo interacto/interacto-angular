@@ -26,7 +26,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClicks(fn: (partialBinder: PartialPointsBinder | undefined) => void | undefined)  {
+  set ioClicks(fn: (partialBinder: PartialPointsBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 

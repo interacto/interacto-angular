@@ -19,7 +19,7 @@ export class DoubleClickBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDoubleClick(fn: (partialBinder: PartialUpdatePointBinder | undefined) => void | undefined)  {
+  set ioDoubleClick(fn: (partialBinder: PartialUpdatePointBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {

@@ -28,7 +28,7 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMultiTouch(fn: (partialBinder: PartialMultiTouchBinder | undefined) => void | undefined)  {
+  set ioMultiTouch(fn: (partialBinder: PartialMultiTouchBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 

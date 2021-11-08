@@ -23,7 +23,7 @@ export class DndBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDnd(fn: (partialBinder: PartialPointSrcTgtBinder | undefined) => void | undefined)  {
+  set ioDnd(fn: (partialBinder: PartialPointSrcTgtBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 

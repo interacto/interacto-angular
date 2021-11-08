@@ -19,7 +19,7 @@ export class KeysPressBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeysPress(fn: (partialBinder: PartialKeysBinder | undefined) => void | undefined)  {
+  set ioKeysPress(fn: (partialBinder: PartialKeysBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {

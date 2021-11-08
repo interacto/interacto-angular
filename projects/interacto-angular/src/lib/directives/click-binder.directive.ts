@@ -17,7 +17,7 @@ export class ClickBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClick(fn: (partialBinder: PartialPointBinder | undefined) => void | undefined)  {
+  set ioClick(fn: (partialBinder: PartialPointBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {

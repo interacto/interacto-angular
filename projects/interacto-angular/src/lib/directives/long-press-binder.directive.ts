@@ -27,7 +27,7 @@ export class LongPressBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongPress(fn: (partialBinder: PartialUpdatePointBinder | undefined) => void | undefined)  {
+  set ioLongPress(fn: (partialBinder: PartialUpdatePointBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 

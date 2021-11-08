@@ -19,7 +19,7 @@ export class DragLockBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDragLock(fn: (partialBinder: PartialPointSrcTgtBinder | undefined) => void | undefined)  {
+  set ioDragLock(fn: (partialBinder: PartialPointSrcTgtBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {

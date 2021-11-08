@@ -19,7 +19,7 @@ export class KeyTypeBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeyType(fn: (partialBinder: PartialKeyBinder | undefined) => void | undefined)  {
+  set ioKeyType(fn: (partialBinder: PartialKeyBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {

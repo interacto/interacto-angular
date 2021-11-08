@@ -27,7 +27,7 @@ export class TapBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioTap(fn: (partialBinder: PartialTapBinder | undefined) => void)  {
+  set ioTap(fn: (partialBinder: PartialTapBinder) => void)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 

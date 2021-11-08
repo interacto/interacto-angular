@@ -19,7 +19,7 @@ export class PressBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioPress(fn: (partialBinder: PartialPointBinder | undefined) => void)  {
+  set ioPress(fn: (partialBinder: PartialPointBinder) => void)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {

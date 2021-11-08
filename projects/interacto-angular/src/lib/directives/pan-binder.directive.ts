@@ -44,7 +44,7 @@ export class PanBinderDirective extends InteractoBinderDirective {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioPan(fn: (partialBinder: PartialTouchSrcTgtBinder | undefined) => void)  {
+  set ioPan(fn: (partialBinder: PartialTouchSrcTgtBinder) => void)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 
