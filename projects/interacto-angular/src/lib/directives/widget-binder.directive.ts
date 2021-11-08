@@ -16,7 +16,7 @@ export class WidgetBinderDirective extends InteractoBinderDirective {
 
   @Input()
   set ioWidget(fn:
-                 (partialBinder: InteractionBinder<Interaction<WidgetData<HTMLElement>>, WidgetData<HTMLElement>>,
+                 (partialBinder: InteractionBinder<Interaction<WidgetData<any>>, WidgetData<any>>,
                   widget: HTMLElement) => void) {
     const fnName = this.checkFnName(fn);
 
