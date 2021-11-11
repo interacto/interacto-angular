@@ -3,15 +3,15 @@ import {Bindings, Redo} from 'interacto';
 import {Subscription} from 'rxjs';
 
 @Directive({
-  selector: '[ioRedo]'
+  selector: 'button:[ioRedo]'
 })
 export class RedoBinderDirective implements OnDestroy {
   private readonly redoObs: Subscription;
 
   constructor(private element: ElementRef, private bindings: Bindings) {
-    if (!(element.nativeElement instanceof HTMLButtonElement)) {
-      throw new Error('The redo directive only applies on buttons');
-    }
+    // if (!(element.nativeElement instanceof HTMLButtonElement)) {
+    //   throw new Error('The redo directive only applies on buttons');
+    // }
 
     this.redoObs = bindings.undoHistory
       .redosObservable()

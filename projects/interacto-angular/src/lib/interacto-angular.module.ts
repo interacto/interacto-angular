@@ -3,7 +3,6 @@ import {ClicksBinderDirective} from './directives/clicks-binder.directive';
 import {Bindings, BindingsImpl, UndoHistory} from 'interacto';
 import {UndoBinderDirective} from './directives/undo-binder.directive';
 import {RedoBinderDirective} from './directives/redo-binder.directive';
-import {WidgetBinderDirective} from './directives/widget-binder.directive';
 import {ClickBinderDirective} from './directives/click-binder.directive';
 import {DoubleClickBinderDirective} from './directives/dble-click-binder.directive';
 import {DragLockBinderDirective} from './directives/drag-lock-binder.directive';
@@ -20,6 +19,12 @@ import {PressBinderDirective} from './directives/press-binder.directive';
 import {SwipeBinderDirective} from './directives/swipe-binder.directive';
 import {TapBinderDirective} from './directives/tap-binder.directive';
 import {OnDynamicDirective} from './directives/on-dynamic.directive';
+import {TextInputBinderDirective} from './directives/textinput-binder.directive';
+import {ButtonBinderDirective} from './directives/button-binder.directive';
+import {InputBinderDirective} from './directives/input-binder.directive';
+import {SelectBinderDirective} from './directives/select-binder.directive';
+import {AnchorBinderDirective} from './directives/anchor-binder.directive';
+import {TextAreaBinderDirective} from './directives/textarea-binder.directive';
 
 
 export function undoHistoryFactory(ctx: Bindings): UndoHistory {
@@ -33,7 +38,6 @@ export function bindingsFactory(): Bindings {
 
 @NgModule({
   declarations: [
-    WidgetBinderDirective,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,
@@ -52,11 +56,16 @@ export function bindingsFactory(): Bindings {
     PressBinderDirective,
     SwipeBinderDirective,
     TapBinderDirective,
+    TextAreaBinderDirective,
+    TextInputBinderDirective,
+    ButtonBinderDirective,
+    InputBinderDirective,
+    SelectBinderDirective,
+    AnchorBinderDirective,
     OnDynamicDirective
   ],
   imports: [],
   exports: [
-    WidgetBinderDirective,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,
@@ -75,6 +84,12 @@ export function bindingsFactory(): Bindings {
     PressBinderDirective,
     SwipeBinderDirective,
     TapBinderDirective,
+    TextAreaBinderDirective,
+    TextInputBinderDirective,
+    ButtonBinderDirective,
+    InputBinderDirective,
+    SelectBinderDirective,
+    AnchorBinderDirective,
     OnDynamicDirective
   ],
   providers: [{
