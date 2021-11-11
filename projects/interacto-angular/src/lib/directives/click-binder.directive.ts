@@ -6,9 +6,9 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioClick]'
 })
-export class ClickBinderDirective extends InteractoBinderDirective {
+export class ClickBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
-              element: ElementRef, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
+              element: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
     super(element, viewContainerRef);
   }
 

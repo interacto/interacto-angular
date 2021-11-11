@@ -6,9 +6,9 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 @Directive({
   selector: '[ioKeysPress]'
 })
-export class KeysPressBinderDirective extends InteractoBinderDirective {
+export class KeysPressBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);

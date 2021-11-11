@@ -6,9 +6,9 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 @Directive({
   selector: '[ioDoubleClick]'
 })
-export class DoubleClickBinderDirective extends InteractoBinderDirective {
+export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);

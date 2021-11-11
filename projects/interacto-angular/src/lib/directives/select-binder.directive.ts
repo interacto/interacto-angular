@@ -6,9 +6,9 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'select:[ioWidget]'
 })
-export class SelectBinderDirective extends InteractoBinderDirective {
+export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectElement> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLSelectElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -26,7 +26,7 @@ export class SelectBinderDirective extends InteractoBinderDirective {
       return;
     }
 
-    throw new Error(`Cannot create a binder on the select element: ${elt.prototype?.name ?? '[prototype is undefined]'}.
-Make sure you use Angular [ioWidget] and not template *ioWidget and you tag a select element`);
+    throw new Error('Cannot create a binder on the select element. Make sure you use ' +
+      'Angular [ioWidget] and not template *ioWidget and you tag a select element');
   }
 }

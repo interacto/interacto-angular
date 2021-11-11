@@ -6,9 +6,9 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioLongPress]'
 })
-export class LongPressBinderDirective extends InteractoBinderDirective {
+export class LongPressBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {

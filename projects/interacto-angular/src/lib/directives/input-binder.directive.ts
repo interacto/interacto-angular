@@ -6,9 +6,9 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'input:[ioWidget]'
 })
-export class InputBinderDirective extends InteractoBinderDirective {
+export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLInputElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -45,7 +45,7 @@ export class InputBinderDirective extends InteractoBinderDirective {
       }
     }
 
-    throw new Error(`Cannot create a binder on the input: ${elt.prototype?.name ?? '[prototype is undefined]'}.
-Make sure you use Angular [ioWidget] and not template *ioWidget and you tag an input of type checkbox, radio, color, date, or number`);
+    throw new Error('Cannot create a binder on the input. Make sure you use Angular [ioWidget] and ' +
+      'not template *ioWidget and you tag an input of type checkbox, radio, color, date, or number');
   }
 }

@@ -6,9 +6,9 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 @Directive({
   selector: '[ioPan]'
 })
-export class PanBinderDirective extends InteractoBinderDirective {
+export class PanBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {

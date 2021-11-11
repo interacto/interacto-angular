@@ -6,9 +6,9 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'a:[ioWidget]'
 })
-export class AnchorBinderDirective extends InteractoBinderDirective {
+export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLAnchorElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -26,7 +26,7 @@ export class AnchorBinderDirective extends InteractoBinderDirective {
       return;
     }
 
-    throw new Error(`Cannot create a binder on the anchor: ${elt.prototype?.name ?? '[prototype is undefined]'}.
-Make sure you use Angular [ioWidget] and not template *ioWidget and you tag an anchor`);
+    throw new Error('Cannot create a binder on the anchor. Make sure you use Angular [ioWidget] and not ' +
+      'template *ioWidget and you tag an anchor');
   }
 }

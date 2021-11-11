@@ -3,8 +3,8 @@ import {ElementRef, ViewContainerRef} from '@angular/core';
 /**
  * Base class for Interacto's interactions Directives
  */
-export abstract class InteractoBinderDirective {
-  protected constructor(protected element: ElementRef, protected viewContainerRef: ViewContainerRef) {
+export abstract class InteractoBinderDirective<T> {
+  protected constructor(protected element: ElementRef<T>, protected viewContainerRef: ViewContainerRef) {
   }
 
   // tslint:disable-next-line:ban-types

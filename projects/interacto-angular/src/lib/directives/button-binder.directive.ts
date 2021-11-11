@@ -6,9 +6,9 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'button:[ioWidget]'
 })
-export class ButtonBinderDirective extends InteractoBinderDirective {
+export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLButtonElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -26,7 +26,7 @@ export class ButtonBinderDirective extends InteractoBinderDirective {
       return;
     }
 
-    throw new Error(`Cannot create a binder on the button: ${elt.prototype?.name ?? '[prototype is undefined]'}.
-Make sure you use Angular [ioWidget] and not template *ioWidget and you tag a button`);
+    throw new Error('Cannot create a binder on the button. Make sure you use Angular [ioWidget] ' +
+      'and not template *ioWidget and you tag a button');
   }
 }

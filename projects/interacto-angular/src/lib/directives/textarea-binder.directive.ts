@@ -7,9 +7,9 @@ import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
 @Directive({
   selector: 'textarea:[ioWidget]'
 })
-export class TextAreaBinderDirective extends InteractoBinderDirective {
+export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAreaElement> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
-              element: ElementRef,
+              element: ElementRef<HTMLTextAreaElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(element, viewContainerRef);
@@ -27,7 +27,6 @@ export class TextAreaBinderDirective extends InteractoBinderDirective {
         return;
     }
 
-    throw new Error(`Cannot create a binder on this text area: ${elt.prototype?.name ?? '[prototype is undefined]'}.
-Make sure you use Angular [ioWidget] and not template *ioWidget`);
+    throw new Error('Cannot create a binder on this text area. Make sure you use Angular [ioWidget] and not template *ioWidget');
   }
 }

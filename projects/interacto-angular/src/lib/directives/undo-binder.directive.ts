@@ -8,7 +8,7 @@ import {Subscription} from 'rxjs';
 export class UndoBinderDirective implements OnDestroy {
   private readonly undoObs: Subscription;
 
-  constructor(private element: ElementRef, private bindings: Bindings) {
+  constructor(private element: ElementRef<HTMLButtonElement>, private bindings: Bindings) {
     // if (!(element.nativeElement instanceof HTMLButtonElement)) {
     //   throw new Error('The undo directive only applies on buttons');
     // }
