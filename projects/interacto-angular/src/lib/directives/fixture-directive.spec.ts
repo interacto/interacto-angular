@@ -14,3 +14,8 @@ export class StubCmd3 extends CommandBase {
   protected execution(): void {
   }
 }
+
+export class StubCmd4 extends CommandBase {
+  protected execution(): void {
+  }
+}

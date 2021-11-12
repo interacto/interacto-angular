@@ -19,7 +19,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement>
    * The expected number of clicks.
    */
   @Input()
-  count = 2;
+  count: number | string = 2;
 
   /**
    * Starts the creation of a binding using the clicks interaction.
@@ -30,10 +30,18 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement>
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 
+    let countValue = typeof this.count === 'number' ? this.count : parseInt(this.count, 0);
+
+    if(isNaN(countValue)) {
+      console.log('Cannot create a clicks binder since the value of number is ' +
+        'not a number (in string or number format). So using the default value: 2');
+      countValue = 2;
+    }
+
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.clicksBinder(this.count).onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.clicksBinder(countValue).onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.clicksBinder(this.count).on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.clicksBinder(countValue).on(this.element));
     }
   }
 }

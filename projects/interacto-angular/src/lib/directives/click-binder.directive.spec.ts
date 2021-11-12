@@ -1,5 +1,5 @@
 import {ClickBinderDirective} from './click-binder.directive';
-import {Component, DebugElement} from '@angular/core';
+import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
 import {BindingsContext, PartialPointBinder} from 'interacto';
@@ -7,9 +7,6 @@ import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
 
 let fixture: ComponentFixture<TestComponent>;
-let div: DebugElement;
-let button: DebugElement;
-let b: DebugElement;
 let binderDiv: PartialPointBinder;
 let binderBut: PartialPointBinder;
 let binderB: PartialPointBinder;
@@ -44,70 +41,76 @@ class TestComponent {
   }
 }
 
-beforeEach(() => {
-  fixture = TestBed.configureTestingModule({
-    imports: [TestingInteractoModule],
-    declarations: [ ClickBinderDirective, TestComponent ]
-  }).createComponent(TestComponent);
+describe('click directive', () => {
+  beforeEach(() => {
+    fixture = TestBed.configureTestingModule({
+      imports: [TestingInteractoModule],
+      declarations: [ClickBinderDirective, TestComponent]
+    }).createComponent(TestComponent);
 
-  fixture.detectChanges();
+    fixture.detectChanges();
 
-  div = fixture.debugElement.query(By.css('div'));
-  button = fixture.debugElement.query(By.css('button'));
-  b = fixture.debugElement.query(By.css('#b'));
-  ctx = TestBed.inject(BindingsContext);
-});
+    ctx = TestBed.inject(BindingsContext);
+  });
 
+  afterEach(() => {
+    TestBed.resetTestingModule();
+  })
 
-it('should call the binder method of the div', () => {
-  expect(binderDiv).toBeDefined();
-});
+  it('should call the binder method of the div', () => {
+    expect(binderDiv).toBeDefined();
+  });
 
-it('should call the binder method of the button', () => {
-  expect(binderBut).toBeDefined();
-});
+  it('should call the binder method of the button', () => {
+    expect(binderBut).toBeDefined();
+  });
 
-it('should call the binder method of the b', () => {
-  expect(binderB).toBeDefined();
-});
+  it('should call the binder method of the b', () => {
+    expect(binderB).toBeDefined();
+  });
 
-it('should produce a StubCmd1 on a click on the div', () => {
-  (div.nativeElement as HTMLElement).click();
-  expect(ctx.commands.length).toEqual(1);
-  expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
-});
+  it('should produce a StubCmd1 on a click on the div', () => {
+    const div = fixture.debugElement.query(By.css('div')) .nativeElement as HTMLElement;
+    div.click();
+    expect(ctx.commands.length).toEqual(1);
+    expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
+  });
 
-it('should produce two StubCmd1 on two click on the div', () => {
-  (div.nativeElement as HTMLElement).click();
-  (div.nativeElement as HTMLElement).click();
-  expect(ctx.commands.length).toEqual(2);
-});
+  it('should produce two StubCmd1 on two click on the div', () => {
+    const div = fixture.debugElement.query(By.css('div')) .nativeElement as HTMLElement;
+    div.click();
+    div.click();
+    expect(ctx.commands.length).toEqual(2);
+  });
 
-it('should produce a StubCmd2 on a click on the button', () => {
-  (button.nativeElement as HTMLElement).click();
-  expect(ctx.commands.length).toEqual(1);
-  expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
-});
+  it('should produce a StubCmd2 on a click on the button', () => {
+    const button = fixture.debugElement.query(By.css('button')) .nativeElement as HTMLElement;
+    button.click();
+    expect(ctx.commands.length).toEqual(1);
+    expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
+  });
 
-it('should produce two StubCmd2 on two clicks on the button', () => {
-  (button.nativeElement as HTMLElement).click();
-  (button.nativeElement as HTMLElement).click();
-  expect(ctx.commands.length).toEqual(2);
-});
+  it('should produce two StubCmd2 on two clicks on the button', () => {
+    const button = fixture.debugElement.query(By.css('button')) .nativeElement as HTMLElement;
+    button.click();
+    button.click();
+    expect(ctx.commands.length).toEqual(2);
+  });
 
-it('should produce a StubCmd3 on a click on b1', () => {
-  (fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement).click();
-  expect(ctx.commands.length).toEqual(1);
-  expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
-});
+  it('should produce a StubCmd3 on a click on b1', () => {
+    (fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement).click();
+    expect(ctx.commands.length).toEqual(1);
+    expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
+  });
 
-it('should produce a StubCmd3 on a click on b2', async () => {
-  const div = document.createElement("div");
-  div.setAttribute("id", "b2");
-  b.nativeElement.appendChild(div);
-  await Promise.resolve();
+  it('should produce a StubCmd3 on a click on b2', async () => {
+    const div = document.createElement("div");
+    div.setAttribute("id", "b2");
+    fixture.debugElement.query(By.css('#b')).nativeElement.appendChild(div);
+    await Promise.resolve();
 
-  (fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement).click();
-  expect(ctx.commands.length).toEqual(1);
-  expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
+    (fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement).click();
+    expect(ctx.commands.length).toEqual(1);
+    expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
+  });
 });
