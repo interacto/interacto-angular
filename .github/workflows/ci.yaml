@@ -15,9 +15,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Build
-        run: npm run ng build-prod
+        run: npm run build-prod
       - name: Test
         uses: GabrielBB/xvfb-action@v1
         with:
-          run: npm run ng test-headless
+          run: npm run test-headless
 
