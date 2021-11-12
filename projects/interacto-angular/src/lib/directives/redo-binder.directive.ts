@@ -9,10 +9,6 @@ export class RedoBinderDirective implements OnDestroy {
   private readonly redoObs: Subscription;
 
   constructor(private element: ElementRef<HTMLButtonElement>, private bindings: Bindings) {
-    // if (!(element.nativeElement instanceof HTMLButtonElement)) {
-    //   throw new Error('The redo directive only applies on buttons');
-    // }
-
     this.redoObs = bindings.undoHistory
       .redosObservable()
       .subscribe(_ => {
