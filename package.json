@@ -3,6 +3,9 @@
   "description": "Front-end framework for processing user interface events in Angular",
   "version": "1.0.0-beta.12",
   "author": "Arnaud Blouin",
+  "contributors": [
+    "Rémi Daniel"
+  ],
   "keywords": [
     "event processing",
     "user interaction",
