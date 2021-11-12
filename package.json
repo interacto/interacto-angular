@@ -33,6 +33,7 @@
     "build": "npm run clean && ng build",
     "build-prod": "npm run clean && ng lint && ng build --configuration production",
     "test": "ng test",
+    "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "clean": "rm -rf dist",
