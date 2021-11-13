@@ -5,6 +5,7 @@ import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3, StubCmd4} from './fixture-directive.spec';
 import {ClicksBinderDirective} from './clicks-binder.directive';
 import {By} from '@angular/platform-browser';
+import {robot} from 'interacto-nono';
 
 let fixture: ComponentFixture<TestComponentClicks>;
 let binderDiv: PartialPointsBinder;
@@ -85,33 +86,27 @@ describe('clicks directive', () => {
 
   it('should produce a StubCmd1 on two clicks on the div', () => {
     const div = fixture.debugElement.query(By.css('div')).nativeElement as HTMLElement;
-    div.click();
-    div.click();
+    robot(div).click().click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });
 
   it('should produce two StubCmd1 on four clicks on the div', () => {
     const div = fixture.debugElement.query(By.css('div')).nativeElement as HTMLElement;
-    div.click();
-    div.click();
-    div.click();
-    div.click();
+    robot(div).click().click().click().click();
     expect(ctx.commands.length).toEqual(2);
   });
 
   it('should produce a StubCmd2 on two clicks on the button', () => {
     const button = fixture.debugElement.query(By.css('button')).nativeElement as HTMLElement;
-    button.click();
-    button.click();
+    robot(button).click().click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
   });
 
   it('should produce a StubCmd3 on two clicks on b1', () => {
     const b1 = fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement;
-    b1.click();
-    b1.click();
+    robot(b1).click().click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
@@ -124,32 +119,27 @@ describe('clicks directive', () => {
     await Promise.resolve();
 
     const b2 = fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement;
-    b2.click();
-    b2.click();
+    robot(b2).click().click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
 
   it('should produce no StubCmd4 on two clicks on the p', () => {
     const p = fixture.debugElement.query(By.css('#p1')).nativeElement as HTMLElement;
-    p.click();
-    p.click();
+    robot(p).click().click();
     expect(ctx.commands.length).toEqual(0);
   });
 
   it('should produce a StubCmd4 on three clicks on the p', () => {
     const p = fixture.debugElement.query(By.css('#p1')).nativeElement as HTMLElement;
-    p.click();
-    p.click();
-    p.click();
+    robot(p).click().click().click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd4);
   });
 
   it('should support an invalid format pf "number"', () => {
     const p = fixture.debugElement.query(By.css('#p2')).nativeElement as HTMLElement;
-    p.click();
-    p.click();
+    robot(p).click().click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });

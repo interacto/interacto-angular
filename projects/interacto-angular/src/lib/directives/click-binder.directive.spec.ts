@@ -5,6 +5,7 @@ import {By} from '@angular/platform-browser';
 import {BindingsContext, PartialPointBinder} from 'interacto';
 import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
+import {robot} from 'interacto-nono';
 
 let fixture: ComponentFixture<TestComponent>;
 let binderDiv: PartialPointBinder;
@@ -71,34 +72,36 @@ describe('click directive', () => {
 
   it('should produce a StubCmd1 on a click on the div', () => {
     const div = fixture.debugElement.query(By.css('div')) .nativeElement as HTMLElement;
-    div.click();
+    robot(div).click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });
 
   it('should produce two StubCmd1 on two click on the div', () => {
     const div = fixture.debugElement.query(By.css('div')) .nativeElement as HTMLElement;
-    div.click();
-    div.click();
+    robot(div)
+      .click()
+      .click();
     expect(ctx.commands.length).toEqual(2);
   });
 
   it('should produce a StubCmd2 on a click on the button', () => {
     const button = fixture.debugElement.query(By.css('button')) .nativeElement as HTMLElement;
-    button.click();
+    robot(button).click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
   });
 
   it('should produce two StubCmd2 on two clicks on the button', () => {
     const button = fixture.debugElement.query(By.css('button')) .nativeElement as HTMLElement;
-    button.click();
-    button.click();
+    robot(button)
+      .click()
+      .click();
     expect(ctx.commands.length).toEqual(2);
   });
 
   it('should produce a StubCmd3 on a click on b1', () => {
-    (fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement).click();
+    robot((fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement)).click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
@@ -109,7 +112,7 @@ describe('click directive', () => {
     fixture.debugElement.query(By.css('#b')).nativeElement.appendChild(div);
     await Promise.resolve();
 
-    (fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement).click();
+    robot((fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement)).click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
