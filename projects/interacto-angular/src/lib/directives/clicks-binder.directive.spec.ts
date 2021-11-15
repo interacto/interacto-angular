@@ -86,27 +86,27 @@ describe('clicks directive', () => {
 
   it('should produce a StubCmd1 on two clicks on the div', () => {
     const div = fixture.debugElement.query(By.css('div')).nativeElement as HTMLElement;
-    robot(div).click().click();
+    robot().click(div, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });
 
   it('should produce two StubCmd1 on four clicks on the div', () => {
     const div = fixture.debugElement.query(By.css('div')).nativeElement as HTMLElement;
-    robot(div).click().click().click().click();
+    robot().click(div, 4);
     expect(ctx.commands.length).toEqual(2);
   });
 
   it('should produce a StubCmd2 on two clicks on the button', () => {
     const button = fixture.debugElement.query(By.css('button')).nativeElement as HTMLElement;
-    robot(button).click().click();
+    robot().click(button, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
   });
 
   it('should produce a StubCmd3 on two clicks on b1', () => {
     const b1 = fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement;
-    robot(b1).click().click();
+    robot().click(b1, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
@@ -119,27 +119,27 @@ describe('clicks directive', () => {
     await Promise.resolve();
 
     const b2 = fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement;
-    robot(b2).click().click();
+    robot().click(b2, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
 
   it('should produce no StubCmd4 on two clicks on the p', () => {
     const p = fixture.debugElement.query(By.css('#p1')).nativeElement as HTMLElement;
-    robot(p).click().click();
+    robot().click(p, 2);
     expect(ctx.commands.length).toEqual(0);
   });
 
   it('should produce a StubCmd4 on three clicks on the p', () => {
     const p = fixture.debugElement.query(By.css('#p1')).nativeElement as HTMLElement;
-    robot(p).click().click().click();
+    robot().click(p, 3);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd4);
   });
 
   it('should support an invalid format pf "number"', () => {
     const p = fixture.debugElement.query(By.css('#p2')).nativeElement as HTMLElement;
-    robot(p).click().click();
+    robot(p).click(p, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });

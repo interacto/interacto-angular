@@ -79,9 +79,7 @@ describe('click directive', () => {
 
   it('should produce two StubCmd1 on two click on the div', () => {
     const div = fixture.debugElement.query(By.css('div')) .nativeElement as HTMLElement;
-    robot(div)
-      .click()
-      .click();
+    robot().click(div, 2);
     expect(ctx.commands.length).toEqual(2);
   });
 
@@ -94,9 +92,7 @@ describe('click directive', () => {
 
   it('should produce two StubCmd2 on two clicks on the button', () => {
     const button = fixture.debugElement.query(By.css('button')) .nativeElement as HTMLElement;
-    robot(button)
-      .click()
-      .click();
+    robot().click(button, 2);
     expect(ctx.commands.length).toEqual(2);
   });
 
