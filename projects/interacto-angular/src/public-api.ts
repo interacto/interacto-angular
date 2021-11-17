@@ -24,6 +24,7 @@ export * from './lib/directives/redo-binder.directive';
 export * from './lib/directives/select-binder.directive';
 export * from './lib/directives/swipe-binder.directive';
 export * from './lib/directives/tap-binder.directive';
+export * from './lib/directives/textarea-binder.directive';
 export * from './lib/directives/textinput-binder.directive';
 export * from './lib/directives/undo-binder.directive';
 export * from './lib/interacto-angular.module';
