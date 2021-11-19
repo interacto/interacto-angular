@@ -25,6 +25,11 @@ import {MousedownBinderDirective} from './directives/mousedown-binder.directive'
 import {LongMousedownBinderDirective} from './directives/long-mousedown-binder.directive';
 import {KeydownBinderDirective} from './directives/keydown-binder.directive';
 import {KeysdownBinderDirective} from './directives/keysdown-binder.directive';
+import {KeyupBinderDirective} from './directives/keyup-binder.directive';
+import {MousemoveBinderDirective} from './directives/mousemove-binder.directive';
+import {MouseenterBinderDirective} from './directives/mouseenter-binder.directive';
+import {MouseleaveBinderDirective} from './directives/mouseleave-binder.directive';
+import {MouseupBinderDirective} from './directives/mouseup-binder.directive';
 
 
 export function undoHistoryFactory(ctx: Bindings): UndoHistory {
@@ -45,6 +50,7 @@ export function bindingsFactory(): Bindings {
     RedoBinderDirective,
     DragLockBinderDirective,
     KeydownBinderDirective,
+    KeyupBinderDirective,
     KeysdownBinderDirective,
     KeyTypeBinderDirective,
     KeysTypeBinderDirective,
@@ -54,6 +60,10 @@ export function bindingsFactory(): Bindings {
     MultiTouchBinderDirective,
     PanBinderDirective,
     MousedownBinderDirective,
+    MousemoveBinderDirective,
+    MouseenterBinderDirective,
+    MouseleaveBinderDirective,
+    MouseupBinderDirective,
     SwipeBinderDirective,
     TapBinderDirective,
     TextAreaBinderDirective,
@@ -73,6 +83,7 @@ export function bindingsFactory(): Bindings {
     RedoBinderDirective,
     DragLockBinderDirective,
     KeydownBinderDirective,
+    KeyupBinderDirective,
     KeysdownBinderDirective,
     KeyTypeBinderDirective,
     KeysTypeBinderDirective,
@@ -82,6 +93,10 @@ export function bindingsFactory(): Bindings {
     MultiTouchBinderDirective,
     PanBinderDirective,
     MousedownBinderDirective,
+    MousemoveBinderDirective,
+    MouseenterBinderDirective,
+    MouseleaveBinderDirective,
+    MouseupBinderDirective,
     SwipeBinderDirective,
     TapBinderDirective,
     TextAreaBinderDirective,
