@@ -1,12 +1,12 @@
 import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialPointBinder} from 'interacto';
-import {InteractoBinderDirective} from './interacto-binder-directive';
+import {Bindings, PartialKeysBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
+import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
-  selector: '[ioPress]'
+  selector: '[ioKeysdown]'
 })
-export class PressBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
@@ -15,17 +15,17 @@ export class PressBinderDirective extends InteractoBinderDirective<HTMLElement> 
   }
 
   /**
-   * Starts the creation of a binding using the mouse press interaction.
+   * Starts the creation of a binding using the keys pressed interaction.
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioPress(fn: (partialBinder: PartialPointBinder) => void)  {
+  set ioKeysdown(fn: (partialBinder: PartialKeysBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.mouseDownBinder().onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.keysDownBinder().onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.mouseDownBinder().on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.keysDownBinder().on(this.element));
     }
   }
 }

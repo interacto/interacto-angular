@@ -1,12 +1,12 @@
 import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialKeyBinder} from 'interacto';
-import {OnDynamicDirective} from './on-dynamic.directive';
+import {Bindings, PartialUpdatePointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioKeyPress]'
+  selector: '[ioLongMousedown]'
 })
-export class KeyPressBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
@@ -15,22 +15,26 @@ export class KeyPressBinderDirective extends InteractoBinderDirective<HTMLElemen
     super(element, viewContainerRef);
   }
 
+  /**
+   * The duration of the pressure to end the user interaction.
+   * If this duration is not reached, the interaction is cancelled.
+   */
   @Input()
-  modifierAccepted = true;
+  duration = 1000;
 
   /**
-   * Starts the creation of a binding using the key pressure interaction.
+   * Starts the creation of a binding using the long press interaction.
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeyPress(fn: (partialBinder: PartialKeyBinder) => void | undefined)  {
+  set ioLongMousedown(fn: (partialBinder: PartialUpdatePointBinder) => void | undefined)  {
     const fnName = this.checkFnName(fn);
     this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
 
     if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.keyDownBinder(this.modifierAccepted).onDynamic(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.longMouseDownBinder(this.duration).onDynamic(this.element));
     }else {
-      this.getComponent(fnName)[fnName](this.bindings.keyDownBinder(this.modifierAccepted).on(this.element));
+      this.getComponent(fnName)[fnName](this.bindings.longMouseDownBinder(this.duration).on(this.element));
     }
   }
 }

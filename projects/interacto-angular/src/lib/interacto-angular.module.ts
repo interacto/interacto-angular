@@ -6,16 +6,12 @@ import {RedoBinderDirective} from './directives/redo-binder.directive';
 import {ClickBinderDirective} from './directives/click-binder.directive';
 import {DoubleClickBinderDirective} from './directives/dble-click-binder.directive';
 import {DragLockBinderDirective} from './directives/drag-lock-binder.directive';
-import {KeyPressBinderDirective} from './directives/key-pressure-binder.directive';
-import {KeysPressBinderDirective} from './directives/key-pressures-binder.directive';
 import {KeyTypeBinderDirective} from './directives/key-type-binder.directive';
 import {KeysTypeBinderDirective} from './directives/keys-type-binder.directive';
 import {DndBinderDirective} from './directives/dnd-binder.directive';
-import {LongPressBinderDirective} from './directives/long-press-binder.directive';
 import {LongTouchBinderDirective} from './directives/long-touch-binder.directive';
 import {MultiTouchBinderDirective} from './directives/multi-touch-binder.directive';
 import {PanBinderDirective} from './directives/pan-binder.directive';
-import {PressBinderDirective} from './directives/press-binder.directive';
 import {SwipeBinderDirective} from './directives/swipe-binder.directive';
 import {TapBinderDirective} from './directives/tap-binder.directive';
 import {OnDynamicDirective} from './directives/on-dynamic.directive';
@@ -25,6 +21,10 @@ import {InputBinderDirective} from './directives/input-binder.directive';
 import {SelectBinderDirective} from './directives/select-binder.directive';
 import {AnchorBinderDirective} from './directives/anchor-binder.directive';
 import {TextAreaBinderDirective} from './directives/textarea-binder.directive';
+import {MousedownBinderDirective} from './directives/mousedown-binder.directive';
+import {LongMousedownBinderDirective} from './directives/long-mousedown-binder.directive';
+import {KeydownBinderDirective} from './directives/keydown-binder.directive';
+import {KeysdownBinderDirective} from './directives/keysdown-binder.directive';
 
 
 export function undoHistoryFactory(ctx: Bindings): UndoHistory {
@@ -44,16 +44,16 @@ export function bindingsFactory(): Bindings {
     UndoBinderDirective,
     RedoBinderDirective,
     DragLockBinderDirective,
-    KeyPressBinderDirective,
-    KeysPressBinderDirective,
+    KeydownBinderDirective,
+    KeysdownBinderDirective,
     KeyTypeBinderDirective,
     KeysTypeBinderDirective,
     DndBinderDirective,
-    LongPressBinderDirective,
+    LongMousedownBinderDirective,
     LongTouchBinderDirective,
     MultiTouchBinderDirective,
     PanBinderDirective,
-    PressBinderDirective,
+    MousedownBinderDirective,
     SwipeBinderDirective,
     TapBinderDirective,
     TextAreaBinderDirective,
@@ -72,16 +72,16 @@ export function bindingsFactory(): Bindings {
     UndoBinderDirective,
     RedoBinderDirective,
     DragLockBinderDirective,
-    KeyPressBinderDirective,
-    KeysPressBinderDirective,
+    KeydownBinderDirective,
+    KeysdownBinderDirective,
     KeyTypeBinderDirective,
     KeysTypeBinderDirective,
     DndBinderDirective,
-    LongPressBinderDirective,
+    LongMousedownBinderDirective,
     LongTouchBinderDirective,
     MultiTouchBinderDirective,
     PanBinderDirective,
-    PressBinderDirective,
+    MousedownBinderDirective,
     SwipeBinderDirective,
     TapBinderDirective,
     TextAreaBinderDirective,
