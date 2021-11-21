@@ -4,7 +4,7 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'input:[ioWidget]'
+  selector: 'input:[ioWidget] :not([type=text])'
 })
 export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialInputBinder> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
