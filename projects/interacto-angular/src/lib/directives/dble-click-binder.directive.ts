@@ -6,12 +6,12 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 @Directive({
   selector: '[ioDoubleClick]'
 })
-export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   /**
@@ -19,13 +19,11 @@ export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLEle
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDoubleClick(fn: (partialBinder: PartialUpdatePointBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
+  set ioDoubleClick(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.dbleClickBinder().onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.dbleClickBinder().on(this.element));
-    }
+  protected createPartialBinder(): PartialUpdatePointBinder {
+    return this.onDyn ? this.bindings.dbleClickBinder().onDynamic(this.element): this.bindings.dbleClickBinder().on(this.element);
   }
 }

@@ -6,12 +6,12 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 @Directive({
   selector: '[ioKeysdown]'
 })
-export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeysBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   /**
@@ -19,13 +19,11 @@ export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElemen
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeysdown(fn: (partialBinder: PartialKeysBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
+  set ioKeysdown(fn: ((partialBinder: PartialKeysBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.keysDownBinder().onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.keysDownBinder().on(this.element));
-    }
+  protected createPartialBinder(): PartialKeysBinder {
+    return this.onDyn ? this.bindings.keysDownBinder().onDynamic(this.element): this.bindings.keysDownBinder().on(this.element);
   }
 }

@@ -6,27 +6,20 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'a:[ioWidget]'
 })
-export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement> {
+export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement, PartialAnchorBinder> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
               element: ElementRef<HTMLAnchorElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   @Input()
-  set ioWidget(fn: (partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => void) {
-    const fnName = this.checkFnName(fn);
+  set ioWidget(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => void) | undefined) {
+    this.callBinder(fn);
+  }
 
-    const elt = this.element.nativeElement;
-
-    if (elt instanceof HTMLAnchorElement) {
-      const binder = this.onDyn ? this.bindings.hyperlinkBinder().onDynamic(elt) : this.bindings.hyperlinkBinder().on(elt);
-      this.getComponent(fnName)[fnName](binder, elt);
-      return;
-    }
-
-    throw new Error('Cannot create a binder on the anchor. Make sure you use Angular [ioWidget] and not ' +
-      'template *ioWidget and you tag an anchor');
+  protected createPartialBinder(): PartialAnchorBinder {
+    return this.onDyn ? this.bindings.hyperlinkBinder().onDynamic(this.element) : this.bindings.hyperlinkBinder().on(this.element);
   }
 }

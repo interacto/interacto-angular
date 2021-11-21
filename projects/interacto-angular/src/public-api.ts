@@ -16,7 +16,7 @@ export * from './lib/directives/keysdown-binder.directive';
 export * from './lib/directives/key-type-binder.directive';
 export * from './lib/directives/keys-type-binder.directive';
 export * from './lib/directives/long-touch-binder.directive';
-export * from './lib/directives/long-touch-binder.directive';
+export * from './lib/directives/long-mousedown-binder.directive';
 export * from './lib/directives/multi-touch-binder.directive';
 export * from './lib/directives/on-dynamic.directive';
 export * from './lib/directives/pan-binder.directive';

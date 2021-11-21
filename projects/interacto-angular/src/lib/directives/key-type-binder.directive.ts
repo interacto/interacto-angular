@@ -6,12 +6,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioKeyType]'
 })
-export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   /**
@@ -19,13 +19,11 @@ export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeyType(fn: (partialBinder: PartialKeyBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
+  set ioKeyType(fn: ((partialBinder: PartialKeyBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.keyTypeBinder().onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.keyTypeBinder().on(this.element));
-    }
+  protected createPartialBinder(): PartialKeyBinder {
+    return this.onDyn ? this.bindings.keyTypeBinder().onDynamic(this.element): this.bindings.keyTypeBinder().on(this.element);
   }
 }

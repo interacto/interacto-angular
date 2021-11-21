@@ -6,13 +6,13 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioMultiTouch]'
 })
-export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   /**
@@ -28,14 +28,12 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElem
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMultiTouch(fn: (partialBinder: PartialMultiTouchBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioMultiTouch(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.multiTouchBinder(this.nbTouches).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.multiTouchBinder(this.nbTouches).on(this.element));
-    }
+  protected createPartialBinder(): PartialMultiTouchBinder {
+    return this.onDyn ? this.bindings.multiTouchBinder(this.nbTouches).onDynamic(this.element):
+      this.bindings.multiTouchBinder(this.nbTouches).on(this.element);
   }
 }

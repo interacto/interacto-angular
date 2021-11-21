@@ -6,13 +6,13 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioMouseenter]'
 })
-export class MouseenterBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class MouseenterBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   /**
@@ -27,16 +27,14 @@ export class MouseenterBinderDirective extends InteractoBinderDirective<HTMLElem
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMouseenter(fn: (partialBinder: PartialPointBinder) => void)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioMouseenter(fn: ((partialBinder: PartialPointBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
+  protected createPartialBinder(): PartialPointBinder {
     const withbubbling = typeof this.bubbling === 'boolean' ? this.bubbling : this.bubbling === 'true';
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.mouseEnterBinder(withbubbling).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.mouseEnterBinder(withbubbling).on(this.element));
-    }
+    return this.onDyn ? this.bindings.mouseEnterBinder(withbubbling).onDynamic(this.element):
+      this.bindings.mouseEnterBinder(withbubbling).on(this.element);
   }
 }

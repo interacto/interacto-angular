@@ -6,10 +6,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioClick]'
 })
-export class ClickBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class ClickBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
-              element: ElementRef<HTMLElement>, viewContainerRef: ViewContainerRef, private bindings: Bindings) {
-    super(element, viewContainerRef);
+              element: ElementRef<HTMLElement>,
+              viewContainerRef: ViewContainerRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   /**
@@ -17,13 +19,11 @@ export class ClickBinderDirective extends InteractoBinderDirective<HTMLElement> 
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClick(fn: (partialBinder: PartialPointBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
+  public set ioClick(fn: ((partialBinder: PartialPointBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.clickBinder().onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.clickBinder().on(this.element));
-    }
+  protected createPartialBinder(): PartialPointBinder {
+    return this.onDyn ? this.bindings.clickBinder().onDynamic(this.element): this.bindings.clickBinder().on(this.element);
   }
 }

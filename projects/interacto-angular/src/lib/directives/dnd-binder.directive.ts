@@ -6,13 +6,13 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioDnd]'
 })
-export class DndBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class DndBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   @Input()
@@ -23,14 +23,12 @@ export class DndBinderDirective extends InteractoBinderDirective<HTMLElement> {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDnd(fn: (partialBinder: PartialPointSrcTgtBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioDnd(fn: ((partialBinder: PartialPointSrcTgtBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.dndBinder(this.cancellable).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.dndBinder(this.cancellable).on(this.element));
-    }
+  protected createPartialBinder(): PartialPointSrcTgtBinder {
+    return this.onDyn ? this.bindings.dndBinder(this.cancellable).onDynamic(this.element):
+      this.bindings.dndBinder(this.cancellable).on(this.element);
   }
 }

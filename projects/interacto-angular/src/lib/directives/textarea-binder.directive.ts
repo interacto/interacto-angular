@@ -7,26 +7,20 @@ import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
 @Directive({
   selector: 'textarea:[ioWidget]'
 })
-export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAreaElement> {
+export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAreaElement, PartialTextInputBinder> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
               element: ElementRef<HTMLTextAreaElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   @Input()
-  set ioWidget(fn: (partialBinder: PartialTextInputBinder, widget: HTMLTextAreaElement) => void) {
-    const fnName = this.checkFnName(fn);
+  set ioWidget(fn: ((partialBinder: PartialTextInputBinder, widget: HTMLTextAreaElement) => void) | undefined) {
+    this.callBinder(fn);
+  }
 
-    const elt = this.element.nativeElement;
-
-    if (elt instanceof HTMLTextAreaElement) {
-        const bTxt = this.onDyn ? this.bindings.textInputBinder().onDynamic(elt) : this.bindings.textInputBinder().on(elt);
-        this.getComponent(fnName)[fnName](bTxt, elt);
-        return;
-    }
-
-    throw new Error('Cannot create a binder on this text area. Make sure you use Angular [ioWidget] and not template *ioWidget');
+  protected createPartialBinder(): PartialTextInputBinder {
+    return this.onDyn ? this.bindings.textInputBinder().onDynamic(this.element): this.bindings.textInputBinder().on(this.element);
   }
 }

@@ -1,18 +1,18 @@
 import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialTouchSrcTgtBinder} from 'interacto';
+import {Bindings, PartialMultiTouchBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioSwipe]'
 })
-export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   /**
@@ -50,19 +50,13 @@ export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement> 
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioSwipe(fn: (partialBinder: PartialTouchSrcTgtBinder) => void)  {
-    const fnName = this.checkFnName(fn);
+  set ioSwipe(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
-
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](
-        this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance)
-          .onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](
-        this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance)
-          .on(this.element));
-    }
+  protected createPartialBinder(): PartialMultiTouchBinder {
+    return this.onDyn ?
+      this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance).onDynamic(this.element):
+      this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance).on(this.element);
   }
 }

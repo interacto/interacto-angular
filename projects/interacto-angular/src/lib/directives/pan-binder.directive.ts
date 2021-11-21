@@ -1,18 +1,18 @@
 import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialTouchSrcTgtBinder} from 'interacto';
+import {Bindings, PartialMultiTouchBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioPan]'
 })
-export class PanBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class PanBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   /**
@@ -44,16 +44,13 @@ export class PanBinderDirective extends InteractoBinderDirective<HTMLElement> {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioPan(fn: (partialBinder: PartialTouchSrcTgtBinder) => void)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioPan(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](
-        this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](
-        this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).on(this.element));
-    }
+  protected createPartialBinder(): PartialMultiTouchBinder {
+    return this.onDyn ?
+      this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).onDynamic(this.element):
+      this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).on(this.element);
   }
 }

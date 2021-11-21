@@ -6,12 +6,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioMousemove]'
 })
-export class MousemoveBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class MousemoveBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   /**
@@ -19,13 +19,11 @@ export class MousemoveBinderDirective extends InteractoBinderDirective<HTMLEleme
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMousemove(fn: (partialBinder: PartialPointBinder) => void)  {
-    const fnName = this.checkFnName(fn);
+  set ioMousemove(fn: ((partialBinder: PartialPointBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.mouseMoveBinder().onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.mouseMoveBinder().on(this.element));
-    }
+  protected createPartialBinder(): PartialPointBinder {
+    return this.onDyn ? this.bindings.mouseMoveBinder().onDynamic(this.element): this.bindings.mouseMoveBinder().on(this.element);
   }
 }

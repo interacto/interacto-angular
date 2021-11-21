@@ -6,13 +6,13 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioLongMousedown]'
 })
-export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   /**
@@ -27,14 +27,12 @@ export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLE
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongMousedown(fn: (partialBinder: PartialUpdatePointBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioLongMousedown(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.longMouseDownBinder(this.duration).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.longMouseDownBinder(this.duration).on(this.element));
-    }
+  protected createPartialBinder(): PartialUpdatePointBinder {
+    return this.onDyn ? this.bindings.longMouseDownBinder(this.duration).onDynamic(this.element):
+      this.bindings.longMouseDownBinder(this.duration).on(this.element);
   }
 }

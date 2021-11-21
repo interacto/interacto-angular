@@ -6,27 +6,20 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'select:[ioWidget]'
 })
-export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectElement> {
+export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectElement, PartialSelectBinder> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
               element: ElementRef<HTMLSelectElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   @Input()
-  set ioWidget(fn: (partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => void) {
-    const fnName = this.checkFnName(fn);
+  set ioWidget(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => void) | undefined) {
+    this.callBinder(fn);
+  }
 
-    const elt = this.element.nativeElement;
-
-    if (elt instanceof HTMLSelectElement) {
-      const binder = this.onDyn ? this.bindings.comboBoxBinder().onDynamic(elt) : this.bindings.comboBoxBinder().on(elt);
-      this.getComponent(fnName)[fnName](binder, elt);
-      return;
-    }
-
-    throw new Error('Cannot create a binder on the select element. Make sure you use ' +
-      'Angular [ioWidget] and not template *ioWidget and you tag a select element');
+  protected createPartialBinder(): PartialSelectBinder {
+    return this.onDyn ? this.bindings.comboBoxBinder().onDynamic(this.element): this.bindings.comboBoxBinder().on(this.element);
   }
 }

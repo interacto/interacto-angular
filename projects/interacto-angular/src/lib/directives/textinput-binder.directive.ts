@@ -7,26 +7,20 @@ import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
 @Directive({
   selector: 'input:[ioWidget][type=text]'
 })
-export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInputElement> {
+export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialTextInputBinder> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
               element: ElementRef<HTMLInputElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   @Input()
-  set ioWidget(fn: (partialBinder: PartialTextInputBinder, widget: HTMLInputElement) => void) {
-    const fnName = this.checkFnName(fn);
+  set ioWidget(fn: ((partialBinder: PartialTextInputBinder, widget: HTMLInputElement) => void) | undefined) {
+    this.callBinder(fn);
+  }
 
-    const elt = this.element.nativeElement;
-
-    if (elt instanceof HTMLInputElement && elt.type === 'text') {
-        const bTxt = this.onDyn ? this.bindings.textInputBinder().onDynamic(elt) : this.bindings.textInputBinder().on(elt);
-        this.getComponent(fnName)[fnName](bTxt, elt);
-        return;
-    }
-
-    throw new Error('Cannot create a binder on this input (of type text). Make sure you use Angular [ioWidget] and not template *ioWidget');
+  protected createPartialBinder(): PartialTextInputBinder {
+    return this.onDyn ? this.bindings.textInputBinder().onDynamic(this.element): this.bindings.textInputBinder().on(this.element);
   }
 }

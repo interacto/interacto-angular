@@ -6,13 +6,13 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 @Directive({
   selector: '[ioKeyup]'
 })
-export class KeyupBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class KeyupBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   @Input()
@@ -23,14 +23,12 @@ export class KeyupBinderDirective extends InteractoBinderDirective<HTMLElement> 
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeyup(fn: (partialBinder: PartialKeyBinder) => void | undefined)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioKeyup(fn: ((partialBinder: PartialKeyBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.keyUpBinder(this.modifierAccepted).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.keyUpBinder(this.modifierAccepted).on(this.element));
-    }
+  protected createPartialBinder(): PartialKeyBinder {
+    return this.onDyn ? this.bindings.keyUpBinder(this.modifierAccepted).onDynamic(this.element):
+      this.bindings.keyUpBinder(this.modifierAccepted).on(this.element);
   }
 }

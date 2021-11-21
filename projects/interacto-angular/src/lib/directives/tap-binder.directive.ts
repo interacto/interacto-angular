@@ -6,13 +6,13 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: '[ioTap]'
 })
-export class TapBinderDirective extends InteractoBinderDirective<HTMLElement> {
+export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapBinder> {
   constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              changeDetectorRef: ChangeDetectorRef,
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings, changeDetectorRef);
   }
 
   /**
@@ -27,14 +27,12 @@ export class TapBinderDirective extends InteractoBinderDirective<HTMLElement> {
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioTap(fn: (partialBinder: PartialTapBinder) => void)  {
-    const fnName = this.checkFnName(fn);
-    this.changeDetectorRef.detectChanges(); // Detects changes to the component and retrieves the input values
+  set ioTap(fn: ((partialBinder: PartialTapBinder, widget: HTMLElement) => void) | undefined)  {
+    this.callBinder(fn);
+  }
 
-    if (this.onDyn) {
-      this.getComponent(fnName)[fnName](this.bindings.tapBinder(this.nbTaps).onDynamic(this.element));
-    }else {
-      this.getComponent(fnName)[fnName](this.bindings.tapBinder(this.nbTaps).on(this.element));
-    }
+  protected createPartialBinder(): PartialTapBinder {
+    return this.onDyn ? this.bindings.tapBinder(this.nbTaps).onDynamic(this.element):
+      this.bindings.tapBinder(this.nbTaps).on(this.element);
   }
 }

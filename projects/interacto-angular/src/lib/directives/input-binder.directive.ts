@@ -6,42 +6,33 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 @Directive({
   selector: 'input:[ioWidget]'
 })
-export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement> {
+export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialInputBinder> {
   constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
               element: ElementRef<HTMLInputElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
-    super(element, viewContainerRef);
+              bindings: Bindings) {
+    super(element, viewContainerRef, bindings);
   }
 
   @Input()
   set ioWidget(fn: (partialBinder: PartialInputBinder, widget: HTMLInputElement) => void) {
-    const fnName = this.checkFnName(fn);
+    this.callBinder(fn);
+  }
 
+  protected createPartialBinder(): PartialInputBinder {
     const elt = this.element.nativeElement;
 
     if (elt instanceof HTMLInputElement) {
       switch (elt.type) {
         case 'checkbox':
         case 'radio':
-          const bCB = this.onDyn ? this.bindings.checkboxBinder().onDynamic(elt) : this.bindings.checkboxBinder().on(elt);
-          this.getComponent(fnName)[fnName](bCB, elt);
-          return;
-
+          return this.onDyn ? this.bindings.checkboxBinder().onDynamic(elt) : this.bindings.checkboxBinder().on(elt);
         case 'color':
-          const bCol = this.onDyn ? this.bindings.colorPickerBinder().onDynamic(elt) : this.bindings.colorPickerBinder().on(elt);
-          this.getComponent(fnName)[fnName](bCol, elt);
-          return;
-
+          return this.onDyn ? this.bindings.colorPickerBinder().onDynamic(elt) : this.bindings.colorPickerBinder().on(elt);
         case 'date':
-          const bDate = this.onDyn ? this.bindings.dateBinder().onDynamic(elt) : this.bindings.dateBinder().on(elt);
-          this.getComponent(fnName)[fnName](bDate, elt);
-          return;
-
+          return this.onDyn ? this.bindings.dateBinder().onDynamic(elt) : this.bindings.dateBinder().on(elt);
         case 'number':
-          const bNum = this.onDyn ? this.bindings.spinnerBinder().onDynamic(elt) : this.bindings.spinnerBinder().on(elt);
-          this.getComponent(fnName)[fnName](bNum, elt);
-          return;
+          return this.onDyn ? this.bindings.spinnerBinder().onDynamic(elt) : this.bindings.spinnerBinder().on(elt);
       }
     }
 

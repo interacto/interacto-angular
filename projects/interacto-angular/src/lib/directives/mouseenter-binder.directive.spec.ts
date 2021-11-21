@@ -1,4 +1,3 @@
-import {ClickBinderDirective} from './click-binder.directive';
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
@@ -6,6 +5,7 @@ import {BindingsContext, PartialPointBinder} from 'interacto';
 import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
 import {robot} from 'interacto-nono';
+import {MouseenterBinderDirective} from './mouseenter-binder.directive';
 
 let fixture: ComponentFixture<TestComponent>;
 let binderDiv: PartialPointBinder;
@@ -16,10 +16,10 @@ let ctx: BindingsContext;
 
 @Component({
   template: `
-    <div [ioClick]="methodDiv">1</div>
-    <button [ioClick]="methodBut">2</button>
-    <b id="b" ioOnDynamic [ioClick]="methodDyn"><b id="b1">B</b></b>
-    <b id="b2" [ioClick] (ioBinder)="methodParam($event, 'foo')"></b>`
+    <div [ioMouseenter]="methodDiv">1</div>
+    <button [ioMouseenter]="methodBut">2</button>
+    <b id="b" ioOnDynamic [ioMouseenter]="methodDyn"><b id="b1">B</b></b>
+    <b id="b2" [ioMouseenter] (ioBinder)="methodParam($event, 'bar')"></b>`
 })
 class TestComponent {
   public param: string = "";
@@ -56,11 +56,11 @@ class TestComponent {
   }
 }
 
-describe('click directive', () => {
+describe('mouseenter directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       imports: [TestingInteractoModule],
-      declarations: [ClickBinderDirective, TestComponent]
+      declarations: [MouseenterBinderDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();
@@ -89,58 +89,58 @@ describe('click directive', () => {
   });
 
   it('should call b2 with the string param', () => {
-    expect(fixture.componentInstance.param).toBe('foo');
+    expect(fixture.componentInstance.param).toBe('bar');
   });
 
   it('should have the widget as second parameter', () => {
     expect(fixture.componentInstance.widget).toBe(fixture.debugElement.query(By.css('button')).nativeElement);
   });
 
-  it('should produce a StubCmd1 on a click on the div', () => {
+  it('should produce a StubCmd1 on a mouseenter on the div', () => {
     const div = fixture.debugElement.query(By.css('div')).nativeElement as HTMLElement;
-    robot(div).click();
+    robot(div).mouseenter();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });
 
-  it('should produce two StubCmd1 on two click on the div', () => {
+  it('should produce two StubCmd1 on two mouseenter on the div', () => {
     const div = fixture.debugElement.query(By.css('div')).nativeElement as HTMLElement;
-    robot().click(div, 2);
+    robot(div).mouseenter().mouseenter();
     expect(ctx.commands.length).toEqual(2);
   });
 
-  it('should produce a StubCmd2 on a click on the button', () => {
+  it('should produce a StubCmd2 on a mouseenter on the button', () => {
     const button = fixture.debugElement.query(By.css('button')).nativeElement as HTMLElement;
-    robot(button).click();
+    robot(button).mouseenter();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
   });
 
-  it('should produce two StubCmd2 on two clicks on the button', () => {
+  it('should produce two StubCmd2 on two mouseenter on the button', () => {
     const button = fixture.debugElement.query(By.css('button')).nativeElement as HTMLElement;
-    robot().click(button, 2);
+    robot(button).mouseenter().mouseenter();
     expect(ctx.commands.length).toEqual(2);
   });
 
-  it('should produce a StubCmd3 on a click on b1', () => {
-    robot((fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement)).click();
+  it('should produce a StubCmd3 on a mouseenter on b1', () => {
+    robot((fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement)).mouseenter();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
 
-  it('should produce a StubCmd3 on a click on b2', () => {
+  it('should produce a StubCmd3 on a mouseenter on b2', () => {
     const div = document.createElement("div");
     div.setAttribute("id", "b2");
     fixture.debugElement.query(By.css('#b')).nativeElement.appendChild(div);
     fixture.detectChanges();
 
-    robot((fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement)).click();
+    robot((fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement)).mouseenter();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
 
-  it('should produce a StubCmd1 on a click on b2', () => {
-    robot((fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement)).click();
+  it('should produce a StubCmd1 on a mouseenter on b2', () => {
+    robot((fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement)).mouseenter();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
   });
