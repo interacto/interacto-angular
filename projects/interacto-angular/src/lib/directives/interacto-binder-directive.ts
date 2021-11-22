@@ -1,7 +1,8 @@
-import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, Output, ViewContainerRef} from '@angular/core';
+import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, OnDestroy, Output, ViewContainerRef} from '@angular/core';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractionBinder} from 'interacto/dist/api/binder/InteractionBinder';
 import {KeyInteractionUpdateBinder} from 'interacto/dist/api/binder/KeyInteractionUpdateBinder';
+import {Binding, BindingImpl} from 'interacto';
 
 /**
  * Base class for Interacto's interactions Directives
@@ -10,11 +11,13 @@ import {KeyInteractionUpdateBinder} from 'interacto/dist/api/binder/KeyInteracti
  */
 @Directive()
 export abstract class InteractoBinderDirective<E extends HTMLElement,
-  B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any>> implements AfterContentInit {
+  B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any>> implements AfterContentInit, OnDestroy {
   @Output()
   protected ioBinder: EventEmitter<B>;
 
   protected inputSet: boolean;
+
+  protected binding: Array<Binding<any, any, any>> | undefined;
 
   protected constructor(
     protected onDyn: OnDynamicDirective,
@@ -35,12 +38,21 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     return fn?.name ?? "";
   }
 
-  protected callBinder(fn: ((partialBinder: B, widget: E) => void) | undefined): void {
+  protected callBinder(fn: ((partialBinder: B, widget: E) => void | Binding<any, any, any>) | undefined): void {
     this.inputSet = true;
     const fnName = this.checkFnName(fn);
     // Detects changes to the component and retrieves the input values
     this.changeDetectorRef?.detectChanges();
-    this.getComponent(fnName)[fnName](this.completePartialBinder(), this.element.nativeElement);
+
+    const binding: unknown = this.getComponent(fnName)[fnName](this.completePartialBinder(), this.element.nativeElement);
+
+    if(binding instanceof BindingImpl) {
+        this.binding = [binding];
+    }else {
+      if(Array.isArray(binding)) {
+        this.binding = binding.filter(b => b instanceof BindingImpl).map(b => b as Binding<any, any, any>);
+      }
+    }
   }
 
   /**
@@ -61,6 +73,10 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     if (!this.inputSet) {
       this.ioBinder.emit(this.completePartialBinder());
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.binding?.forEach(b => b.uninstallBinding());
   }
 
   protected completePartialBinder(): B {
