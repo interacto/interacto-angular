@@ -7,11 +7,11 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioDoubleClick]'
 })
 export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   /**
@@ -24,6 +24,6 @@ export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLEle
   }
 
   protected createPartialBinder(): PartialUpdatePointBinder {
-    return this.onDyn ? this.bindings.dbleClickBinder().onDynamic(this.element): this.bindings.dbleClickBinder().on(this.element);
+    return this.bindings.dbleClickBinder();
   }
 }

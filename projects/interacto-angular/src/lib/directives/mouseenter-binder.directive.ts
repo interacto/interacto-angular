@@ -7,12 +7,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioMouseenter]'
 })
 export class MouseenterBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -34,7 +34,6 @@ export class MouseenterBinderDirective extends InteractoBinderDirective<HTMLElem
   protected createPartialBinder(): PartialPointBinder {
     const withbubbling = typeof this.bubbling === 'boolean' ? this.bubbling : this.bubbling === 'true';
 
-    return this.onDyn ? this.bindings.mouseEnterBinder(withbubbling).onDynamic(this.element):
-      this.bindings.mouseEnterBinder(withbubbling).on(this.element);
+    return this.bindings.mouseEnterBinder(withbubbling);
   }
 }

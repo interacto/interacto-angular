@@ -7,12 +7,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioTap]'
 })
 export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -32,7 +32,6 @@ export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
   }
 
   protected createPartialBinder(): PartialTapBinder {
-    return this.onDyn ? this.bindings.tapBinder(this.nbTaps).onDynamic(this.element):
-      this.bindings.tapBinder(this.nbTaps).on(this.element);
+    return this.bindings.tapBinder(this.nbTaps);
   }
 }

@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: 'a:[ioWidget]'
 })
 export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement, PartialAnchorBinder> {
-  constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLAnchorElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   @Input()
@@ -20,6 +20,6 @@ export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorEl
   }
 
   protected createPartialBinder(): PartialAnchorBinder {
-    return this.onDyn ? this.bindings.hyperlinkBinder().onDynamic(this.element) : this.bindings.hyperlinkBinder().on(this.element);
+    return this.bindings.hyperlinkBinder();
   }
 }

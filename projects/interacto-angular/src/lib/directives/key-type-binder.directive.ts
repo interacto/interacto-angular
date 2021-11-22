@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioKeyType]'
 })
 export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   /**
@@ -24,6 +24,6 @@ export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement
   }
 
   protected createPartialBinder(): PartialKeyBinder {
-    return this.onDyn ? this.bindings.keyTypeBinder().onDynamic(this.element): this.bindings.keyTypeBinder().on(this.element);
+    return this.bindings.keyTypeBinder();
   }
 }

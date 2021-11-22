@@ -7,12 +7,12 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioLongTouch]'
 })
 export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -32,7 +32,6 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
   }
 
   protected createPartialBinder(): PartialTouchBinder {
-    return this.onDyn ? this.bindings.longTouchBinder(this.duration).onDynamic(this.element):
-      this.bindings.longTouchBinder(this.duration).on(this.element);
+    return this.bindings.longTouchBinder(this.duration);
   }
 }

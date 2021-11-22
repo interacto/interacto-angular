@@ -1,5 +1,7 @@
 import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, Output, ViewContainerRef} from '@angular/core';
-import {Bindings} from 'interacto';
+import {OnDynamicDirective} from './on-dynamic.directive';
+import {InteractionBinder} from 'interacto/dist/api/binder/InteractionBinder';
+import {KeyInteractionUpdateBinder} from 'interacto/dist/api/binder/KeyInteractionUpdateBinder';
 
 /**
  * Base class for Interacto's interactions Directives
@@ -7,16 +9,17 @@ import {Bindings} from 'interacto';
  * @typeParam B - The type of the partial binder the directive will produce
  */
 @Directive()
-export abstract class InteractoBinderDirective<T, B> implements AfterContentInit {
+export abstract class InteractoBinderDirective<E extends HTMLElement,
+  B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any>> implements AfterContentInit {
   @Output()
   protected ioBinder: EventEmitter<B>;
 
   protected inputSet: boolean;
 
   protected constructor(
-    protected element: ElementRef<T>,
+    protected onDyn: OnDynamicDirective,
+    protected element: ElementRef<E>,
     protected viewContainerRef: ViewContainerRef,
-    protected bindings: Bindings,
     protected changeDetectorRef?: ChangeDetectorRef) {
     this.ioBinder = new EventEmitter<B>();
     this.inputSet = false;
@@ -32,12 +35,12 @@ export abstract class InteractoBinderDirective<T, B> implements AfterContentInit
     return fn?.name ?? "";
   }
 
-  protected callBinder(fn: ((partialBinder: B, widget: T) => void) | undefined): void {
+  protected callBinder(fn: ((partialBinder: B, widget: E) => void) | undefined): void {
     this.inputSet = true;
     const fnName = this.checkFnName(fn);
     // Detects changes to the component and retrieves the input values
     this.changeDetectorRef?.detectChanges();
-    this.getComponent(fnName)[fnName](this.createPartialBinder(), this.element.nativeElement);
+    this.getComponent(fnName)[fnName](this.completePartialBinder(), this.element.nativeElement);
   }
 
   /**
@@ -56,7 +59,11 @@ export abstract class InteractoBinderDirective<T, B> implements AfterContentInit
 
   public ngAfterContentInit(): void {
     if (!this.inputSet) {
-      this.ioBinder.emit(this.createPartialBinder());
+      this.ioBinder.emit(this.completePartialBinder());
     }
+  }
+
+  protected completePartialBinder(): B {
+    return (this.onDyn ? this.createPartialBinder().onDynamic(this.element) : this.createPartialBinder().on(this.element)) as B;
   }
 }

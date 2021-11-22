@@ -8,11 +8,11 @@ import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
   selector: 'textarea:[ioWidget]'
 })
 export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAreaElement, PartialTextInputBinder> {
-  constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLTextAreaElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   @Input()
@@ -21,6 +21,6 @@ export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAr
   }
 
   protected createPartialBinder(): PartialTextInputBinder {
-    return this.onDyn ? this.bindings.textInputBinder().onDynamic(this.element): this.bindings.textInputBinder().on(this.element);
+    return this.bindings.textInputBinder();
   }
 }

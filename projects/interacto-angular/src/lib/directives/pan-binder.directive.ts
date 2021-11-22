@@ -7,12 +7,12 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioPan]'
 })
 export class PanBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -49,8 +49,6 @@ export class PanBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
   }
 
   protected createPartialBinder(): PartialMultiTouchBinder {
-    return this.onDyn ?
-      this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).onDynamic(this.element):
-      this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance).on(this.element);
+    return this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance);
   }
 }

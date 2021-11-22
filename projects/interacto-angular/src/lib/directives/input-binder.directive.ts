@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: 'input:[ioWidget] :not([type=text])'
 })
 export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialInputBinder> {
-  constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLInputElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   @Input()
@@ -26,13 +26,13 @@ export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElem
       switch (elt.type) {
         case 'checkbox':
         case 'radio':
-          return this.onDyn ? this.bindings.checkboxBinder().onDynamic(elt) : this.bindings.checkboxBinder().on(elt);
+          return this.bindings.checkboxBinder();
         case 'color':
-          return this.onDyn ? this.bindings.colorPickerBinder().onDynamic(elt) : this.bindings.colorPickerBinder().on(elt);
+          return this.bindings.colorPickerBinder();
         case 'date':
-          return this.onDyn ? this.bindings.dateBinder().onDynamic(elt) : this.bindings.dateBinder().on(elt);
+          return this.bindings.dateBinder();
         case 'number':
-          return this.onDyn ? this.bindings.spinnerBinder().onDynamic(elt) : this.bindings.spinnerBinder().on(elt);
+          return this.bindings.spinnerBinder();
       }
     }
 

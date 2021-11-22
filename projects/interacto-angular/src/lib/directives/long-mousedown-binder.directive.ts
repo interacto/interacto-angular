@@ -7,12 +7,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioLongMousedown]'
 })
 export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -32,7 +32,6 @@ export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLE
   }
 
   protected createPartialBinder(): PartialUpdatePointBinder {
-    return this.onDyn ? this.bindings.longMouseDownBinder(this.duration).onDynamic(this.element):
-      this.bindings.longMouseDownBinder(this.duration).on(this.element);
+    return this.bindings.longMouseDownBinder(this.duration);
   }
 }

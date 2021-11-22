@@ -7,12 +7,12 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioKeyup]'
 })
 export class KeyupBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   @Input()
@@ -28,7 +28,6 @@ export class KeyupBinderDirective extends InteractoBinderDirective<HTMLElement, 
   }
 
   protected createPartialBinder(): PartialKeyBinder {
-    return this.onDyn ? this.bindings.keyUpBinder(this.modifierAccepted).onDynamic(this.element):
-      this.bindings.keyUpBinder(this.modifierAccepted).on(this.element);
+    return this.bindings.keyUpBinder(this.modifierAccepted);
   }
 }

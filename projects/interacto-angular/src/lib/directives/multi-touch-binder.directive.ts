@@ -7,12 +7,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioMultiTouch]'
 })
 export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -33,7 +33,6 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElem
   }
 
   protected createPartialBinder(): PartialMultiTouchBinder {
-    return this.onDyn ? this.bindings.multiTouchBinder(this.nbTouches).onDynamic(this.element):
-      this.bindings.multiTouchBinder(this.nbTouches).on(this.element);
+    return this.bindings.multiTouchBinder(this.nbTouches);
   }
 }

@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioMouseup]'
 })
 export class MouseupBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   /**
@@ -24,6 +24,6 @@ export class MouseupBinderDirective extends InteractoBinderDirective<HTMLElement
   }
 
   protected createPartialBinder(): PartialPointBinder {
-    return this.onDyn ? this.bindings.mouseUpBinder().onDynamic(this.element): this.bindings.mouseUpBinder().on(this.element);
+    return this.bindings.mouseUpBinder();
   }
 }

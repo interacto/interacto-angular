@@ -7,12 +7,12 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioClicks]'
 })
 export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointsBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   /**
@@ -39,7 +39,6 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
       countValue = 2;
     }
 
-    return this.onDyn ? this.bindings.clicksBinder(countValue).onDynamic(this.element):
-      this.bindings.clicksBinder(countValue).on(this.element);
+    return this.bindings.clicksBinder(countValue);
   }
 }

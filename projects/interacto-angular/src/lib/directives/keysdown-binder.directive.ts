@@ -7,11 +7,11 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioKeysdown]'
 })
 export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeysBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   /**
@@ -24,6 +24,6 @@ export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElemen
   }
 
   protected createPartialBinder(): PartialKeysBinder {
-    return this.onDyn ? this.bindings.keysDownBinder().onDynamic(this.element): this.bindings.keysDownBinder().on(this.element);
+    return this.bindings.keysDownBinder();
   }
 }

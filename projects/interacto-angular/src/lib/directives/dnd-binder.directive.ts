@@ -7,12 +7,12 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioDnd]'
 })
 export class DndBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings, changeDetectorRef);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef, changeDetectorRef);
   }
 
   @Input()
@@ -28,7 +28,6 @@ export class DndBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
   }
 
   protected createPartialBinder(): PartialPointSrcTgtBinder {
-    return this.onDyn ? this.bindings.dndBinder(this.cancellable).onDynamic(this.element):
-      this.bindings.dndBinder(this.cancellable).on(this.element);
+    return this.bindings.dndBinder(this.cancellable);
   }
 }

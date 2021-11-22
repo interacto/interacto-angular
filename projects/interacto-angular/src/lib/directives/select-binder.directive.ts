@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: 'select:[ioWidget]'
 })
 export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectElement, PartialSelectBinder> {
-  constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLSelectElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   @Input()
@@ -20,6 +20,6 @@ export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectEl
   }
 
   protected createPartialBinder(): PartialSelectBinder {
-    return this.onDyn ? this.bindings.comboBoxBinder().onDynamic(this.element): this.bindings.comboBoxBinder().on(this.element);
+    return this.bindings.comboBoxBinder();
   }
 }

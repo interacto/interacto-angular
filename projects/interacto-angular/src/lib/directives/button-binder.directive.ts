@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: 'button:[ioWidget]'
 })
 export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement, PartialButtonBinder> {
-  constructor(@Optional() @Host() public onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLButtonElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   @Input()
@@ -20,6 +20,6 @@ export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonEl
   }
 
   protected createPartialBinder(): PartialButtonBinder {
-    return this.onDyn ? this.bindings.buttonBinder().onDynamic(this.element) : this.bindings.buttonBinder().on(this.element);
+    return this.bindings.buttonBinder();
   }
 }

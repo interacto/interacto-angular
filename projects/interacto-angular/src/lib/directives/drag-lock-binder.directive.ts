@@ -7,11 +7,11 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioDragLock]'
 })
 export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtBinder> {
-  constructor(@Optional() @Host() private onDyn: OnDynamicDirective,
+  constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              bindings: Bindings) {
-    super(element, viewContainerRef, bindings);
+              private bindings: Bindings) {
+    super(onDyn, element, viewContainerRef);
   }
 
   /**
@@ -24,6 +24,6 @@ export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElemen
   }
 
   protected createPartialBinder(): PartialPointSrcTgtBinder {
-    return this.onDyn ? this.bindings.dragLockBinder().onDynamic(this.element): this.bindings.dragLockBinder().on(this.element);
+    return this.bindings.dragLockBinder();
   }
 }
