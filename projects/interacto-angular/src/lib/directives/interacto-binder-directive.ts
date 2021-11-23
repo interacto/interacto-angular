@@ -1,8 +1,6 @@
 import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, OnDestroy, Output, ViewContainerRef} from '@angular/core';
 import {OnDynamicDirective} from './on-dynamic.directive';
-import {InteractionBinder} from 'interacto/dist/api/binder/InteractionBinder';
-import {KeyInteractionUpdateBinder} from 'interacto/dist/api/binder/KeyInteractionUpdateBinder';
-import {Binding, BindingImpl} from 'interacto';
+import {Binding, BindingImpl, InteractionBinder, KeyInteractionUpdateBinder} from 'interacto';
 
 /**
  * Base class for Interacto's interactions Directives
