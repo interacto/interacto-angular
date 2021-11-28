@@ -18,7 +18,7 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
   protected binding: Array<Binding<any, any, any>> | undefined;
 
   protected constructor(
-    protected onDyn: OnDynamicDirective,
+    protected onDyn: OnDynamicDirective | undefined,
     protected element: ElementRef<E>,
     protected viewContainerRef: ViewContainerRef,
     protected changeDetectorRef?: ChangeDetectorRef) {
