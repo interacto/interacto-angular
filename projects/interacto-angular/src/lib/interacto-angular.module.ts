@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, Provider} from '@angular/core';
 import {ClicksBinderDirective} from './directives/clicks-binder.directive';
 import {Bindings, BindingsImpl, UndoHistory} from 'interacto';
 import {UndoBinderDirective} from './directives/undo-binder.directive';
@@ -32,12 +32,30 @@ import {MouseleaveBinderDirective} from './directives/mouseleave-binder.directiv
 import {MouseupBinderDirective} from './directives/mouseup-binder.directive';
 
 
+/**
+ * Provides an undo history of the provided Bindings object
+ * @param ctx The bindings object that contains the history
+ */
 export function undoHistoryFactory(ctx: Bindings): UndoHistory {
   return ctx.undoHistory;
 }
 
+/**
+ * Provides a Bindings object
+ */
 export function bindingsFactory(): Bindings {
   return new BindingsImpl();
+}
+
+/**
+ * Provides dependency injection for Interacto.
+ * Useful for injecting a specific bindings and undo history to an Angular component
+ */
+export function interactoProviders(): Provider[] {
+  return [
+    {provide: Bindings, useFactory: bindingsFactory},
+    {provide: UndoHistory, useFactory: undoHistoryFactory, deps: [Bindings]}
+  ];
 }
 
 
@@ -107,16 +125,7 @@ export function bindingsFactory(): Bindings {
     AnchorBinderDirective,
     OnDynamicDirective
   ],
-  providers: [{
-    provide: Bindings,
-    useFactory: bindingsFactory,
-  }, {
-    provide: UndoHistory,
-    useFactory: undoHistoryFactory,
-    deps: [
-      Bindings
-    ]
-  }],
+  providers: [interactoProviders()],
 })
 export class InteractoModule {
 }
