@@ -1,5 +1,5 @@
 import {Directive, ElementRef, OnDestroy} from '@angular/core';
-import {Bindings, Undo} from 'interacto';
+import {Binding, Bindings, Command, Interaction, InteractionData, Undo} from 'interacto';
 import {Subscription} from 'rxjs';
 
 @Directive({
@@ -7,6 +7,8 @@ import {Subscription} from 'rxjs';
 })
 export class UndoBinderDirective implements OnDestroy {
   private readonly undoObs: Subscription;
+
+  private binding: Binding<Command, Interaction<InteractionData>, InteractionData>;
 
   constructor(private element: ElementRef<HTMLButtonElement>, private bindings: Bindings) {
     this.undoObs = bindings.undoHistory
@@ -17,10 +19,13 @@ export class UndoBinderDirective implements OnDestroy {
 
     this.updateUndo();
 
-    bindings
+    this.binding = bindings
       .buttonBinder()
       .on(element)
       .toProduce(() => new Undo(bindings.undoHistory))
+      .catch(err => {
+        console.log(err);
+      })
       .bind();
   }
 
@@ -31,5 +36,6 @@ export class UndoBinderDirective implements OnDestroy {
 
   ngOnDestroy(): void {
     this.undoObs.unsubscribe();
+    this.binding.uninstallBinding();
   }
 }
