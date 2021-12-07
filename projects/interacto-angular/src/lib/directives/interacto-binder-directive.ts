@@ -1,4 +1,4 @@
-import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, OnDestroy, Output, ViewContainerRef} from '@angular/core';
+import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, OnDestroy, ViewContainerRef} from '@angular/core';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {Binding, BindingImpl, InteractionBinder, InteractionCmdBinder, KeyInteractionUpdateBinder} from 'interacto';
 
@@ -12,9 +12,6 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
   B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any> | InteractionCmdBinder<any, any, any>>
   implements AfterContentInit, OnDestroy {
 
-  @Output()
-  protected ioBinder: EventEmitter<B>;
-
   protected inputSet: boolean;
 
   protected binding: Array<Binding<any, any, any>> | undefined;
@@ -24,7 +21,6 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     protected element: ElementRef<E>,
     protected viewContainerRef: ViewContainerRef,
     protected changeDetectorRef?: ChangeDetectorRef) {
-    this.ioBinder = new EventEmitter<B>();
     this.inputSet = false;
   }
 
@@ -77,12 +73,15 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
 
   public ngAfterContentInit(): void {
     if (!this.inputSet) {
-      this.ioBinder.emit(this.completePartialBinder());
+      this.getOutputEvent()?.emit(this.completePartialBinder());
     }
   }
 
+  protected abstract getOutputEvent(): EventEmitter<B> | undefined;
+
   public ngOnDestroy(): void {
     this.binding?.forEach(b => b.uninstallBinding());
+    this.getOutputEvent()?.complete();
   }
 
   protected completePartialBinder(): B {

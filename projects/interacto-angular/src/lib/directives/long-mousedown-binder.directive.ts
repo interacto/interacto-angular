@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialUpdatePointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,12 +7,16 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioLongMousedown]'
 })
 export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointBinder> {
+  @Output()
+  private readonly longMousedownBinder: EventEmitter<PartialUpdatePointBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.longMousedownBinder = new EventEmitter<PartialUpdatePointBinder>();
   }
 
   /**
@@ -33,5 +37,9 @@ export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLE
 
   protected createPartialBinder(): PartialUpdatePointBinder {
     return this.bindings.longMouseDownBinder(this.duration);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialUpdatePointBinder> {
+    return this.longMousedownBinder;
   }
 }

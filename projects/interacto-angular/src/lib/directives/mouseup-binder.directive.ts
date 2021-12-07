@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,11 +7,15 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioMouseup]'
 })
 export class MouseupBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
+  @Output()
+  private readonly mouseupBinder: EventEmitter<PartialPointBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef);
+    this.mouseupBinder = new EventEmitter<PartialPointBinder>();
   }
 
   /**
@@ -25,5 +29,9 @@ export class MouseupBinderDirective extends InteractoBinderDirective<HTMLElement
 
   protected createPartialBinder(): PartialPointBinder {
     return this.bindings.mouseUpBinder();
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialPointBinder> {
+    return this.mouseupBinder;
   }
 }

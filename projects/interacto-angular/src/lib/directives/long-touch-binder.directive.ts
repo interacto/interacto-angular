@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTouchBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
@@ -7,12 +7,16 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioLongTouch]'
 })
 export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchBinder> {
+  @Output()
+  private readonly longTouchBinder: EventEmitter<PartialTouchBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.longTouchBinder = new EventEmitter<PartialTouchBinder>();
   }
 
   /**
@@ -33,5 +37,9 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
 
   protected createPartialBinder(): PartialTouchBinder {
     return this.bindings.longTouchBinder(this.duration);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialTouchBinder> {
+    return this.longTouchBinder;
   }
 }

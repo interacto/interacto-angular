@@ -19,7 +19,7 @@ let ctx: BindingsContext;
     <div [ioMouseenter]="methodDiv">1</div>
     <button [ioMouseenter]="methodBut">2</button>
     <b id="b" ioOnDynamic [ioMouseenter]="methodDyn"><b id="b1">B</b></b>
-    <b id="b2" [ioMouseenter] (ioBinder)="methodParam($event, 'bar')"></b>`
+    <b id="b2" [ioMouseenter] (mouseenterBinder)="methodParam($event, 'bar')"></b>`
 })
 class TestComponent {
   public param: string = "";

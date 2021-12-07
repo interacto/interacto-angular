@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialKeysBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
@@ -7,11 +7,15 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioKeysdown]'
 })
 export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeysBinder> {
+  @Output()
+  private readonly keysdownBinder: EventEmitter<PartialKeysBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef);
+    this.keysdownBinder = new EventEmitter<PartialKeysBinder>();
   }
 
   /**
@@ -25,5 +29,9 @@ export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElemen
 
   protected createPartialBinder(): PartialKeysBinder {
     return this.bindings.keysDownBinder();
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialKeysBinder> {
+    return this.keysdownBinder;
   }
 }

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialMultiTouchBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,12 +7,16 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioMultiTouch]'
 })
 export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
+  @Output()
+  private readonly multiTouchBinder: EventEmitter<PartialMultiTouchBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.multiTouchBinder = new EventEmitter<PartialMultiTouchBinder>();
   }
 
   /**
@@ -34,5 +38,9 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElem
 
   protected createPartialBinder(): PartialMultiTouchBinder {
     return this.bindings.multiTouchBinder(this.nbTouches);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialMultiTouchBinder> {
+    return this.multiTouchBinder;
   }
 }

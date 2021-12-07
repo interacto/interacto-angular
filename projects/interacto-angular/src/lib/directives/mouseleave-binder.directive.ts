@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,12 +7,16 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioMouseleave]'
 })
 export class MouseleaveBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
+  @Output()
+  private readonly mouseleaveBinder: EventEmitter<PartialPointBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.mouseleaveBinder = new EventEmitter<PartialPointBinder>();
   }
 
   /**
@@ -33,7 +37,10 @@ export class MouseleaveBinderDirective extends InteractoBinderDirective<HTMLElem
 
   protected createPartialBinder(): PartialPointBinder {
     const withbubbling = typeof this.bubbling === 'boolean' ? this.bubbling : this.bubbling === 'true';
-
     return this.bindings.mouseLeaveBinder(withbubbling);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialPointBinder> {
+    return this.mouseleaveBinder;
   }
 }

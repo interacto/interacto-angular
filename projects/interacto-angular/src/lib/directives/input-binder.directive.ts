@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialInputBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,11 +7,15 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: 'input:[ioWidget] :not([type=text])'
 })
 export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialInputBinder> {
+  @Output()
+  private readonly inputBinder: EventEmitter<PartialInputBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLInputElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef);
+    this.inputBinder = new EventEmitter<PartialInputBinder>();
   }
 
   @Input()
@@ -38,5 +42,9 @@ export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElem
 
     throw new Error('Cannot create a binder on the input. Make sure you use Angular [ioWidget] and ' +
       'not template *ioWidget and you tag an input of type checkbox, radio, color, date, or number');
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialInputBinder> {
+    return this.inputBinder;
   }
 }

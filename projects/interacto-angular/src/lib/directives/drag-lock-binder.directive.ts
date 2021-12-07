@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointSrcTgtBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,11 +7,15 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioDragLock]'
 })
 export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtBinder> {
+  @Output()
+  private readonly dragLockBinder: EventEmitter<PartialPointSrcTgtBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef);
+    this.dragLockBinder = new EventEmitter<PartialPointSrcTgtBinder>();
   }
 
   /**
@@ -19,11 +23,15 @@ export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElemen
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDragLock(fn: ((partialBinder: PartialPointSrcTgtBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioDragLock(fn: ((partialBinder: PartialPointSrcTgtBinder, widget: HTMLElement) => void) | undefined | string)  {
     this.callBinder(fn);
   }
 
   protected createPartialBinder(): PartialPointSrcTgtBinder {
     return this.bindings.dragLockBinder();
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialPointSrcTgtBinder> {
+    return this.dragLockBinder;
   }
 }

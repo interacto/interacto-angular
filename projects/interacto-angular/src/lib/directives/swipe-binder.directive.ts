@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialMultiTouchBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,12 +7,16 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioSwipe]'
 })
 export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
+  @Output()
+  private readonly swipeBinder: EventEmitter<PartialMultiTouchBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.swipeBinder = new EventEmitter<PartialMultiTouchBinder>();
   }
 
   /**
@@ -56,5 +60,9 @@ export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement, 
 
   protected createPartialBinder(): PartialMultiTouchBinder {
     return this.bindings.swipeBinder(this.horizontal, this.minVelocity, this.minLength, this.nbTouches, this.pxTolerance);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialMultiTouchBinder> {
+    return this.swipeBinder;
   }
 }

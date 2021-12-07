@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointSrcTgtBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,12 +7,16 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioDnd]'
 })
 export class DndBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtBinder> {
+  @Output()
+  private readonly dndBinder: EventEmitter<PartialPointSrcTgtBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.dndBinder = new EventEmitter<PartialPointSrcTgtBinder>();
   }
 
   @Input()
@@ -23,11 +27,15 @@ export class DndBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDnd(fn: ((partialBinder: PartialPointSrcTgtBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioDnd(fn: ((partialBinder: PartialPointSrcTgtBinder, widget: HTMLElement) => void) | undefined | string)  {
     this.callBinder(fn);
   }
 
   protected createPartialBinder(): PartialPointSrcTgtBinder {
     return this.bindings.dndBinder(this.cancellable);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialPointSrcTgtBinder> {
+    return this.dndBinder;
   }
 }

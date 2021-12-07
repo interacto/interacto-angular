@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialMultiTouchBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
@@ -7,12 +7,16 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioPan]'
 })
 export class PanBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
+  @Output()
+  private readonly panBinder: EventEmitter<PartialMultiTouchBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.panBinder = new EventEmitter<PartialMultiTouchBinder>();
   }
 
   /**
@@ -50,5 +54,9 @@ export class PanBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
 
   protected createPartialBinder(): PartialMultiTouchBinder {
     return this.bindings.panBinder(this.horizontal, this.minLength, this.nbTouches, this.pxTolerance);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialMultiTouchBinder> {
+    return this.panBinder;
   }
 }

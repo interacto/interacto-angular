@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialPointsBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
@@ -7,12 +7,16 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
   selector: '[ioClicks]'
 })
 export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointsBinder> {
+  @Output()
+  private readonly clicksBinder: EventEmitter<PartialPointsBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.clicksBinder = new EventEmitter<PartialPointsBinder>();
   }
 
   /**
@@ -26,7 +30,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClicks(fn: ((partialBinder: PartialPointsBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioClicks(fn: ((partialBinder: PartialPointsBinder, widget: HTMLElement) => void) | undefined | string)  {
     this.callBinder(fn);
   }
 
@@ -40,5 +44,9 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
     }
 
     return this.bindings.clicksBinder(countValue);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialPointsBinder> {
+    return this.clicksBinder;
   }
 }

@@ -13,11 +13,13 @@ let binderBut: PartialPointsBinder;
 let binderB: PartialPointsBinder;
 let binderP: PartialPointsBinder;
 let ctx: BindingsContext;
+let param: string | undefined;
 
 @Component({
   template: `
     <div [ioClicks]="methodDiv">1</div>
     <button [ioClicks]="methodBut">2</button>
+    <button id="b4" ioClicks (clicksBinder)="m4($event, 'y')">2</button>
     <b id="b" ioOnDynamic [ioClicks]="methodDyn"><b id="b1">B</b></b>
     <p id="p1" [ioClicks]="method3Clicks" count="3"></p>
     <p id="p2" [ioClicks]="methodDiv" count="a"></p>`
@@ -45,6 +47,14 @@ class TestComponentClicks {
   }
 
   public method3Clicks(binder: PartialPointsBinder): void {
+    binderP = binder;
+    binder
+      .toProduce(_ => new StubCmd4())
+      .bind();
+  }
+
+  public m4(binder: PartialPointsBinder, p: string): void {
+    param = p;
     binderP = binder;
     binder
       .toProduce(_ => new StubCmd4())
@@ -89,6 +99,14 @@ describe('clicks directive', () => {
     robot().click(div, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
+  });
+
+  it('should produce a StubCmd4 on two clicks on b4', () => {
+    const div = fixture.debugElement.query(By.css('#b4')).nativeElement as HTMLElement;
+    robot().click(div, 2);
+    expect(ctx.commands.length).toEqual(1);
+    expect(ctx.commands[0]).toBeInstanceOf(StubCmd4);
+    expect(param).toBe('y');
   });
 
   it('should produce two StubCmd1 on four clicks on the div', () => {

@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialTapBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,12 +7,16 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: '[ioTap]'
 })
 export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapBinder> {
+  @Output()
+  private readonly tapBinder: EventEmitter<PartialTapBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
+    this.tapBinder = new EventEmitter<PartialTapBinder>();
   }
 
   /**
@@ -33,5 +37,9 @@ export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
 
   protected createPartialBinder(): PartialTapBinder {
     return this.bindings.tapBinder(this.nbTaps);
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialTapBinder> {
+    return this.tapBinder;
   }
 }

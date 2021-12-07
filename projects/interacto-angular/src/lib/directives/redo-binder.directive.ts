@@ -1,4 +1,4 @@
-import {AfterContentInit, Directive, ElementRef, Input, ViewContainerRef} from '@angular/core';
+import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, ViewContainerRef} from '@angular/core';
 import {Bindings, Interaction, InteractionCmdBinder, Redo, WidgetData} from 'interacto';
 import {Subscription} from 'rxjs';
 import {InteractoBinderDirective} from './interacto-binder-directive';
@@ -59,5 +59,9 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
   public ngOnDestroy(): void {
     super.ngOnDestroy();
     this.redoObs.unsubscribe();
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialRedoButtonBinder> | undefined {
+    return undefined;
   }
 }

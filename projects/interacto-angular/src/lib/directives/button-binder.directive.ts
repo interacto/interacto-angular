@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Host, Input, Optional, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
 import {Bindings, PartialButtonBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
@@ -7,19 +7,27 @@ import {OnDynamicDirective} from './on-dynamic.directive';
   selector: 'button:[ioWidget]'
 })
 export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement, PartialButtonBinder> {
+  @Output()
+  private readonly buttonBinder: EventEmitter<PartialButtonBinder>;
+
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLButtonElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef);
+    this.buttonBinder = new EventEmitter<PartialButtonBinder>();
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement) => void) | undefined) {
+  set ioWidget(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement) => void) | undefined | string) {
     this.callBinder(fn);
   }
 
   protected createPartialBinder(): PartialButtonBinder {
     return this.bindings.buttonBinder();
+  }
+
+  protected getOutputEvent(): EventEmitter<PartialButtonBinder> {
+    return this.buttonBinder;
   }
 }
