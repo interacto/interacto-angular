@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialSelectBinder} from 'interacto';
+import {Binding, Bindings, PartialSelectBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -19,7 +19,7 @@ export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectEl
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => void) | undefined) {
+  set ioWidget(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

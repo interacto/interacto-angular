@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings} from 'interacto';
+import {Binding, Bindings} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
@@ -20,7 +20,7 @@ export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInput
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialTextInputBinder, widget: HTMLInputElement) => void) | undefined) {
+  set ioWidget(fn: ((partialBinder: PartialTextInputBinder, widget: HTMLInputElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialPointsBinder} from 'interacto';
+import {Binding, Bindings, PartialPointsBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -30,7 +30,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClicks(fn: ((partialBinder: PartialPointsBinder, widget: HTMLElement) => void) | undefined | string)  {
+  set ioClicks(fn: ((partialBinder: PartialPointsBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

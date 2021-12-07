@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialPointBinder} from 'interacto';
+import {Binding, Bindings, PartialPointBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -31,7 +31,7 @@ export class MouseenterBinderDirective extends InteractoBinderDirective<HTMLElem
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMouseenter(fn: ((partialBinder: PartialPointBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioMouseenter(fn: ((partialBinder: PartialPointBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

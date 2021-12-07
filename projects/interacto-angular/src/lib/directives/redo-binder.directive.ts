@@ -1,5 +1,5 @@
 import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, ViewContainerRef} from '@angular/core';
-import {Bindings, Interaction, InteractionCmdBinder, Redo, WidgetData} from 'interacto';
+import {Binding, Bindings, Interaction, InteractionCmdBinder, Redo, WidgetData} from 'interacto';
 import {Subscription} from 'rxjs';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -25,7 +25,7 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
   }
 
   @Input()
-  public set ioRedo(fn: ((partialBinder: PartialRedoButtonBinder, widget: HTMLElement) => void) | undefined | string) {
+  public set ioRedo(fn: ((partialBinder: PartialRedoButtonBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

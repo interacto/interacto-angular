@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialButtonBinder} from 'interacto';
+import {Binding, Bindings, PartialButtonBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -19,7 +19,7 @@ export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonEl
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement) => void) | undefined | string) {
+  set ioWidget(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

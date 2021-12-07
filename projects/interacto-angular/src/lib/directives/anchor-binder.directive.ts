@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialAnchorBinder} from 'interacto';
+import {Binding, Bindings, PartialAnchorBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -19,7 +19,7 @@ export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorEl
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => void) | undefined | string) {
+  set ioWidget(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

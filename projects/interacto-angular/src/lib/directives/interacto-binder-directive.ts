@@ -34,7 +34,7 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     return fn?.name;
   }
 
-  protected callBinder(fn: ((partialBinder: B, widget: E) => void) | undefined | string): void {
+  protected callBinder(fn: ((partialBinder: B, widget: E) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string): void {
     const fnName = this.checkFnName(fn);
 
     if(fnName === undefined) {

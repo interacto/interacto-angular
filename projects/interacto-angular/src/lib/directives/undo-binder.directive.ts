@@ -1,5 +1,5 @@
 import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, ViewContainerRef} from '@angular/core';
-import {Bindings, Interaction, InteractionCmdBinder, Undo, WidgetData} from 'interacto';
+import {Binding, Bindings, Interaction, InteractionCmdBinder, Undo, WidgetData} from 'interacto';
 import {Subscription} from 'rxjs';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -26,7 +26,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
   }
 
   @Input()
-  public set ioUndo(fn: ((partialBinder: PartialUndoButtonBinder, widget: HTMLElement) => void) | undefined | string) {
+  public set ioUndo(fn: ((partialBinder: PartialUndoButtonBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

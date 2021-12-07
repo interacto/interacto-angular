@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialMultiTouchBinder} from 'interacto';
+import {Binding, Bindings, PartialMultiTouchBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -32,7 +32,7 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElem
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMultiTouch(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioMultiTouch(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

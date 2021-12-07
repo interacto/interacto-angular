@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialUpdatePointBinder} from 'interacto';
+import {Binding, Bindings, PartialUpdatePointBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -23,7 +23,7 @@ export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLEle
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDoubleClick(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => void) | undefined | string)  {
+  set ioDoubleClick(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

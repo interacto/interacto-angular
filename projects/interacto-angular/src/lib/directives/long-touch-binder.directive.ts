@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialTouchBinder} from 'interacto';
+import {Binding, Bindings, PartialTouchBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -31,7 +31,7 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongTouch(fn: ((partialBinder: PartialTouchBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioLongTouch(fn: ((partialBinder: PartialTouchBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

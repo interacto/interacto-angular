@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialKeyBinder} from 'interacto';
+import {Binding, Bindings, PartialKeyBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -27,7 +27,7 @@ export class KeyupBinderDirective extends InteractoBinderDirective<HTMLElement, 
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeyup(fn: ((partialBinder: PartialKeyBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioKeyup(fn: ((partialBinder: PartialKeyBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

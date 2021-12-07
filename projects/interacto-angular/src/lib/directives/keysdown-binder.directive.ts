@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Bindings, PartialKeysBinder} from 'interacto';
+import {Binding, Bindings, PartialKeysBinder} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -23,7 +23,7 @@ export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElemen
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeysdown(fn: ((partialBinder: PartialKeysBinder, widget: HTMLElement) => void) | undefined)  {
+  set ioKeysdown(fn: ((partialBinder: PartialKeysBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
