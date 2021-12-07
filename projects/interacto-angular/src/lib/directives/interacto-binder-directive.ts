@@ -1,6 +1,6 @@
 import {AfterContentInit, ChangeDetectorRef, Directive, ElementRef, EventEmitter, OnDestroy, Output, ViewContainerRef} from '@angular/core';
 import {OnDynamicDirective} from './on-dynamic.directive';
-import {Binding, BindingImpl, InteractionBinder, KeyInteractionUpdateBinder} from 'interacto';
+import {Binding, BindingImpl, InteractionBinder, InteractionCmdBinder, KeyInteractionUpdateBinder} from 'interacto';
 
 /**
  * Base class for Interacto's interactions Directives
@@ -9,7 +9,9 @@ import {Binding, BindingImpl, InteractionBinder, KeyInteractionUpdateBinder} fro
  */
 @Directive()
 export abstract class InteractoBinderDirective<E extends HTMLElement,
-  B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any>> implements AfterContentInit, OnDestroy {
+  B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any> | InteractionCmdBinder<any, any, any>>
+  implements AfterContentInit, OnDestroy {
+
   @Output()
   protected ioBinder: EventEmitter<B>;
 
@@ -36,7 +38,7 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     return fn?.name ?? "";
   }
 
-  protected callBinder(fn: ((partialBinder: B, widget: E) => void | Binding<any, any, any>) | undefined): void {
+  protected callBinder(fn: ((partialBinder: B, widget: E) => void) | undefined): void {
     this.inputSet = true;
     const fnName = this.checkFnName(fn);
     // Detects changes to the component and retrieves the input values
