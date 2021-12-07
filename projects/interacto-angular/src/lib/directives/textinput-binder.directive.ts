@@ -5,7 +5,7 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
 
 @Directive({
-  selector: 'input:[ioWidget][type=text]'
+  selector: 'input:[ioTextinput][type=text], [ioTextinput] [ioOnDynamic]'
 })
 export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialTextInputBinder> {
   @Output()
@@ -20,7 +20,7 @@ export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInput
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialTextInputBinder, widget: HTMLInputElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioTextinput(fn: ((partialBinder: PartialTextInputBinder, widget: HTMLInputElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

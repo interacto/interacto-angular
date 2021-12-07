@@ -4,14 +4,14 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'button:[ioWidget]'
+  selector: 'button:[ioButton],[ioButton] [ioOnDynamic]'
 })
-export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement, PartialButtonBinder> {
+export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement | HTMLElement, PartialButtonBinder> {
   @Output()
   private readonly buttonBinder: EventEmitter<PartialButtonBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
-              element: ElementRef<HTMLButtonElement>,
+              element: ElementRef<HTMLButtonElement | HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings) {
     super(onDyn, element, viewContainerRef);
@@ -19,7 +19,7 @@ export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonEl
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioButton(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement | HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

@@ -6,6 +6,7 @@ import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
 import {robot} from 'interacto-nono';
 import {ButtonBinderDirective} from './button-binder.directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 let fixture: ComponentFixture<TestComponent>;
 let b1: PartialButtonBinder;
@@ -15,11 +16,11 @@ let ctx: BindingsContext;
 
 @Component({
   template: `
-    <button id="b1" [ioWidget]="m1">1</button>
-    <button id="b2" ioOnDynamic [ioWidget]="m2"><button id="b4">B</button></button>
-    <button id="b3" [ioWidget] (buttonBinder)="m3($event, 123)"></button>
-    <button ioWidget>Bad</button>
-    <button [ioWidget]="rr">Bad2</button>`
+    <button id="b1" [ioButton]="m1">1</button>
+    <div id="b2" ioOnDynamic [ioButton]="m2"><button id="b4">B</button></div>
+    <button id="b3" [ioButton] (buttonBinder)="m3($event, 123)">b3</button>
+    <button ioButton>Bad</button>
+    <button [ioButton]="rr">Bad2</button>`
 })
 class TestComponent {
   public param: number = 0;
@@ -53,7 +54,7 @@ describe('button directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       imports: [TestingInteractoModule],
-      declarations: [ButtonBinderDirective, TestComponent]
+      declarations: [ButtonBinderDirective, OnDynamicDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();
@@ -99,7 +100,7 @@ describe('button directive', () => {
   });
 
   it('should produce a StubCmd2 on a click on b4', () => {
-    const button = fixture.debugElement.query(By.css('#b4')) .nativeElement as HTMLElement;
+    const button = fixture.debugElement.query(By.css('#b4')).nativeElement as HTMLElement;
     robot(button).click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
@@ -109,16 +110,5 @@ describe('button directive', () => {
     robot((fixture.debugElement.query(By.css('#b3')).nativeElement as HTMLElement)).click();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
-  });
-
-  it('should produce a StubCmd2 on a click on b5', () => {
-    const b = document.createElement("button");
-    b.setAttribute("id", "b5");
-    fixture.debugElement.query(By.css('#b2')).nativeElement.appendChild(b);
-    fixture.detectChanges();
-
-    robot((fixture.debugElement.query(By.css('#b5')).nativeElement as HTMLElement)).click();
-    expect(ctx.commands.length).toEqual(1);
-    expect(ctx.commands[0]).toBeInstanceOf(StubCmd2);
   });
 });

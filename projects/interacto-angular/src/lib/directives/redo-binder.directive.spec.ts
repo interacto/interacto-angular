@@ -5,8 +5,7 @@ import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {By} from '@angular/platform-browser';
 import {robot} from 'interacto-nono';
 import {StubCmd5} from './fixture-directive.spec';
-import {RedoBinderDirective} from 'interacto-angular';
-import {PartialRedoButtonBinder} from './redo-binder.directive';
+import {PartialRedoButtonBinder, RedoBinderDirective} from './redo-binder.directive';
 
 let fixture: ComponentFixture<TestComponent>;
 let b2: PartialRedoButtonBinder;

@@ -4,7 +4,7 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'input:[ioWidget] :not([type=text])'
+  selector: 'input:[ioInput] :not([type=text]), [ioInput] [ioOnDynamic]'
 })
 export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialInputBinder> {
   @Output()
@@ -19,7 +19,7 @@ export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElem
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialInputBinder, widget: HTMLInputElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioInput(fn: ((partialBinder: PartialInputBinder, widget: HTMLInputElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 
@@ -40,8 +40,7 @@ export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElem
       }
     }
 
-    throw new Error('Cannot create a binder on the input. Make sure you use Angular [ioWidget] and ' +
-      'not template *ioWidget and you tag an input of type checkbox, radio, color, date, or number');
+    throw new Error('Cannot create a binder on the input.');
   }
 
   protected getOutputEvent(): EventEmitter<PartialInputBinder> {

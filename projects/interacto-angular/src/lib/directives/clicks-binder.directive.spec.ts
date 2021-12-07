@@ -6,6 +6,7 @@ import {StubCmd1, StubCmd2, StubCmd3, StubCmd4} from './fixture-directive.spec';
 import {ClicksBinderDirective} from './clicks-binder.directive';
 import {By} from '@angular/platform-browser';
 import {robot} from 'interacto-nono';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 let fixture: ComponentFixture<TestComponentClicks>;
 let binderDiv: PartialPointsBinder;
@@ -20,7 +21,7 @@ let param: string | undefined;
     <div [ioClicks]="methodDiv">1</div>
     <button [ioClicks]="methodBut">2</button>
     <button id="b4" ioClicks (clicksBinder)="m4($event, 'y')">2</button>
-    <b id="b" ioOnDynamic [ioClicks]="methodDyn"><b id="b1">B</b></b>
+    <div id="b" ioOnDynamic [ioClicks]="methodDyn"><b id="b1">B</b></div>
     <p id="p1" [ioClicks]="method3Clicks" count="3"></p>
     <p id="p2" [ioClicks]="methodDiv" count="a"></p>`
 })
@@ -66,7 +67,7 @@ describe('clicks directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       imports: [TestingInteractoModule],
-      declarations: [ClicksBinderDirective, TestComponentClicks]
+      declarations: [ClicksBinderDirective, OnDynamicDirective, TestComponentClicks]
     }).createComponent(TestComponentClicks);
 
     fixture.detectChanges();
@@ -125,19 +126,6 @@ describe('clicks directive', () => {
   it('should produce a StubCmd3 on two clicks on b1', () => {
     const b1 = fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement;
     robot().click(b1, 2);
-    expect(ctx.commands.length).toEqual(1);
-    expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
-  });
-
-  it('should produce a StubCmd3 on two clicks on b2', async () => {
-    const b = fixture.debugElement.query(By.css('#b'));
-    const div = document.createElement("div");
-    div.setAttribute("id", "b2");
-    b.nativeElement.appendChild(div);
-    await Promise.resolve();
-
-    const b2 = fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement;
-    robot().click(b2, 2);
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });

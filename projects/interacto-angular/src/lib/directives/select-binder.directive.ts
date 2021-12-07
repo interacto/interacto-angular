@@ -4,7 +4,7 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'select:[ioWidget]'
+  selector: 'select:[ioSelect], [ioSelect] [ioOnDynamic]'
 })
 export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectElement, PartialSelectBinder> {
   @Output()
@@ -19,7 +19,7 @@ export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectEl
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioSelect(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

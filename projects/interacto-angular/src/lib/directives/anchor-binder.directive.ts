@@ -4,7 +4,7 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'a:[ioWidget]'
+  selector: 'a:[ioAnchor],[ioAnchor] [ioOnDynamic]'
 })
 export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement, PartialAnchorBinder> {
   @Output()
@@ -19,7 +19,7 @@ export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorEl
   }
 
   @Input()
-  set ioWidget(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioAnchor(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

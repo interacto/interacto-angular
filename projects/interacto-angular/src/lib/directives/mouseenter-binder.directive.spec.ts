@@ -6,6 +6,7 @@ import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
 import {robot} from 'interacto-nono';
 import {MouseenterBinderDirective} from './mouseenter-binder.directive';
+import {OnDynamicDirective} from './on-dynamic.directive';
 
 let fixture: ComponentFixture<TestComponent>;
 let binderDiv: PartialPointBinder;
@@ -18,7 +19,7 @@ let ctx: BindingsContext;
   template: `
     <div [ioMouseenter]="methodDiv">1</div>
     <button [ioMouseenter]="methodBut">2</button>
-    <b id="b" ioOnDynamic [ioMouseenter]="methodDyn"><b id="b1">B</b></b>
+    <div id="b" ioOnDynamic [ioMouseenter]="methodDyn"><b id="b1">B</b></div>
     <b id="b2" [ioMouseenter] (mouseenterBinder)="methodParam($event, 'bar')"></b>`
 })
 class TestComponent {
@@ -60,7 +61,7 @@ describe('mouseenter directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
       imports: [TestingInteractoModule],
-      declarations: [MouseenterBinderDirective, TestComponent]
+      declarations: [MouseenterBinderDirective, OnDynamicDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();
@@ -124,17 +125,6 @@ describe('mouseenter directive', () => {
 
   it('should produce a StubCmd3 on a mouseenter on b1', () => {
     robot((fixture.debugElement.query(By.css('#b1')).nativeElement as HTMLElement)).mouseenter();
-    expect(ctx.commands.length).toEqual(1);
-    expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
-  });
-
-  it('should produce a StubCmd3 on a mouseenter on b2', () => {
-    const div = document.createElement("div");
-    div.setAttribute("id", "b2");
-    fixture.debugElement.query(By.css('#b')).nativeElement.appendChild(div);
-    fixture.detectChanges();
-
-    robot((fixture.debugElement.query(By.css('#b2')).nativeElement as HTMLElement)).mouseenter();
     expect(ctx.commands.length).toEqual(1);
     expect(ctx.commands[0]).toBeInstanceOf(StubCmd3);
   });
