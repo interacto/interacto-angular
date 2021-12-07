@@ -31,25 +31,31 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
   protected abstract createPartialBinder(): B;
 
   // tslint:disable-next-line:ban-types
-  protected checkFnName(fn: Function | undefined): string {
-    if (fn === undefined) {
-      throw new Error('The callback function provided to the button directive does not exist in the component');
+  protected checkFnName(fn: Function | undefined | string): string | undefined {
+    if (fn === undefined || typeof fn === "string") {
+      return undefined;
     }
-    return fn?.name ?? "";
+    return fn?.name;
   }
 
-  protected callBinder(fn: ((partialBinder: B, widget: E) => void) | undefined): void {
-    this.inputSet = true;
+  protected callBinder(fn: ((partialBinder: B, widget: E) => void) | undefined | string): void {
     const fnName = this.checkFnName(fn);
+
+    if(fnName === undefined) {
+      console.error("The callback function provided to the button directive does not exist in the component");
+      return;
+    }
+
+    this.inputSet = true;
     // Detects changes to the component and retrieves the input values
     this.changeDetectorRef?.detectChanges();
 
     const binding: unknown = this.getComponent(fnName)[fnName](this.completePartialBinder(), this.element.nativeElement);
 
-    if(binding instanceof BindingImpl) {
-        this.binding = [binding];
-    }else {
-      if(Array.isArray(binding)) {
+    if (binding instanceof BindingImpl) {
+      this.binding = [binding];
+    } else {
+      if (Array.isArray(binding)) {
         this.binding = binding.filter(b => b instanceof BindingImpl).map(b => b as Binding<any, any, any>);
       }
     }

@@ -25,11 +25,8 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
   }
 
   @Input()
-  public set ioRedo(
-    fn: ((partialBinder: PartialRedoButtonBinder, widget: HTMLElement) => void) | undefined | string) {
-    if(typeof fn !== "string") {
-      this.callBinder(fn);
-    }
+  public set ioRedo(fn: ((partialBinder: PartialRedoButtonBinder, widget: HTMLElement) => void) | undefined | string) {
+    this.callBinder(fn);
   }
 
 

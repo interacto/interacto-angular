@@ -17,7 +17,9 @@ let ctx: BindingsContext;
   template: `
     <button id="b1" [ioWidget]="m1">1</button>
     <button id="b2" ioOnDynamic [ioWidget]="m2"><button id="b4">B</button></button>
-    <button id="b3" [ioWidget] (ioBinder)="m3($event, 123)"></button>`
+    <button id="b3" [ioWidget] (ioBinder)="m3($event, 123)"></button>
+    <button ioWidget>Bad</button>
+    <button [ioWidget]="rr">Bad2</button>`
 })
 class TestComponent {
   public param: number = 0;

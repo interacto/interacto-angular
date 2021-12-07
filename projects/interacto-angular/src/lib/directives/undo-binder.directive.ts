@@ -26,11 +26,8 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
   }
 
   @Input()
-  public set ioUndo(
-    fn: ((partialBinder: PartialUndoButtonBinder, widget: HTMLElement) => void) | undefined | string) {
-    if(typeof fn !== "string") {
-      this.callBinder(fn);
-    }
+  public set ioUndo(fn: ((partialBinder: PartialUndoButtonBinder, widget: HTMLElement) => void) | undefined | string) {
+    this.callBinder(fn);
   }
 
 

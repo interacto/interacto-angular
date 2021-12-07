@@ -19,7 +19,9 @@ let ctx: BindingsContext;
     <div [ioClick]="methodDiv">1</div>
     <button [ioClick]="methodBut">2</button>
     <b id="b" ioOnDynamic [ioClick]="methodDyn"><b id="b1">B</b></b>
-    <b id="b2" [ioClick] (ioBinder)="methodParam($event, 'foo')"></b>`
+    <b id="b2" [ioClick] (ioBinder)="methodParam($event, 'foo')"></b>
+    <b ioClick>bad</b>
+    <b [ioClick]="fff">bad2</b>`
 })
 class TestComponent {
   public param: string = "";
