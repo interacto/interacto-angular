@@ -1,0 +1,27 @@
+
+<div class="history">
+  <div class="header">
+    <h2>HISTORY</h2>
+    <button ioUndo class="button-undo-redo">UNDO</button>
+    <button ioRedo class="button-undo-redo">REDO</button>
+  </div>
+
+  <div class="buttons">
+    <div #undoButtonContainer>
+      <button #b *ngFor="let undoable of undoHistory.getUndo(); index as i"
+              class="history-button-active" [attr.data-index]="undoHistory.getUndo().length - i">
+        {{undoButtonSnapshot(undoable, b)}}
+      </button>
+      <br/>
+    </div>
+
+    <div #redoButtonContainer>
+      <p *ngIf="undoHistory.getRedo().length > 0">Redo:</p>
+      <button #b *ngFor="let _ of undoHistory.getRedo(); index as i"
+              class="history-button-inactive" [attr.data-index]="i + 1">
+        {{undoButtonSnapshot(undoHistory.getRedo()[undoHistory.getRedo().length - i - 1], b)}}
+      </button>
+      <br/>
+    </div>
+  </div>
+</div>

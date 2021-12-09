@@ -30,6 +30,8 @@ import {MousemoveBinderDirective} from './directives/mousemove-binder.directive'
 import {MouseenterBinderDirective} from './directives/mouseenter-binder.directive';
 import {MouseleaveBinderDirective} from './directives/mouseleave-binder.directive';
 import {MouseupBinderDirective} from './directives/mouseup-binder.directive';
+import {LinearHistoryComponent} from './components/linear-history.component';
+import {CommonModule} from '@angular/common';
 
 
 /**
@@ -61,6 +63,7 @@ export function interactoProviders(): Provider[] {
 
 @NgModule({
   declarations: [
+    LinearHistoryComponent,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,
@@ -92,8 +95,11 @@ export function interactoProviders(): Provider[] {
     AnchorBinderDirective,
     OnDynamicDirective
   ],
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   exports: [
+    LinearHistoryComponent,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,

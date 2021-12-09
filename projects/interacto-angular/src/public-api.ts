@@ -2,6 +2,7 @@
  * Public API Surface of interacto-angular
  */
 
+export * from './lib/components/linear-history.component';
 export * from './lib/directives/anchor-binder.directive';
 export * from './lib/directives/button-binder.directive';
 export * from './lib/directives/click-binder.directive';

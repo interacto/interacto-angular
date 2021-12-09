@@ -1,0 +1,70 @@
+.history {
+  height: 100%;
+  width: 10%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+  border-right-style: solid;
+  border-width: medium;
+  overflow-y: auto;
+}
+
+
+.header {
+  background-color: black;
+  min-height: 75px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  border-bottom-style: solid;
+}
+
+.header h2 {
+  font-size: 25px;
+  text-align: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  margin: 0;
+  color: white;
+}
+
+.button-undo-redo {
+  width: 50%;
+  min-height: 40px;
+  border-right-style: solid;
+  border-left-style: solid;
+  color: black;
+  background-color: white;
+  border-width: thin;
+  font-size: 20px;
+}
+
+.history-button-active {
+  width: 100%;
+  border-right-style: none;
+  border-left-style: none;
+  color: black;
+  background-color: white;
+  border-width: thin;
+}
+
+.history-button-inactive {
+  width: 100%;
+  border-right-style: none;
+  border-left-style: none;
+  color: lightgray;
+  background-color: gray;
+  border-width: thin;
+}
+
+.header button:disabled {
+  width: 50%;
+  border-right-style: solid;
+  border-left-style: solid;
+  color: black;
+  background-color: lightgray;
+  border-width: thin;
+  font-size: 20px;
+}
