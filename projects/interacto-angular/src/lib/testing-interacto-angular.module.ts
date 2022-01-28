@@ -1,13 +1,13 @@
 import {undoHistoryFactory} from './interacto-angular.module';
-import {Bindings, BindingsContext, BindingsImpl, UndoHistory} from 'interacto';
+import {Bindings, BindingsContext, BindingsImpl, UndoHistory, UndoHistoryImpl} from 'interacto';
 import {NgModule} from '@angular/core';
 
 export function bindingsContextFactory(): BindingsContext {
   return new BindingsContext();
 }
 
-export function testingBindingsFactory(ctx: BindingsContext): Bindings {
-  const binding = new BindingsImpl();
+export function testingBindingsFactory(ctx: BindingsContext): Bindings<UndoHistory> {
+  const binding = new BindingsImpl(new UndoHistoryImpl());
   binding.setBindingObserver(ctx);
   return binding;
 }
