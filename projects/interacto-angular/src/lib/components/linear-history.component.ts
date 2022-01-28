@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, ElementRef, Input, Optional, ViewChild} from '@angular/core';
-import {Bindings, RedoNTimes, Undoable, UndoHistory, UndoNTimes} from 'interacto';
+import {Bindings, RedoNTimes, Undoable, UndoHistory, UndoHistoryBase, UndoNTimes} from 'interacto';
 
 @Component({
-  selector: 'app-linear-history',
+  selector: 'io-linear-history',
   templateUrl: './linear-history.component.html',
   styleUrls: ['./linear-history.component.css']
 })
@@ -26,7 +26,7 @@ export class LinearHistoryComponent implements AfterViewInit {
   public svgIconSize: number = 50;
 
 
-  public constructor(public undoHistory: UndoHistory, public bindings: Bindings) {
+  public constructor(public undoHistory: UndoHistory, public bindings: Bindings<UndoHistoryBase>) {
   }
 
 
@@ -49,7 +49,6 @@ export class LinearHistoryComponent implements AfterViewInit {
 
   public undoButtonSnapshot(command: Undoable, button: HTMLButtonElement): any {
     const snapshot = command.getVisualSnapshot();
-    // console.log(snapshot);
     if(snapshot === undefined) {
       return command.getUndoName();
     }

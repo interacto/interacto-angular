@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialButtonBinder} from 'interacto';
+import {Binding, Bindings, PartialButtonBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -13,7 +13,7 @@ export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonEl
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLButtonElement | HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+              private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
     this.buttonBinder = new EventEmitter<PartialButtonBinder>();
   }

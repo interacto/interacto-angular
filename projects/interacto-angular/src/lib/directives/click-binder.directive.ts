@@ -1,5 +1,5 @@
 import {AfterContentInit, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialPointBinder} from 'interacto';
+import {Binding, Bindings, PartialPointBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -13,7 +13,7 @@ export class ClickBinderDirective extends InteractoBinderDirective<HTMLElement, 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+              private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
     this.clickBinder = new EventEmitter<PartialPointBinder>();
   }

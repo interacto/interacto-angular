@@ -1,6 +1,6 @@
 import {NgModule, Provider} from '@angular/core';
 import {ClicksBinderDirective} from './directives/clicks-binder.directive';
-import {Bindings, BindingsImpl, UndoHistory} from 'interacto';
+import {Bindings, BindingsImpl, TreeUndoHistory, TreeUndoHistoryImpl, UndoHistory, UndoHistoryBase, UndoHistoryImpl} from 'interacto';
 import {UndoBinderDirective} from './directives/undo-binder.directive';
 import {RedoBinderDirective} from './directives/redo-binder.directive';
 import {ClickBinderDirective} from './directives/click-binder.directive';
@@ -37,26 +37,50 @@ import {CommonModule} from '@angular/common';
 /**
  * Provides an undo history of the provided Bindings object
  * @param ctx The bindings object that contains the history
+ * @typeParam T -- The type of the undo history
  */
-export function undoHistoryFactory(ctx: Bindings): UndoHistory {
+export function undoHistoryFactory<T extends UndoHistoryBase>(ctx: Bindings<T>): T {
   return ctx.undoHistory;
 }
 
 /**
- * Provides a Bindings object
+ * Provides a Bindings object that uses a standard linear undo history
  */
-export function bindingsFactory(): Bindings {
-  return new BindingsImpl();
+export function bindingsLinearUndoHistoryFactory(): Bindings<UndoHistory> {
+  return new BindingsImpl(new UndoHistoryImpl());
+}
+
+/**
+ * Provides a Bindings object that uses a standard linear undo history
+ */
+export function bindingsTreeUndoHistoryFactory(): Bindings<TreeUndoHistory> {
+  return new BindingsImpl(new TreeUndoHistoryImpl());
 }
 
 /**
  * Provides dependency injection for Interacto.
- * Useful for injecting a specific bindings and undo history to an Angular component
+ * Useful for injecting a specific bindings and undo history to an Angular component.
+ * This injection will use a classical linear undo history. For other kinds of undo algorithm, see
+ * the other providers.
+ * This undo algorithm is the default one Interacto uses.
  */
 export function interactoProviders(): Provider[] {
   return [
-    {provide: Bindings, useFactory: bindingsFactory},
+    {provide: Bindings, useFactory: bindingsLinearUndoHistoryFactory},
     {provide: UndoHistory, useFactory: undoHistoryFactory, deps: [Bindings]}
+  ];
+}
+
+/**
+ * Provides dependency injection for Interacto.
+ * Useful for injecting a specific bindings and undo history to an Angular component.
+ * This injection will use a tree undo history. For other kinds of undo algorithm, see
+ * the other providers.
+ */
+export function interactoTreeUndoProviders(): Provider[] {
+  return [
+    {provide: Bindings, useFactory: bindingsTreeUndoHistoryFactory},
+    {provide: TreeUndoHistory, useFactory: undoHistoryFactory, deps: [Bindings]}
   ];
 }
 

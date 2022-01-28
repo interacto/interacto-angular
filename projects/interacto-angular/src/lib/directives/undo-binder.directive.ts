@@ -1,12 +1,12 @@
 import {AfterContentInit, Directive, ElementRef, EventEmitter, Input, OnDestroy, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, Interaction, InteractionCmdBinder, Undo, WidgetData} from 'interacto';
+import {Binding, Bindings, Interaction, InteractionCmdBinder, Undo, UndoHistoryBase, WidgetData} from 'interacto';
 import {Subscription} from 'rxjs';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 export type PartialUndoButtonBinder = InteractionCmdBinder<Undo, Interaction<WidgetData<HTMLButtonElement>>, WidgetData<HTMLButtonElement>>;
 
 @Directive({
-  selector: 'button:[ioUndo]'
+  selector: 'button:ioUndo,button:[ioUndo]'
 })
 export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElement, PartialUndoButtonBinder>
   implements AfterContentInit, OnDestroy {
@@ -16,7 +16,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
   public constructor(
     element: ElementRef<HTMLButtonElement>,
     viewContainerRef: ViewContainerRef,
-    private bindings: Bindings) {
+    private bindings: Bindings<UndoHistoryBase>) {
     super(undefined, element, viewContainerRef);
     this.undoObs = bindings.undoHistory
       .undosObservable()

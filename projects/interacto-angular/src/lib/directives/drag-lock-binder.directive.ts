@@ -1,5 +1,5 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialPointSrcTgtBinder} from 'interacto';
+import {Binding, Bindings, PartialPointSrcTgtBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -13,7 +13,7 @@ export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElemen
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
-              private bindings: Bindings) {
+              private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
     this.dragLockBinder = new EventEmitter<PartialPointSrcTgtBinder>();
   }

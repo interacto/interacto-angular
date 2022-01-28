@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialUpdatePointBinder} from 'interacto';
+import {Binding, Bindings, PartialUpdatePointBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
@@ -14,7 +14,7 @@ export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLE
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
+              private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
     this.longMousedownBinder = new EventEmitter<PartialUpdatePointBinder>();
   }

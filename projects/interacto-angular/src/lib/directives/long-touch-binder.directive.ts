@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialTouchBinder} from 'interacto';
+import {Binding, Bindings, PartialTouchBinder, UndoHistoryBase} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -14,7 +14,7 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
+              private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
     this.longTouchBinder = new EventEmitter<PartialTouchBinder>();
   }

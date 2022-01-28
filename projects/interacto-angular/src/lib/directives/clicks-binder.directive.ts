@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialPointsBinder} from 'interacto';
+import {Binding, Bindings, PartialPointsBinder, UndoHistoryBase} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
@@ -14,7 +14,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               changeDetectorRef: ChangeDetectorRef,
-              private bindings: Bindings) {
+              private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
     this.clicksBinder = new EventEmitter<PartialPointsBinder>();
   }

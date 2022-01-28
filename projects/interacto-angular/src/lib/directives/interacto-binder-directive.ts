@@ -38,7 +38,6 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     const fnName = this.checkFnName(fn);
 
     if(fnName === undefined) {
-      console.error("The callback function provided to the button directive does not exist in the component");
       return;
     }
 
