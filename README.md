@@ -18,3 +18,8 @@ Using npm:
 npm install interacto
 npm install interacto-angular
 ```
+
+# Version number
+
+`7.12.0` means Interacto 7 with Angular 12
+
