@@ -12,14 +12,17 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "tsConfig": "projects/interacto-angular/tsconfig.lib.json",
             "project": "projects/interacto-angular/ng-package.json"
           },
           "configurations": {
             "production": {
               "tsConfig": "projects/interacto-angular/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/interacto-angular/tsconfig.lib.json"
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",

@@ -11,15 +11,21 @@ This project provides facilities for using Interacto within Angular projects, in
 See https://interacto.github.io for usages and documentation of Interacto.
 
 
-# How to install
-
-Using npm:
-```
-npm install interacto
-npm install interacto-angular
-```
-
 # Version number
 
 `7.12.0` means Interacto 7 with Angular 12
 
+
+# How to install
+
+For Angular 13:
+
+```
+npm install interacto@latest interacto-angular@latest
+```
+
+For Angular 12:
+
+```
+npm install interacto@7.0 interacto-angular@7.12
+```

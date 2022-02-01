@@ -35,7 +35,7 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
     this.element.nativeElement.title = this.bindings.undoHistory.getLastOrEmptyRedoMessage();
   }
 
-  public ngAfterContentInit(): void {
+  public override ngAfterContentInit(): void {
     this.updateRedo();
 
     if (!this.inputSet) {
@@ -56,7 +56,7 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
       .toProduce(() => new Redo(this.bindings.undoHistory));
   }
 
-  public ngOnDestroy(): void {
+  public override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.redoObs.unsubscribe();
   }

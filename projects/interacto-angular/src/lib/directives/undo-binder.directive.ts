@@ -36,7 +36,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
     this.element.nativeElement.title = this.bindings.undoHistory.getLastOrEmptyUndoMessage();
   }
 
-  public ngAfterContentInit(): void {
+  public override ngAfterContentInit(): void {
     this.updateUndo();
 
     if (!this.inputSet) {
@@ -57,7 +57,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
       .toProduce(() => new Undo(this.bindings.undoHistory));
   }
 
-  public ngOnDestroy(): void {
+  public override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.undoObs.unsubscribe();
   }
