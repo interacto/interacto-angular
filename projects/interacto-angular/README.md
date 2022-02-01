@@ -1,24 +1,31 @@
-# InteractoAngular
+# Interacto Angular
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.13.
+**Interacto** is a front-end framework for processing user interface events.<br/>
+With **Interacto** developers handle user interactions (DnD, drag-lock, double-click, button click, pan, multi-touch, etc.) instead of low-level UI events.<br/>
+Developers configure how to turn a selected user interaction into a (undoable) UI command using a fluent API.<br/>
+Interacto also provides a native support for undo/redo operations.
 
-## Code scaffolding
+This project provides facilities for using Interacto within Angular projects, in particular Angular directives and DI.
 
-Run `ng generate component component-name --project interacto-angular` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project interacto-angular`.
-> Note: Don't forget to add `--project interacto-angular` or else it will be added to the default project in your `angular.json` file. 
 
-## Build
+See https://interacto.github.io for usages and documentation of Interacto.
 
-Run `ng build interacto-angular` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Publishing
+# Version number
 
-After building your library with `ng build interacto-angular`, go to the dist folder `cd dist/interacto-angular` and run `npm publish`.
+`7.12.0` means Interacto 7 with Angular 12
 
-## Running unit tests
 
-Run `ng test interacto-angular` to execute the unit tests via [Karma](https://karma-runner.github.io).
+# How to install
 
-## Further help
+For Angular 13:
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```
+npm install interacto@latest interacto-angular@latest
+```
+
+For Angular 12:
+
+```
+npm install interacto@7.0 interacto-angular@7.12
+```
