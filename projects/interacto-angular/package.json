@@ -2,15 +2,15 @@
   "name": "interacto-angular",
   "version": "7.13.0",
   "peerDependencies": {
-    "@angular/common": " ~13",
-    "@angular/core": "~13",
+    "@angular/common": " ~14",
+    "@angular/core": "~14",
     "interacto": ">=7.1.0"
   },
   "devDependencies": {
     "tslib": "^2.3.0",
-    "@angular-eslint/schematics": "^13.0.1",
-    "@typescript-eslint/eslint-plugin": "^5.10.2",
-    "@typescript-eslint/parser": "^5.10.2",
-    "eslint": "^8.8.0"
+    "@angular-eslint/schematics": "^14.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.4",
+    "@typescript-eslint/parser": "^5.30.4",
+    "eslint": "^8.19.0"
   }
 }
