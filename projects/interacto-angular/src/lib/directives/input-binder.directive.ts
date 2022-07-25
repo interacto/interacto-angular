@@ -24,7 +24,7 @@ export class InputBinderDirective extends InteractoBinderDirective<HTMLInputElem
   }
 
   protected createPartialBinder(): PartialInputBinder {
-    const elt = this.element.nativeElement;
+    const elt = this.getElementContent();
 
     if (elt instanceof HTMLInputElement) {
       switch (elt.type) {

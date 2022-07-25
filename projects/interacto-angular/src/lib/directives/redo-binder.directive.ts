@@ -31,8 +31,9 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
 
 
   private updateRedo(): void {
-    this.element.nativeElement.disabled = this.bindings.undoHistory.getLastRedo() === undefined;
-    this.element.nativeElement.title = this.bindings.undoHistory.getLastOrEmptyRedoMessage();
+    const elt = this.getElementContent();
+    elt.disabled = this.bindings.undoHistory.getLastRedo() === undefined;
+    elt.title = this.bindings.undoHistory.getLastOrEmptyRedoMessage();
   }
 
   public override ngAfterContentInit(): void {

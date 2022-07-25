@@ -8,7 +8,7 @@ import {Binding, BindingImpl, InteractionBinder, InteractionCmdBinder, KeyIntera
  * @typeParam B - The type of the partial binder the directive will produce
  */
 @Directive()
-export abstract class InteractoBinderDirective<E extends HTMLElement,
+export abstract class InteractoBinderDirective<E,
   B extends InteractionBinder<any, any> | KeyInteractionUpdateBinder<any, any> | InteractionCmdBinder<any, any, any>>
   implements AfterContentInit, OnDestroy {
 
@@ -18,7 +18,7 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
 
   protected constructor(
     protected onDyn: OnDynamicDirective | undefined,
-    protected element: ElementRef<E>,
+    protected element: ElementRef<E> | E,
     protected viewContainerRef: ViewContainerRef,
     protected changeDetectorRef?: ChangeDetectorRef) {
     this.inputSet = false;
@@ -45,7 +45,7 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
     // Detects changes to the component and retrieves the input values
     this.changeDetectorRef?.detectChanges();
 
-    const binding: unknown = this.getComponent(fnName)[fnName](this.completePartialBinder(), this.element.nativeElement);
+    const binding: unknown = this.getComponent(fnName)[fnName](this.completePartialBinder(), this.getElementContent());
 
     if (binding instanceof BindingImpl) {
       this.binding = [binding];
@@ -54,6 +54,10 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
         this.binding = binding.filter(b => b instanceof BindingImpl).map(b => b as Binding<any, any, any>);
       }
     }
+  }
+
+  protected getElementContent(): E {
+    return this.element instanceof ElementRef ? this.element.nativeElement : this.element;
   }
 
   /**
@@ -84,6 +88,9 @@ export abstract class InteractoBinderDirective<E extends HTMLElement,
   }
 
   protected completePartialBinder(): B {
-    return (this.onDyn ? this.createPartialBinder().onDynamic(this.element) : this.createPartialBinder().on(this.element)) as B;
+    const elt = this.getElementContent();
+    return (this.onDyn && elt instanceof Node ?
+      this.createPartialBinder().onDynamic(elt) :
+      this.createPartialBinder().on(this.element)) as B;
   }
 }

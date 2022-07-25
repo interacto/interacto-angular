@@ -1,6 +1,6 @@
 import {NgModule, Provider} from '@angular/core';
 import {ClicksBinderDirective} from './directives/clicks-binder.directive';
-import {Bindings, BindingsImpl, TreeUndoHistory, TreeUndoHistoryImpl, UndoHistory, UndoHistoryBase, UndoHistoryImpl} from 'interacto';
+import {Bindings, TreeUndoHistory, TreeUndoHistoryImpl, UndoHistory, UndoHistoryBase, UndoHistoryImpl} from 'interacto';
 import {UndoBinderDirective} from './directives/undo-binder.directive';
 import {RedoBinderDirective} from './directives/redo-binder.directive';
 import {ClickBinderDirective} from './directives/click-binder.directive';
@@ -32,6 +32,8 @@ import {MouseleaveBinderDirective} from './directives/mouseleave-binder.directiv
 import {MouseupBinderDirective} from './directives/mouseup-binder.directive';
 import {LinearHistoryComponent} from './components/linear-history.component';
 import {CommonModule} from '@angular/common';
+import {AngularBindings} from './base/angular-bindings';
+import {MatSelectBinderDirective} from './directives/mat-select-binder.directive';
 
 
 /**
@@ -39,22 +41,23 @@ import {CommonModule} from '@angular/common';
  * @param ctx The bindings object that contains the history
  * @typeParam T -- The type of the undo history
  */
-export function undoHistoryFactory<T extends UndoHistoryBase>(ctx: Bindings<T>): T {
+export function undoHistoryFactory<T extends UndoHistoryBase>(ctx: AngularBindings<T>): T {
   return ctx.undoHistory;
 }
 
 /**
  * Provides a Bindings object that uses a standard linear undo history
  */
-export function bindingsLinearUndoHistoryFactory(): Bindings<UndoHistory> {
-  return new BindingsImpl(new UndoHistoryImpl());
+export function bindingsLinearUndoHistoryFactory(): AngularBindings<UndoHistory> {
+  return new AngularBindings(new UndoHistoryImpl());
 }
 
 /**
  * Provides a Bindings object that uses a standard linear undo history
  */
-export function bindingsTreeUndoHistoryFactory(): Bindings<TreeUndoHistory> {
-  return new BindingsImpl(new TreeUndoHistoryImpl());
+export function bindingsTreeUndoHistoryFactory(): AngularBindings<TreeUndoHistory> {
+  return new AngularBindings(new TreeUndoHistoryImpl());
+
 }
 
 /**
@@ -66,8 +69,9 @@ export function bindingsTreeUndoHistoryFactory(): Bindings<TreeUndoHistory> {
  */
 export function interactoProviders(): Provider[] {
   return [
-    {provide: Bindings, useFactory: bindingsLinearUndoHistoryFactory},
-    {provide: UndoHistory, useFactory: undoHistoryFactory, deps: [Bindings]}
+    {provide: AngularBindings, useFactory: bindingsLinearUndoHistoryFactory},
+    {provide: Bindings, useExisting: AngularBindings},
+    {provide: UndoHistory, useFactory: undoHistoryFactory, deps: [AngularBindings]}
   ];
 }
 
@@ -79,8 +83,9 @@ export function interactoProviders(): Provider[] {
  */
 export function interactoTreeUndoProviders(): Provider[] {
   return [
-    {provide: Bindings, useFactory: bindingsTreeUndoHistoryFactory},
-    {provide: TreeUndoHistory, useFactory: undoHistoryFactory, deps: [Bindings]}
+    {provide: AngularBindings, useFactory: bindingsTreeUndoHistoryFactory},
+    {provide: Bindings, useExisting: AngularBindings},
+    {provide: TreeUndoHistory, useFactory: undoHistoryFactory, deps: [AngularBindings]}
   ];
 }
 
@@ -117,6 +122,7 @@ export function interactoTreeUndoProviders(): Provider[] {
     InputBinderDirective,
     SelectBinderDirective,
     AnchorBinderDirective,
+    MatSelectBinderDirective,
     OnDynamicDirective
   ],
   imports: [
@@ -153,6 +159,7 @@ export function interactoTreeUndoProviders(): Provider[] {
     InputBinderDirective,
     SelectBinderDirective,
     AnchorBinderDirective,
+    MatSelectBinderDirective,
     OnDynamicDirective
   ],
   providers: [interactoProviders()],

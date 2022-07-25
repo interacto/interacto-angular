@@ -2,6 +2,11 @@
  * Public API Surface of interacto-angular
  */
 
+export * from './lib/base/angular-bindings';
+export * from './lib/material/mat-event';
+export * from './lib/material/mat-interaction-base';
+export * from './lib/material/mat-select-change-transition';
+export * from './lib/material/mat-select-interaction';
 export * from './lib/components/linear-history.component';
 export * from './lib/directives/anchor-binder.directive';
 export * from './lib/directives/button-binder.directive';
@@ -32,5 +37,6 @@ export * from './lib/directives/swipe-binder.directive';
 export * from './lib/directives/tap-binder.directive';
 export * from './lib/directives/textarea-binder.directive';
 export * from './lib/directives/textinput-binder.directive';
+export * from './lib/directives/mat-select-binder.directive';
 export * from './lib/directives/undo-binder.directive';
 export * from './lib/interacto-angular.module';

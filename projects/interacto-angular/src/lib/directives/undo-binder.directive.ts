@@ -32,8 +32,9 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
 
 
   private updateUndo(): void {
-    this.element.nativeElement.disabled = this.bindings.undoHistory.getLastUndo() === undefined;
-    this.element.nativeElement.title = this.bindings.undoHistory.getLastOrEmptyUndoMessage();
+    const elt = this.getElementContent();
+    elt.disabled = this.bindings.undoHistory.getLastUndo() === undefined;
+    elt.title = this.bindings.undoHistory.getLastOrEmptyUndoMessage();
   }
 
   public override ngAfterContentInit(): void {
