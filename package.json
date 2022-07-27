@@ -39,7 +39,8 @@
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "clean": "rm -rf dist",
-    "test-publish": "cd dist/interacto-angular && npm pack"
+    "test-publish": "cd dist/interacto-angular && npm pack",
+    "publish": "cd dist/interacto-angular && npm publish"
   },
   "files": [
     "dist/"
