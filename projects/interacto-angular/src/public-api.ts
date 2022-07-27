@@ -15,6 +15,7 @@ export * from './lib/directives/clicks-binder.directive';
 export * from './lib/directives/dble-click-binder.directive';
 export * from './lib/directives/dnd-binder.directive';
 export * from './lib/directives/drag-lock-binder.directive';
+export * from './lib/directives/focus-on-mouse-enter.directive';
 export * from './lib/directives/input-binder.directive';
 export * from './lib/directives/keydown-binder.directive';
 export * from './lib/directives/keyup-binder.directive';

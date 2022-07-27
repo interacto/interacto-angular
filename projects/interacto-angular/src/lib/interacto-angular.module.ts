@@ -34,6 +34,7 @@ import {LinearHistoryComponent} from './components/linear-history.component';
 import {CommonModule} from '@angular/common';
 import {AngularBindings} from './base/angular-bindings';
 import {MatSelectBinderDirective} from './directives/mat-select-binder.directive';
+import {FocusOnMouseEnterDirective} from './directives/focus-on-mouse-enter.directive';
 
 
 /**
@@ -123,6 +124,7 @@ export function interactoTreeUndoProviders(): Provider[] {
     SelectBinderDirective,
     AnchorBinderDirective,
     MatSelectBinderDirective,
+    FocusOnMouseEnterDirective,
     OnDynamicDirective
   ],
   imports: [
@@ -160,6 +162,7 @@ export function interactoTreeUndoProviders(): Provider[] {
     SelectBinderDirective,
     AnchorBinderDirective,
     MatSelectBinderDirective,
+    FocusOnMouseEnterDirective,
     OnDynamicDirective
   ],
   providers: [interactoProviders()],
