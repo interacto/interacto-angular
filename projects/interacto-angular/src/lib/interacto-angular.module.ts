@@ -30,11 +30,12 @@ import {MousemoveBinderDirective} from './directives/mousemove-binder.directive'
 import {MouseenterBinderDirective} from './directives/mouseenter-binder.directive';
 import {MouseleaveBinderDirective} from './directives/mouseleave-binder.directive';
 import {MouseupBinderDirective} from './directives/mouseup-binder.directive';
-import {LinearHistoryComponent} from './components/linear-history.component';
+import {LinearHistoryComponent} from './components/linear-history/linear-history.component';
 import {CommonModule} from '@angular/common';
 import {AngularBindings} from './base/angular-bindings';
 import {MatSelectBinderDirective} from './directives/mat-select-binder.directive';
 import {FocusOnMouseEnterDirective} from './directives/focus-on-mouse-enter.directive';
+import {TreeHistoryComponent} from './components/tree-history/tree-history.component';
 
 
 /**
@@ -94,6 +95,7 @@ export function interactoTreeUndoProviders(): Provider[] {
 @NgModule({
   declarations: [
     LinearHistoryComponent,
+    TreeHistoryComponent,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,
@@ -132,6 +134,7 @@ export function interactoTreeUndoProviders(): Provider[] {
   ],
   exports: [
     LinearHistoryComponent,
+    TreeHistoryComponent,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,

@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {LinearHistoryComponent} from './linear-history.component';
-import {InteractoModule} from '../interacto-angular.module';
+import {InteractoModule} from '../../interacto-angular.module';
 
 describe('LinearHistoryComponent', () => {
   let component: LinearHistoryComponent;

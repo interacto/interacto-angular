@@ -1,0 +1,57 @@
+.header {
+  background-color: black;
+  min-height: 75px;
+  border-bottom-style: solid;
+}
+
+.header h2 {
+  font-size: 25px;
+  text-align: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  margin: 0;
+  color: white;
+}
+
+.tree-node-history {
+  position: absolute;
+  /*width: 90px;*/
+  padding: 0;
+  border-style: solid;
+  color: black;
+  background-color: white;
+  border-width: thin;
+  user-select: none;
+}
+
+.button-undo-redo {
+  width: 50%;
+  min-height: 40px;
+  border-right-style: solid;
+  border-left-style: solid;
+  color: black;
+  background-color: white;
+  border-width: thin;
+  font-size: 20px;
+}
+
+.header button:disabled {
+  width: 50%;
+  border-right-style: solid;
+  border-left-style: solid;
+  color: black;
+  background-color: lightgray;
+  border-width: thin;
+  font-size: 20px;
+}
+
+.current-node {
+  background-color: slategray;
+}
+
+.tree {
+  overflow: auto;
+  width: inherit;
+  height: inherit;
+  position: fixed;
+}
