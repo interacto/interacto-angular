@@ -7,7 +7,7 @@ import {UndoableSnapshot} from "interacto/dist/api/undo/Undoable";
  * The Angular component for display a tree-based undo/redo history
  */
 @Component({
-  selector: 'app-tree-history',
+  selector: 'io-tree-history',
   templateUrl: './tree-history.component.html',
   styleUrls: ['./tree-history.component.css']
 })
@@ -30,7 +30,7 @@ export class TreeHistoryComponent {
   @HostBinding('style.width')
   widthcss = "";
 
-  public cache: Record<number, any> = {};
+  public cache: Record<number, unknown> = {};
 
   public cacheRoot: unknown | undefined;
 
@@ -69,8 +69,7 @@ export class TreeHistoryComponent {
   }
 
 
-  private undoButtonSnapshot_(snapshot: HTMLElement | SVGElement | string,
-                              txt: string, div: HTMLDivElement): string | undefined {
+  private undoButtonSnapshot_(snapshot: unknown, txt: string, div: HTMLDivElement): string | undefined {
     if (typeof snapshot === 'string') {
       return `${txt}: ${snapshot}`;
     }
@@ -107,7 +106,7 @@ export class TreeHistoryComponent {
     }
 
     if (snapshot instanceof Promise) {
-      snapshot.then(res => {
+      void snapshot.then(res => {
         if (node !== undefined) {
           this.cache[node.id] = res;
         } else {
