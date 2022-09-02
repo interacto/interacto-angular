@@ -57,8 +57,8 @@ export function bindingsLinearUndoHistoryFactory(): AngularBindings<UndoHistory>
 /**
  * Provides a Bindings object that uses a standard linear undo history
  */
-export function bindingsTreeUndoHistoryFactory(): AngularBindings<TreeUndoHistory> {
-  return new AngularBindings(new TreeUndoHistoryImpl());
+export function bindingsTreeUndoHistoryFactory(keepHistoryTraces: boolean): AngularBindings<TreeUndoHistory> {
+  return new AngularBindings(new TreeUndoHistoryImpl(keepHistoryTraces));
 
 }
 
@@ -82,10 +82,13 @@ export function interactoProviders(): Provider[] {
  * Useful for injecting a specific bindings and undo history to an Angular component.
  * This injection will use a tree undo history. For other kinds of undo algorithm, see
  * the other providers.
+ * @param keepHistoryTraces - States whether the history will keep in memory the ordered
+ * sequence of commands the users performed. This allows to keep traces about the design process.
+ * If set to true, users would not be able to delete history elements.
  */
-export function interactoTreeUndoProviders(): Provider[] {
+export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): Provider[] {
   return [
-    {provide: AngularBindings, useFactory: bindingsTreeUndoHistoryFactory},
+    {provide: AngularBindings, useFactory: () => bindingsTreeUndoHistoryFactory(keepHistoryTraces)},
     {provide: Bindings, useExisting: AngularBindings},
     {provide: TreeUndoHistory, useFactory: undoHistoryFactory, deps: [AngularBindings]}
   ];
