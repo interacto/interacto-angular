@@ -16,7 +16,7 @@ import {Subscription} from "rxjs";
  * The Angular component for display a tree-based undo/redo history
  */
 @Component({
-  selector: 'app-tree-history',
+  selector: 'io-tree-history',
   templateUrl: './tree-history.component.html',
   styleUrls: ['./tree-history.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -40,7 +40,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
   @HostBinding('style.width')
   widthcss = "";
 
-  public cache: Record<number, any> = {};
+  public cache: Record<number, unknown> = {};
 
   public cacheRoot: unknown | undefined;
 
@@ -102,7 +102,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
   }
 
 
-  private undoButtonSnapshot_(snapshot: HTMLElement | SVGElement | string,
+  private undoButtonSnapshot_(snapshot: unknown,
                               txt: string, div: HTMLDivElement): string | undefined {
     if (typeof snapshot === 'string') {
       return `${txt}: ${snapshot}`;
