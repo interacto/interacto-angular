@@ -1,17 +1,27 @@
-import {Component, HostBinding, Input} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  HostBinding,
+  Input,
+  OnDestroy
+} from '@angular/core';
 import {Binding, PartialPointBinder, TreeUndoHistory, UndoableTreeNode} from 'interacto';
 import {KeyValue} from "@angular/common";
 import {UndoableSnapshot} from "interacto/dist/api/undo/Undoable";
+import {Subscription} from "rxjs";
 
 /**
  * The Angular component for display a tree-based undo/redo history
  */
 @Component({
-  selector: 'io-tree-history',
+  selector: 'app-tree-history',
   templateUrl: './tree-history.component.html',
-  styleUrls: ['./tree-history.component.css']
+  styleUrls: ['./tree-history.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TreeHistoryComponent {
+export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
   @Input()
   public width?: string;
 
@@ -30,12 +40,35 @@ export class TreeHistoryComponent {
   @HostBinding('style.width')
   widthcss = "";
 
-  public cache: Record<number, unknown> = {};
+  public cache: Record<number, any> = {};
 
   public cacheRoot: unknown | undefined;
 
+  private subscriptionUndos: Subscription;
 
-  public constructor(public history: TreeUndoHistory) {
+  private subscriptionRedos: Subscription;
+
+
+  public constructor(public history: TreeUndoHistory,
+                     private changeDetect: ChangeDetectorRef) {
+    // Only updating the view on history changes
+    this.subscriptionUndos = history.undosObservable().subscribe(() => {
+      changeDetect.detectChanges();
+    });
+
+    this.subscriptionRedos = history.redosObservable().subscribe(() => {
+      changeDetect.detectChanges();
+    });
+  }
+
+  public ngAfterViewInit() {
+    // Preventing the input attributes to update the view
+    this.changeDetect.detach();
+  }
+
+  public ngOnDestroy(): void {
+    this.subscriptionUndos.unsubscribe();
+    this.subscriptionRedos.unsubscribe();
   }
 
   public depth(undoableNode: UndoableTreeNode | undefined): number {
@@ -69,7 +102,8 @@ export class TreeHistoryComponent {
   }
 
 
-  private undoButtonSnapshot_(snapshot: unknown, txt: string, div: HTMLDivElement): string | undefined {
+  private undoButtonSnapshot_(snapshot: HTMLElement | SVGElement | string,
+                              txt: string, div: HTMLDivElement): string | undefined {
     if (typeof snapshot === 'string') {
       return `${txt}: ${snapshot}`;
     }
@@ -106,7 +140,7 @@ export class TreeHistoryComponent {
     }
 
     if (snapshot instanceof Promise) {
-      void snapshot.then(res => {
+      snapshot.then(res => {
         if (node !== undefined) {
           this.cache[node.id] = res;
         } else {
@@ -117,13 +151,15 @@ export class TreeHistoryComponent {
       return txt;
     }
 
-    div.scrollIntoView();
+    if(node?.id === this.history.currentNode.id) {
+      div.scrollIntoView();
+    }
 
     return this.undoButtonSnapshot_(snapshot, txt, div);
   }
 
 
-  public goTo(binder: PartialPointBinder, position: number): Array<Binding<any, any, any>> {
+  public clickBinders(binder: PartialPointBinder, position: number): Array<Binding<any, any, any>> {
     return [
       binder
         .toProduceAnon(() => {
@@ -135,7 +171,10 @@ export class TreeHistoryComponent {
         .toProduceAnon(() => {
           this.history.delete(position);
         })
-        .when(i => i.button === 2)
+        .when(i => !this.history.keepPath && i.button === 2)
+        .ifHadEffects(() => {
+          this.changeDetect.detectChanges();
+        })
         .bind()
     ];
   }
