@@ -140,7 +140,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     }
 
     if (snapshot instanceof Promise) {
-      snapshot.then(res => {
+      void snapshot.then((res: unknown) => {
         if (node !== undefined) {
           this.cache[node.id] = res;
         } else {
