@@ -1,6 +1,6 @@
 {
   "name": "interacto-angular",
-  "version": "7.14.3",
+  "version": "7.14.4",
   "peerDependencies": {
     "@angular/common": " ~14",
     "@angular/core": "~14",
