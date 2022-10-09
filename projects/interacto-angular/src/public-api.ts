@@ -42,3 +42,4 @@ export * from './lib/directives/textinput-binder.directive';
 export * from './lib/directives/mat-select-binder.directive';
 export * from './lib/directives/undo-binder.directive';
 export * from './lib/interacto-angular.module';
+export * from './lib/testing-interacto-angular.module';
