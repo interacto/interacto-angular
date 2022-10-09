@@ -1,7 +1,7 @@
 {
   "name": "interacto-angular",
   "description": "Front-end framework for processing user interface events in Angular",
-  "version": "7.14.4",
+  "version": "7.14.5",
   "author": "Arnaud Blouin",
   "contributors": [
     "Rémi Daniel"
@@ -40,7 +40,7 @@
     "lint": "ng lint",
     "clean": "rm -rf dist",
     "test-publish": "cd dist/interacto-angular && npm pack",
-    "publish": "cd dist/interacto-angular && npm publish"
+    "prod-publish": "cd dist/interacto-angular && npm publish"
   },
   "files": [
     "dist/"
