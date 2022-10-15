@@ -1,3 +1,4 @@
+import { KeyValue } from "@angular/common";
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -7,10 +8,8 @@ import {
   Input,
   OnDestroy
 } from '@angular/core';
-import {Binding, PartialPointBinder, TreeUndoHistory, UndoableTreeNode} from 'interacto';
-import {KeyValue} from "@angular/common";
-import {UndoableSnapshot} from "interacto/dist/api/undo/Undoable";
-import {Subscription} from "rxjs";
+import { Binding, PartialPointBinder, TreeUndoHistory, UndoableSnapshot, UndoableTreeNode } from 'interacto';
+import { Subscription } from "rxjs";
 
 /**
  * The Angular component for display a tree-based undo/redo history

@@ -1,8 +1,8 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, UndoHistoryBase, PartialTextInputBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
-import {PartialTextInputBinder} from 'interacto/dist/api/binding/Bindings';
+
 
 @Directive({
   selector: 'textarea:[ioTextarea], [ioTextarea] [ioOnDynamic]'
