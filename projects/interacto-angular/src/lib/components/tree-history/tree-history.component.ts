@@ -8,7 +8,7 @@ import {
   Input,
   OnDestroy
 } from '@angular/core';
-import { Binding, PartialPointBinder, TreeUndoHistory, UndoableSnapshot, UndoableTreeNode } from 'interacto';
+import { Binding, PartialPointBinder, PartialTapBinder, PartialTouchBinder, TreeUndoHistory, UndoableSnapshot, UndoableTreeNode } from 'interacto';
 import { Subscription } from "rxjs";
 
 /**
@@ -157,6 +157,29 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     return this.undoButtonSnapshot_(snapshot, txt, div);
   }
 
+  public longTouchBinder(binder: PartialTouchBinder, position: number): Array<Binding<any, any, any>> {
+    return [
+      binder
+        .toProduceAnon(() => {
+          this.history.delete(position);
+        })
+        .when(() => !this.history.keepPath)
+        .ifHadEffects(() => {
+          this.changeDetect.detectChanges();
+        })
+        .bind()
+    ];
+  }
+
+  public tapBinder(binder: PartialTapBinder, position: number): Array<Binding<any, any, any>> {
+    return [
+      binder
+        .toProduceAnon(() => {
+          this.history.goTo(position);
+        })
+        .bind()
+    ];
+  }
 
   public clickBinders(binder: PartialPointBinder, position: number): Array<Binding<any, any, any>> {
     return [
