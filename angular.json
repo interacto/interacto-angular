@@ -27,9 +27,12 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/interacto-angular/src/test.ts",
             "tsConfig": "projects/interacto-angular/tsconfig.spec.json",
-            "karmaConfig": "projects/interacto-angular/karma.conf.js"
+            "karmaConfig": "projects/interacto-angular/karma.conf.js",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         },
         "lint": {
@@ -42,6 +45,5 @@
           }
         }
       }
-    }},
-  "defaultProject": "interacto-angular"
+    }}
 }

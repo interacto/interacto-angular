@@ -5,16 +5,16 @@
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "paths": {
-      "interacto-angular": [
-        "dist/interacto-angular"
-      ]
-    },
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
+    "paths": {
+      "interacto-angular": [
+        "dist/interacto-angular"
+      ]
+    },
     "declaration": false,
     "downlevelIteration": true,
     "experimentalDecorators": true,
@@ -26,10 +26,11 @@
     "noUnusedParameters": true,
     "strictPropertyInitialization": false,
     "noImplicitAny": true,
-    "target": "es2020",
-    "module": "es2020",
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
     "lib": [
-      "es2020",
+      "ES2022",
       "dom"
     ]
   },

@@ -1,17 +1,17 @@
 {
   "name": "interacto-angular",
-  "version": "7.14.5",
+  "version": "7.15.0",
   "peerDependencies": {
-    "@angular/common": " ~14",
-    "@angular/core": "~14",
-    "@angular/material": "~14",
-    "interacto": ">=7.3.0"
+    "@angular/common": " ~15",
+    "@angular/core": "~15",
+    "@angular/material": "~15",
+    "interacto": ">=7.4.0"
   },
   "devDependencies": {
     "tslib": "^2.3.0",
-    "@angular-eslint/schematics": "^14.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.30.4",
-    "@typescript-eslint/parser": "^5.30.4",
-    "eslint": "^8.19.0"
+    "@angular-eslint/schematics": "15.2.1",
+    "@typescript-eslint/eslint-plugin": "5.59.9",
+    "@typescript-eslint/parser": "5.59.9",
+    "eslint": "8.42.0"
   }
 }
