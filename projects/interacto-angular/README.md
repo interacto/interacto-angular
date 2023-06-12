@@ -13,15 +13,33 @@ See https://interacto.github.io for usages and documentation of Interacto.
 
 # Version number
 
-`7.12.0` means Interacto 7 with Angular 12
+`7.16.0` means Interacto 7 with Angular 16
 
 
 # How to install
 
+For Angular 16:
+
+```
+npm install interacto@latest interacto-angular@7.16
+```
+
+For Angular 15:
+
+```
+npm install interacto@7.4 interacto-angular@7.15
+```
+
+For Angular 14:
+
+```
+npm install interacto@7.3 interacto-angular@7.14
+```
+
 For Angular 13:
 
 ```
-npm install interacto@latest interacto-angular@latest
+npm install interacto@7.3 interacto-angular@7.13
 ```
 
 For Angular 12:
