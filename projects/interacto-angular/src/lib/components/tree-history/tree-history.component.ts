@@ -28,10 +28,13 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
   public svgViewportWidth: number = 50;
 
   @Input()
-  public svgViewportHeight: number = 50;
+  public svgViewportHeight: number = this.svgViewportWidth;
 
   @Input()
-  public svgIconSize: number = 50;
+  public cmdViewWidth: number = 50;
+
+  @Input()
+  public cmdViewHeight: number = this.cmdViewWidth;
 
   @Input()
   public rootRenderer: UndoableSnapshot = undefined;
@@ -85,18 +88,19 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
 
   private createHtmlTag(snapshot: Element, div: HTMLDivElement, svg: boolean): void {
     div.querySelectorAll('div')[0]?.remove();
-    const size = `${this.svgIconSize}px`;
+    const width = `${this.cmdViewWidth}px`;
+    const height = `${this.cmdViewHeight}px`;
     const divpic = document.createElement("div");
     divpic.appendChild(snapshot);
-    divpic.style.width = size;
-    divpic.style.height = size;
+    divpic.style.width = width;
+    divpic.style.height = height;
 
     if (svg) {
       snapshot.setAttribute("viewBox", `0 0 ${this.svgViewportWidth} ${this.svgViewportHeight}`);
     }
 
-    snapshot.setAttribute("width", size);
-    snapshot.setAttribute("height", size);
+    snapshot.setAttribute("width", width);
+    snapshot.setAttribute("height", height);
     div.appendChild(divpic);
   }
 
@@ -157,7 +161,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     return this.undoButtonSnapshot_(snapshot, txt, div);
   }
 
-  public longTouchBinder(binder: PartialTouchBinder, position: number): Array<Binding<any, any, any>> {
+  public longTouchBinder(binder: PartialTouchBinder, position: number): Array<Binding<any, any, any, unknown>> {
     return [
       binder
         .toProduceAnon(() => {
@@ -171,7 +175,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     ];
   }
 
-  public tapBinder(binder: PartialTapBinder, position: number): Array<Binding<any, any, any>> {
+  public tapBinder(binder: PartialTapBinder, position: number): Array<Binding<any, any, any, unknown>> {
     return [
       binder
         .toProduceAnon(() => {
@@ -181,7 +185,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     ];
   }
 
-  public clickBinders(binder: PartialPointBinder, position: number): Array<Binding<any, any, any>> {
+  public clickBinders(binder: PartialPointBinder, position: number): Array<Binding<any, any, any, unknown>> {
     return [
       binder
         .toProduceAnon(() => {
@@ -203,10 +207,10 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
 
 
   public getTop(position: KeyValue<number, number>): number {
-    return this.depth(this.history.undoableNodes[position.key]) * (this.svgIconSize + 10) + 10;
+    return this.depth(this.history.undoableNodes[position.key]) * (this.cmdViewWidth + 10) + 10;
   }
 
   public getLeft(position: KeyValue<number, number>): number {
-    return position.value * (this.svgIconSize + 10) + 10;
+    return position.value * (this.cmdViewWidth + 10) + 10;
   }
 }

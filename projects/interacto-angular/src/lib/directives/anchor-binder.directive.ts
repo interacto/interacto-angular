@@ -19,7 +19,7 @@ export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorEl
   }
 
   @Input()
-  set ioAnchor(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioAnchor(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

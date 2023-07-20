@@ -5,7 +5,7 @@ import {Binding, Bindings, FocusHTMLElement, Interaction, PointData, UndoHistory
   selector: '[ioFocusOnMouseEnter]'
 })
 export class FocusOnMouseEnterDirective implements AfterContentInit, OnDestroy {
-  private binding: Binding<FocusHTMLElement, Interaction<PointData>, PointData> | undefined;
+  private binding: Binding<FocusHTMLElement, Interaction<PointData>, PointData, unknown> | undefined;
 
   constructor(private element: ElementRef<HTMLElement>,
               private bindings: Bindings<UndoHistoryBase>) {

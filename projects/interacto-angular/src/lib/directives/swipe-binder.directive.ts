@@ -54,7 +54,7 @@ export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement, 
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioSwipe(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
+  set ioSwipe(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

@@ -36,6 +36,7 @@ import {AngularBindings} from './base/angular-bindings';
 import {MatSelectBinderDirective} from './directives/mat-select-binder.directive';
 import {FocusOnMouseEnterDirective} from './directives/focus-on-mouse-enter.directive';
 import {TreeHistoryComponent} from './components/tree-history/tree-history.component';
+import { DwellSpringComponent } from './components/dwell-spring/dwell-spring.component';
 
 
 /**
@@ -99,6 +100,7 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
   declarations: [
     LinearHistoryComponent,
     TreeHistoryComponent,
+    DwellSpringComponent,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,
@@ -138,6 +140,7 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
   exports: [
     LinearHistoryComponent,
     TreeHistoryComponent,
+    DwellSpringComponent,
     ClicksBinderDirective,
     ClickBinderDirective,
     DoubleClickBinderDirective,

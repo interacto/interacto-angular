@@ -23,7 +23,7 @@ export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLEle
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDoubleClick(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string)  {
+  set ioDoubleClick(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 

@@ -9,6 +9,7 @@ export * from './lib/material/mat-select-change-transition';
 export * from './lib/material/mat-select-interaction';
 export * from './lib/components/linear-history/linear-history.component';
 export * from './lib/components/tree-history/tree-history.component';
+export * from './lib/components/dwell-spring/dwell-spring.component';
 export * from './lib/directives/anchor-binder.directive';
 export * from './lib/directives/button-binder.directive';
 export * from './lib/directives/click-binder.directive';

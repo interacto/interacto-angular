@@ -19,7 +19,7 @@ export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectEl
   }
 
   @Input()
-  set ioSelect(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioSelect(fn: ((partialBinder: PartialSelectBinder, widget: HTMLSelectElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

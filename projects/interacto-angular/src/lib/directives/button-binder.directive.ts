@@ -19,7 +19,7 @@ export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonEl
   }
 
   @Input()
-  set ioButton(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement | HTMLElement) => Binding<any, any, any> | Array<Binding<any, any, any>> | void) | undefined | string) {
+  set ioButton(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement | HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 
