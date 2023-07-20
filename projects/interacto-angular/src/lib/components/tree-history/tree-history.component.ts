@@ -204,13 +204,4 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
         .bind()
     ];
   }
-
-
-  public getTop(position: KeyValue<number, number>): number {
-    return this.depth(this.history.undoableNodes[position.key]) * (this.cmdViewWidth + 10) + 10;
-  }
-
-  public getLeft(position: KeyValue<number, number>): number {
-    return position.value * (this.cmdViewWidth + 10) + 10;
-  }
 }
