@@ -1,4 +1,3 @@
-import { KeyValue } from "@angular/common";
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
