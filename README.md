@@ -18,17 +18,30 @@ See https://interacto.github.io for usages and documentation of Interacto.
 
 # How to install
 
-For Angular 14:
+For Angular 16:
 
 ```
 npm install interacto@latest interacto-angular@latest
 ```
 
 
+For Angular 15:
+
+```
+npm install interacto@latest interacto-angular@7.15
+```
+
+For Angular 14:
+
+```
+npm install interacto@7.3 interacto-angular@7.14
+```
+
+
 For Angular 13:
 
 ```
-npm install interacto@latest interacto-angular@7.13
+npm install interacto@7.3 interacto-angular@7.13
 ```
 
 For Angular 12:
