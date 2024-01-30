@@ -3,7 +3,7 @@ import {Binding, Bindings, Interaction, InteractionCmdBinder, Redo, UndoHistoryB
 import {Subscription} from 'rxjs';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
-export type PartialRedoButtonBinder = InteractionCmdBinder<Redo, Interaction<WidgetData<HTMLButtonElement>>, WidgetData<HTMLButtonElement>, unknown>;
+export type PartialRedoButtonBinder = InteractionCmdBinder<Redo, Interaction<WidgetData<HTMLButtonElement>>, unknown, WidgetData<HTMLButtonElement>>;
 
 @Directive({
   selector: 'button:ioRedo,button:[ioRedo]'
@@ -19,13 +19,13 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
     super(undefined, element, viewContainerRef);
     this.redoObs = bindings.undoHistory
       .redosObservable()
-      .subscribe(_ => {
+      .subscribe(() => {
         this.updateRedo();
       });
   }
 
   @Input()
-  public set ioRedo(fn: ((partialBinder: PartialRedoButtonBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
+  public set ioRedo(fn: ((partialBinder: PartialRedoButtonBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

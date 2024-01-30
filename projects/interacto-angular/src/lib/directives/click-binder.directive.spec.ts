@@ -2,17 +2,17 @@ import {ClickBinderDirective} from './click-binder.directive';
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {BindingsContext, PartialPointBinder} from 'interacto';
+import {BindingsContext, PartialPointTypedBinder} from 'interacto';
 import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
 import {robot} from 'interacto-nono';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 let fixture: ComponentFixture<TestComponent>;
-let binderDiv: PartialPointBinder;
-let binderBut: PartialPointBinder;
-let binderB: PartialPointBinder;
-let binderB2: PartialPointBinder;
+let binderDiv: PartialPointTypedBinder;
+let binderBut: PartialPointTypedBinder;
+let binderB: PartialPointTypedBinder;
+let binderB2: PartialPointTypedBinder;
 let ctx: BindingsContext;
 
 @Component({
@@ -28,33 +28,33 @@ class TestComponent {
   public param: string = "";
   public widget?: HTMLButtonElement = undefined;
 
-  public methodDiv(binder: PartialPointBinder): void {
+  public methodDiv(binder: PartialPointTypedBinder): void {
     binderDiv = binder;
     binder
-      .toProduce(_ => new StubCmd1())
+      .toProduce(() => new StubCmd1())
       .bind();
   }
 
-  public methodBut(binder: PartialPointBinder, widget: HTMLButtonElement): void {
+  public methodBut(binder: PartialPointTypedBinder, widget: HTMLButtonElement): void {
     this.widget = widget;
     binderBut = binder;
     binder
-      .toProduce(_ => new StubCmd2())
+      .toProduce(() => new StubCmd2())
       .bind();
   }
 
-  public methodDyn(binder: PartialPointBinder): void {
+  public methodDyn(binder: PartialPointTypedBinder): void {
     binderB = binder;
     binder
-      .toProduce(_ => new StubCmd3())
+      .toProduce(() => new StubCmd3())
       .bind();
   }
 
-  public methodParam(binder: PartialPointBinder, param: string): void {
+  public methodParam(binder: PartialPointTypedBinder, param: string): void {
     this.param = param;
     binderB2 = binder;
     binder
-      .toProduce(_ => new StubCmd1())
+      .toProduce(() => new StubCmd1())
       .bind();
   }
 }

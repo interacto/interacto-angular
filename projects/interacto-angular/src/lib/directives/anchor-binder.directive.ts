@@ -1,33 +1,33 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialAnchorBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialAnchorTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: 'a:[ioAnchor],[ioAnchor] [ioOnDynamic]'
 })
-export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement, PartialAnchorBinder> {
+export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement, PartialAnchorTypedBinder> {
   @Output()
-  private readonly aBinder: EventEmitter<PartialAnchorBinder>;
+  private readonly aBinder: EventEmitter<PartialAnchorTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLAnchorElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
-    this.aBinder = new EventEmitter<PartialAnchorBinder>();
+    this.aBinder = new EventEmitter<PartialAnchorTypedBinder>();
   }
 
   @Input()
-  set ioAnchor(fn: ((partialBinder: PartialAnchorBinder, widget: HTMLAnchorElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
+  set ioAnchor(fn: ((partialBinder: PartialAnchorTypedBinder, widget: HTMLAnchorElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialAnchorBinder {
+  protected createPartialBinder(): PartialAnchorTypedBinder {
     return this.bindings.hyperlinkBinder();
   }
 
-  protected getOutputEvent(): EventEmitter<PartialAnchorBinder> {
+  protected getOutputEvent(): EventEmitter<PartialAnchorTypedBinder> {
     return this.aBinder;
   }
 }

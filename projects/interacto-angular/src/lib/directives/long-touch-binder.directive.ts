@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialTouchBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialTouchTypedBinder, UndoHistoryBase} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioLongTouch]'
 })
-export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchBinder> {
+export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchTypedBinder> {
   @Output()
-  private readonly longTouchBinder: EventEmitter<PartialTouchBinder>;
+  private readonly longTouchBinder: EventEmitter<PartialTouchTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
@@ -16,7 +16,7 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.longTouchBinder = new EventEmitter<PartialTouchBinder>();
+    this.longTouchBinder = new EventEmitter<PartialTouchTypedBinder>();
   }
 
   /**
@@ -31,15 +31,15 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongTouch(fn: ((partialBinder: PartialTouchBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioLongTouch(fn: ((partialBinder: PartialTouchTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialTouchBinder {
+  protected createPartialBinder(): PartialTouchTypedBinder {
     return this.bindings.longTouchBinder(this.duration);
   }
 
-  protected getOutputEvent(): EventEmitter<PartialTouchBinder> {
+  protected getOutputEvent(): EventEmitter<PartialTouchTypedBinder> {
     return this.longTouchBinder;
   }
 }

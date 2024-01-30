@@ -1,21 +1,21 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialPointSrcTgtBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialPointSrcTgtTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioDragLock]'
 })
-export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtBinder> {
+export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtTypedBinder> {
   @Output()
-  private readonly dragLockBinder: EventEmitter<PartialPointSrcTgtBinder>;
+  private readonly dragLockBinder: EventEmitter<PartialPointSrcTgtTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
-    this.dragLockBinder = new EventEmitter<PartialPointSrcTgtBinder>();
+    this.dragLockBinder = new EventEmitter<PartialPointSrcTgtTypedBinder>();
   }
 
   /**
@@ -23,15 +23,15 @@ export class DragLockBinderDirective extends InteractoBinderDirective<HTMLElemen
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioDragLock(fn: ((partialBinder: PartialPointSrcTgtBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioDragLock(fn: ((partialBinder: PartialPointSrcTgtTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialPointSrcTgtBinder {
+  protected createPartialBinder(): PartialPointSrcTgtTypedBinder {
     return this.bindings.dragLockBinder();
   }
 
-  protected getOutputEvent(): EventEmitter<PartialPointSrcTgtBinder> {
+  protected getOutputEvent(): EventEmitter<PartialPointSrcTgtTypedBinder> {
     return this.dragLockBinder;
   }
 }

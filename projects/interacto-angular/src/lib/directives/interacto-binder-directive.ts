@@ -9,12 +9,12 @@ import {Binding, BindingImpl, InteractionBinder, InteractionCmdBinder, KeyIntera
  */
 @Directive()
 export abstract class InteractoBinderDirective<E,
-  B extends InteractionBinder<any, any, unknown> | KeyInteractionUpdateBinder<any, any, unknown> | InteractionCmdBinder<any, any, any, unknown>>
+  B extends InteractionBinder<any, unknown, any> | KeyInteractionUpdateBinder<any, unknown, any> | InteractionCmdBinder<any, any, unknown, any>>
   implements AfterContentInit, OnDestroy {
 
   protected inputSet: boolean;
 
-  protected binding: Array<Binding<any, any, any, unknown>> | undefined;
+  protected binding: Array<Binding<any, any, unknown, any>> | undefined;
 
   protected constructor(
     protected onDyn: OnDynamicDirective | undefined,
@@ -34,7 +34,7 @@ export abstract class InteractoBinderDirective<E,
     return fn?.name;
   }
 
-  protected callBinder(fn: ((partialBinder: B, widget: E) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string): void {
+  protected callBinder(fn: ((partialBinder: B, widget: E) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string): void {
     const fnName = this.checkFnName(fn);
 
     if(fnName === undefined) {
@@ -51,7 +51,7 @@ export abstract class InteractoBinderDirective<E,
       this.binding = [binding];
     } else {
       if (Array.isArray(binding)) {
-        this.binding = binding.filter(b => b instanceof BindingImpl).map(b => b as Binding<any, any, any, unknown>);
+        this.binding = binding.filter(b => b instanceof BindingImpl).map(b => b as Binding<any, any, unknown, any>);
       }
     }
   }

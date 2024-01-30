@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
-import {BindingsContext, PartialPointsBinder} from 'interacto';
+import {BindingsContext, PartialPointsTypedBinder} from 'interacto';
 import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3, StubCmd4} from './fixture-directive.spec';
 import {ClicksBinderDirective} from './clicks-binder.directive';
@@ -9,10 +9,10 @@ import {robot} from 'interacto-nono';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 let fixture: ComponentFixture<TestComponentClicks>;
-let binderDiv: PartialPointsBinder;
-let binderBut: PartialPointsBinder;
-let binderB: PartialPointsBinder;
-let binderP: PartialPointsBinder;
+let binderDiv: PartialPointsTypedBinder;
+let binderBut: PartialPointsTypedBinder;
+let binderB: PartialPointsTypedBinder;
+let binderP: PartialPointsTypedBinder;
 let ctx: BindingsContext;
 let param: string | undefined;
 
@@ -26,39 +26,39 @@ let param: string | undefined;
     <p id="p2" [ioClicks]="methodDiv" count="a"></p>`
 })
 class TestComponentClicks {
-  public methodDiv(binder: PartialPointsBinder): void {
+  public methodDiv(binder: PartialPointsTypedBinder): void {
     binderDiv = binder;
     binder
-      .toProduce(_ => new StubCmd1())
+      .toProduce(() => new StubCmd1())
       .bind();
   }
 
-  public methodBut(binder: PartialPointsBinder): void {
+  public methodBut(binder: PartialPointsTypedBinder): void {
     binderBut = binder;
     binder
-      .toProduce(_ => new StubCmd2())
+      .toProduce(() => new StubCmd2())
       .bind();
   }
 
-  public methodDyn(binder: PartialPointsBinder): void {
+  public methodDyn(binder: PartialPointsTypedBinder): void {
     binderB = binder;
     binder
-      .toProduce(_ => new StubCmd3())
+      .toProduce(() => new StubCmd3())
       .bind();
   }
 
-  public method3Clicks(binder: PartialPointsBinder): void {
+  public method3Clicks(binder: PartialPointsTypedBinder): void {
     binderP = binder;
     binder
-      .toProduce(_ => new StubCmd4())
+      .toProduce(() => new StubCmd4())
       .bind();
   }
 
-  public m4(binder: PartialPointsBinder, p: string): void {
+  public m4(binder: PartialPointsTypedBinder, p: string): void {
     param = p;
     binderP = binder;
     binder
-      .toProduce(_ => new StubCmd4())
+      .toProduce(() => new StubCmd4())
       .bind();
   }
 }

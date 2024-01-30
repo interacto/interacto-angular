@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialPointsBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialPointsTypedBinder, UndoHistoryBase} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioClicks]'
 })
-export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointsBinder> {
+export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointsTypedBinder> {
   @Output()
-  private readonly clicksBinder: EventEmitter<PartialPointsBinder>;
+  private readonly clicksBinder: EventEmitter<PartialPointsTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
@@ -16,7 +16,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.clicksBinder = new EventEmitter<PartialPointsBinder>();
+    this.clicksBinder = new EventEmitter<PartialPointsTypedBinder>();
   }
 
   /**
@@ -30,11 +30,11 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioClicks(fn: ((partialBinder: PartialPointsBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioClicks(fn: ((partialBinder: PartialPointsTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialPointsBinder {
+  protected createPartialBinder(): PartialPointsTypedBinder {
     let countValue = typeof this.count === 'number' ? this.count : parseInt(this.count, 0);
 
     if(isNaN(countValue)) {
@@ -46,7 +46,7 @@ export class ClicksBinderDirective extends InteractoBinderDirective<HTMLElement,
     return this.bindings.clicksBinder(countValue);
   }
 
-  protected getOutputEvent(): EventEmitter<PartialPointsBinder> {
+  protected getOutputEvent(): EventEmitter<PartialPointsTypedBinder> {
     return this.clicksBinder;
   }
 }

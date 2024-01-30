@@ -3,7 +3,7 @@ import {Binding, Bindings, Interaction, InteractionCmdBinder, Undo, UndoHistoryB
 import {Subscription} from 'rxjs';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
-export type PartialUndoButtonBinder = InteractionCmdBinder<Undo, Interaction<WidgetData<HTMLButtonElement>>, WidgetData<HTMLButtonElement>, unknown>;
+export type PartialUndoButtonBinder = InteractionCmdBinder<Undo, Interaction<WidgetData<HTMLButtonElement>>, unknown, WidgetData<HTMLButtonElement>>;
 
 @Directive({
   selector: 'button:ioUndo,button:[ioUndo]'
@@ -20,13 +20,13 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
     super(undefined, element, viewContainerRef);
     this.undoObs = bindings.undoHistory
       .undosObservable()
-      .subscribe(_ => {
+      .subscribe(() => {
         this.updateUndo();
       });
   }
 
   @Input()
-  public set ioUndo(fn: ((partialBinder: PartialUndoButtonBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
+  public set ioUndo(fn: ((partialBinder: PartialUndoButtonBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 

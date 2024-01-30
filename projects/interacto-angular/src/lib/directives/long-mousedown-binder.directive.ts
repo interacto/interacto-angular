@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialUpdatePointBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialUpdatePointTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioLongMousedown]'
 })
-export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointBinder> {
+export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointTypedBinder> {
   @Output()
-  private readonly longMousedownBinder: EventEmitter<PartialUpdatePointBinder>;
+  private readonly longMousedownBinder: EventEmitter<PartialUpdatePointTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
@@ -16,7 +16,7 @@ export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLE
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.longMousedownBinder = new EventEmitter<PartialUpdatePointBinder>();
+    this.longMousedownBinder = new EventEmitter<PartialUpdatePointTypedBinder>();
   }
 
   /**
@@ -31,15 +31,15 @@ export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLE
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioLongMousedown(fn: ((partialBinder: PartialUpdatePointBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioLongMousedown(fn: ((partialBinder: PartialUpdatePointTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialUpdatePointBinder {
+  protected createPartialBinder(): PartialUpdatePointTypedBinder {
     return this.bindings.longMouseDownBinder(this.duration);
   }
 
-  protected getOutputEvent(): EventEmitter<PartialUpdatePointBinder> {
+  protected getOutputEvent(): EventEmitter<PartialUpdatePointTypedBinder> {
     return this.longMousedownBinder;
   }
 }

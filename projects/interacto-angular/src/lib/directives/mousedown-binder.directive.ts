@@ -1,21 +1,21 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialPointBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialPointTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioMousedown]'
 })
-export class MousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointBinder> {
+export class MousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointTypedBinder> {
   @Output()
-  private readonly mousedownBinder: EventEmitter<PartialPointBinder>;
+  private readonly mousedownBinder: EventEmitter<PartialPointTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
-    this.mousedownBinder = new EventEmitter<PartialPointBinder>();
+    this.mousedownBinder = new EventEmitter<PartialPointTypedBinder>();
   }
 
   /**
@@ -23,15 +23,15 @@ export class MousedownBinderDirective extends InteractoBinderDirective<HTMLEleme
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMousedown(fn: ((partialBinder: PartialPointBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioMousedown(fn: ((partialBinder: PartialPointTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialPointBinder {
+  protected createPartialBinder(): PartialPointTypedBinder {
     return this.bindings.mouseDownBinder();
   }
 
-  protected getOutputEvent(): EventEmitter<PartialPointBinder> {
+  protected getOutputEvent(): EventEmitter<PartialPointTypedBinder> {
     return this.mousedownBinder;
   }
 }

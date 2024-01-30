@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialKeyBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialKeyTypedBinder, UndoHistoryBase} from 'interacto';
 import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
   selector: '[ioKeydown]'
 })
-export class KeydownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyBinder> {
+export class KeydownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyTypedBinder> {
   @Output()
-  private readonly keydownBinder: EventEmitter<PartialKeyBinder>;
+  private readonly keydownBinder: EventEmitter<PartialKeyTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
@@ -16,7 +16,7 @@ export class KeydownBinderDirective extends InteractoBinderDirective<HTMLElement
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.keydownBinder = new EventEmitter<PartialKeyBinder>();
+    this.keydownBinder = new EventEmitter<PartialKeyTypedBinder>();
   }
 
   @Input()
@@ -27,15 +27,15 @@ export class KeydownBinderDirective extends InteractoBinderDirective<HTMLElement
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeydown(fn: ((partialBinder: PartialKeyBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioKeydown(fn: ((partialBinder: PartialKeyTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialKeyBinder {
+  protected createPartialBinder(): PartialKeyTypedBinder {
     return this.bindings.keyDownBinder(this.modifierAccepted);
   }
 
-  protected getOutputEvent(): EventEmitter<PartialKeyBinder> {
+  protected getOutputEvent(): EventEmitter<PartialKeyTypedBinder> {
     return this.keydownBinder;
   }
 }

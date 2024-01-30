@@ -1,21 +1,21 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialKeyBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialKeyTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioKeyType]'
 })
-export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyBinder> {
+export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyTypedBinder> {
   @Output()
-  private readonly keyTypeBinder: EventEmitter<PartialKeyBinder>;
+  private readonly keyTypeBinder: EventEmitter<PartialKeyTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
-    this.keyTypeBinder = new EventEmitter<PartialKeyBinder>();
+    this.keyTypeBinder = new EventEmitter<PartialKeyTypedBinder>();
   }
 
   /**
@@ -23,15 +23,15 @@ export class KeyTypeBinderDirective extends InteractoBinderDirective<HTMLElement
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioKeyType(fn: ((partialBinder: PartialKeyBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioKeyType(fn: ((partialBinder: PartialKeyTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialKeyBinder {
+  protected createPartialBinder(): PartialKeyTypedBinder {
     return this.bindings.keyTypeBinder();
   }
 
-  protected getOutputEvent(): EventEmitter<PartialKeyBinder> {
+  protected getOutputEvent(): EventEmitter<PartialKeyTypedBinder> {
     return this.keyTypeBinder;
   }
 }

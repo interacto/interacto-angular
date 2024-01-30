@@ -22,7 +22,7 @@ class MatSelectFSM extends FSMImpl<MatSelectFSMHandler> {
 }
 
 export class MatSelectInteraction extends MatInteractionBase<MatSelectChange> {
-  public constructor(logger: Logger) {
+  public constructor(logger: Logger, name?: string) {
     const handler: MatSelectFSMHandler = {
       "selectionChanged": (event: MatSelectChange): void => {
         this._data._change = event;
@@ -32,6 +32,6 @@ export class MatSelectInteraction extends MatInteractionBase<MatSelectChange> {
       }
     };
 
-    super(logger, new MatSelectFSM(logger, handler), new MatChangeImpl());
+    super(logger, new MatSelectFSM(logger, handler), new MatChangeImpl(), name ?? MatSelectInteraction.name);
   }
 }

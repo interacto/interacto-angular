@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {By} from '@angular/platform-browser';
-import {BindingsContext, PartialButtonBinder} from 'interacto';
+import {BindingsContext, PartialButtonTypedBinder} from 'interacto';
 import {TestingInteractoModule} from '../testing-interacto-angular.module';
 import {StubCmd1, StubCmd2, StubCmd3} from './fixture-directive.spec';
 import {robot} from 'interacto-nono';
@@ -9,9 +9,9 @@ import {ButtonBinderDirective} from './button-binder.directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 let fixture: ComponentFixture<TestComponent>;
-let b1: PartialButtonBinder;
-let b2: PartialButtonBinder;
-let b3: PartialButtonBinder;
+let b1: PartialButtonTypedBinder;
+let b2: PartialButtonTypedBinder;
+let b3: PartialButtonTypedBinder;
 let ctx: BindingsContext;
 
 @Component({
@@ -26,26 +26,26 @@ class TestComponent {
   public param: number = 0;
   public widget?: HTMLButtonElement = undefined;
 
-  public m1(binder: PartialButtonBinder, widget: HTMLButtonElement): void {
+  public m1(binder: PartialButtonTypedBinder, widget: HTMLButtonElement): void {
     this.widget = widget;
     b1 = binder;
     binder
-      .toProduce(_ => new StubCmd1())
+      .toProduce(() => new StubCmd1())
       .bind();
   }
 
-  public m2(binder: PartialButtonBinder): void {
+  public m2(binder: PartialButtonTypedBinder): void {
     b2 = binder;
     binder
-      .toProduce(_ => new StubCmd2())
+      .toProduce(() => new StubCmd2())
       .bind();
   }
 
-  public m3(binder: PartialButtonBinder, param: number): void {
+  public m3(binder: PartialButtonTypedBinder, param: number): void {
     this.param = param;
     b3 = binder;
     binder
-      .toProduce(_ => new StubCmd3())
+      .toProduce(() => new StubCmd3())
       .bind();
   }
 }

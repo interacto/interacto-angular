@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialMultiTouchBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialMultiTouchTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: '[ioMultiTouch]'
 })
-export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchBinder> {
+export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchTypedBinder> {
   @Output()
-  private readonly multiTouchBinder: EventEmitter<PartialMultiTouchBinder>;
+  private readonly multiTouchBinder: EventEmitter<PartialMultiTouchTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
@@ -16,7 +16,7 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElem
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.multiTouchBinder = new EventEmitter<PartialMultiTouchBinder>();
+    this.multiTouchBinder = new EventEmitter<PartialMultiTouchTypedBinder>();
   }
 
   /**
@@ -32,15 +32,15 @@ export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElem
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioMultiTouch(fn: ((partialBinder: PartialMultiTouchBinder, widget: HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string)  {
+  set ioMultiTouch(fn: ((partialBinder: PartialMultiTouchTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialMultiTouchBinder {
+  protected createPartialBinder(): PartialMultiTouchTypedBinder {
     return this.bindings.multiTouchBinder(this.nbTouches);
   }
 
-  protected getOutputEvent(): EventEmitter<PartialMultiTouchBinder> {
+  protected getOutputEvent(): EventEmitter<PartialMultiTouchTypedBinder> {
     return this.multiTouchBinder;
   }
 }

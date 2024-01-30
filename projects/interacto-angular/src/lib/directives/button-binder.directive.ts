@@ -1,33 +1,33 @@
 import {Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialButtonBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, PartialButtonTypedBinder, UndoHistoryBase} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
   selector: 'button:[ioButton],[ioButton] [ioOnDynamic]'
 })
-export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement | HTMLElement, PartialButtonBinder> {
+export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement | HTMLElement, PartialButtonTypedBinder> {
   @Output()
-  private readonly buttonBinder: EventEmitter<PartialButtonBinder>;
+  private readonly buttonBinder: EventEmitter<PartialButtonTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLButtonElement | HTMLElement>,
               viewContainerRef: ViewContainerRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef);
-    this.buttonBinder = new EventEmitter<PartialButtonBinder>();
+    this.buttonBinder = new EventEmitter<PartialButtonTypedBinder>();
   }
 
   @Input()
-  set ioButton(fn: ((partialBinder: PartialButtonBinder, widget: HTMLButtonElement | HTMLElement) => Binding<any, any, any, unknown> | Array<Binding<any, any, any, unknown>> | void) | undefined | string) {
+  set ioButton(fn: ((partialBinder: PartialButtonTypedBinder, widget: HTMLButtonElement | HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string) {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialButtonBinder {
+  protected createPartialBinder(): PartialButtonTypedBinder {
     return this.bindings.buttonBinder();
   }
 
-  protected getOutputEvent(): EventEmitter<PartialButtonBinder> {
+  protected getOutputEvent(): EventEmitter<PartialButtonTypedBinder> {
     return this.buttonBinder;
   }
 }

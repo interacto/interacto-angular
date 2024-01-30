@@ -8,8 +8,8 @@ export abstract class MatInteractionBase<T extends SupportedMaterialChange>
   extends InteractionBase<MatChange<T>, MatChangeImpl<T>, FSM> {
   currentSubscription: Subscription | undefined;
 
-  protected constructor(logger: Logger, fsm: FSM, data: MatChangeImpl<T>) {
-    super(fsm, data, logger);
+  protected constructor(logger: Logger, fsm: FSM, data: MatChangeImpl<T>, name: string) {
+    super(fsm, data, logger, name);
   }
 
   protected registerEventToMatObject(node: SupportedMaterial): void {
