@@ -1,7 +1,7 @@
 {
   "name": "interacto-angular",
   "description": "Front-end framework for processing user interface events in Angular",
-  "version": "7.16.0",
+  "version": "8.16.0",
   "author": "Arnaud Blouin",
   "contributors": [
     "Rémi Daniel"
