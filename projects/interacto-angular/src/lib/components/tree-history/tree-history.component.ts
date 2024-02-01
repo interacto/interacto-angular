@@ -43,7 +43,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
 
   public cache: Record<number, unknown> = {};
 
-  public cacheRoot: unknown | undefined;
+  public cacheRoot: unknown;
 
   private subscriptionUndos: Subscription;
 
