@@ -1,10 +1,10 @@
 {
   "name": "interacto-angular",
-  "version": "8.17.0",
+  "version": "8.17.1",
   "peerDependencies": {
-    "@angular/common": " ~17.1.0",
-    "@angular/core": "~17.1.0",
-    "@angular/material": "~17.1.0",
+    "@angular/common": " ~17",
+    "@angular/core": "~17",
+    "@angular/material": "~17",
     "interacto": ">=8.0.0"
   },
   "devDependencies": {

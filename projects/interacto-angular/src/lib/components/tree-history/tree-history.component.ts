@@ -1,3 +1,4 @@
+import type {KeyValue} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -82,6 +83,15 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     }
 
     return Math.max(0, depth);
+  }
+
+  public getTop(position: KeyValue<number, number>): number {
+    return this.depth(this.history.undoableNodes[position.key]) * (this.cmdViewHeight + 30) + 5;
+  }
+
+  public getLeft(position: KeyValue<number, number>): number {
+    console.log(position, this.cmdViewWidth);
+    return position.value * (this.cmdViewWidth + 15) + 5;
   }
 
 
