@@ -6,6 +6,7 @@
 
 <div class="tree" oncontextmenu="return false;">
   <div #d class="tree-node-history" *ngFor="let position of history.getPositions() | keyvalue"
+       [ngStyle]="{left: getLeft(position) + 'px', top: getTop(position) + 'px'}"
        [ngClass]="history.currentNode.id === position.key ? 'current-node' : ''"
        [ioClick] (clickBinder)="clickBinders($event, position.key)"
        [ioTap] (tapBinder)="tapBinder($event, position.key)" [nbTaps]="1"
