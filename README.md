@@ -13,10 +13,16 @@ See https://interacto.github.io for usages and documentation of Interacto.
 
 # Version number
 
-`8.17.0` means Interacto 9 with Angular 17
+`8.18.0` means Interacto 9 with Angular 18
 
 
 # How to install
+
+For Angular 18:
+
+```
+npm install interacto@8 interacto-angular@8.18
+```
 
 For Angular 17:
 
