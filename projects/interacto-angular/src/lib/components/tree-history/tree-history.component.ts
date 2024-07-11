@@ -90,7 +90,6 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
   }
 
   public getLeft(position: KeyValue<number, number>): number {
-    console.log(position, this.cmdViewWidth);
     return position.value * (this.cmdViewWidth + 15) + 5;
   }
 
