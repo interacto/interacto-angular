@@ -4,11 +4,11 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioTap]'
+  selector: '[ioTaps]'
 })
-export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapsTypedBinder> {
+export class TapsBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapsTypedBinder> {
   @Output()
-  private readonly tapBinder: EventEmitter<PartialTapsTypedBinder>;
+  private readonly tapsBinder: EventEmitter<PartialTapsTypedBinder>;
 
   constructor(@Optional() @Host() onDyn: OnDynamicDirective,
               element: ElementRef<HTMLElement>,
@@ -16,7 +16,7 @@ export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.tapBinder = new EventEmitter<PartialTapsTypedBinder>();
+    this.tapsBinder = new EventEmitter<PartialTapsTypedBinder>();
   }
 
   /**
@@ -31,15 +31,15 @@ export class TapBinderDirective extends InteractoBinderDirective<HTMLElement, Pa
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioTap(fn: ((partialBinder: PartialTapsTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
+  set ioTaps(fn: ((partialBinder: PartialTapsTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
   protected createPartialBinder(): PartialTapsTypedBinder {
-    return this.bindings.tapBinder(this.nbTaps);
+    return this.bindings.tapsBinder(this.nbTaps);
   }
 
   protected getOutputEvent(): EventEmitter<PartialTapsTypedBinder> {
-    return this.tapBinder;
+    return this.tapsBinder;
   }
 }

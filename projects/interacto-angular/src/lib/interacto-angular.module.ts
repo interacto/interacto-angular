@@ -13,7 +13,7 @@ import {LongTouchBinderDirective} from './directives/long-touch-binder.directive
 import {MultiTouchBinderDirective} from './directives/multi-touch-binder.directive';
 import {PanBinderDirective} from './directives/pan-binder.directive';
 import {SwipeBinderDirective} from './directives/swipe-binder.directive';
-import {TapBinderDirective} from './directives/tap-binder.directive';
+import {TapsBinderDirective} from './directives/taps-binder.directive';
 import {OnDynamicDirective} from './directives/on-dynamic.directive';
 import {TextInputBinderDirective} from './directives/textinput-binder.directive';
 import {ButtonBinderDirective} from './directives/button-binder.directive';
@@ -123,7 +123,7 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
     MouseleaveBinderDirective,
     MouseupBinderDirective,
     SwipeBinderDirective,
-    TapBinderDirective,
+    TapsBinderDirective,
     TextAreaBinderDirective,
     TextInputBinderDirective,
     ButtonBinderDirective,
@@ -163,7 +163,7 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
     MouseleaveBinderDirective,
     MouseupBinderDirective,
     SwipeBinderDirective,
-    TapBinderDirective,
+    TapsBinderDirective,
     TextAreaBinderDirective,
     TextInputBinderDirective,
     ButtonBinderDirective,

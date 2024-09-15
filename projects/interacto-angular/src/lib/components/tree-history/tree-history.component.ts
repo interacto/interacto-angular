@@ -183,7 +183,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     ];
   }
 
-  public tapBinder(binder: PartialTapsTypedBinder, position: number): Array<Binding<any, any, unknown, any>> {
+  public tapsBinder(binder: PartialTapsTypedBinder, position: number): Array<Binding<any, any, unknown, any>> {
     return [
       binder
         .toProduceAnon(() => {

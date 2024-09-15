@@ -37,7 +37,7 @@ export * from './lib/directives/mouseup-binder.directive';
 export * from './lib/directives/redo-binder.directive';
 export * from './lib/directives/select-binder.directive';
 export * from './lib/directives/swipe-binder.directive';
-export * from './lib/directives/tap-binder.directive';
+export * from './lib/directives/taps-binder.directive';
 export * from './lib/directives/textarea-binder.directive';
 export * from './lib/directives/textinput-binder.directive';
 export * from './lib/directives/mat-select-binder.directive';

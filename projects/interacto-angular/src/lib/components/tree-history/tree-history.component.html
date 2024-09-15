@@ -9,7 +9,7 @@
        [ngStyle]="{left: getLeft(position) + 'px', top: getTop(position) + 'px'}"
        [ngClass]="history.currentNode.id === position.key ? 'current-node' : ''"
        [ioClick] (clickBinder)="clickBinders($event, position.key)"
-       [ioTap] (tapBinder)="tapBinder($event, position.key)" [nbTaps]="1"
+       [ioTaps] (tapsBinder)="tapsBinder($event, position.key)" [nbTaps]="1"
        [ioLongTouch] (longTouchBinder)="longTouchBinder($event, position.key)">
     {{undoButtonSnapshot(history.undoableNodes[position.key], d)}}
   </div>
