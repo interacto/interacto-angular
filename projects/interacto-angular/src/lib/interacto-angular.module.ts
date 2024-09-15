@@ -37,6 +37,9 @@ import {MatSelectBinderDirective} from './directives/mat-select-binder.directive
 import {FocusOnMouseEnterDirective} from './directives/focus-on-mouse-enter.directive';
 import {TreeHistoryComponent} from './components/tree-history/tree-history.component';
 import { DwellSpringComponent } from './components/dwell-spring/dwell-spring.component';
+import {TapBinderDirective} from './directives/tap-binder.directive';
+import {ClickOrTapBinderDirective} from './directives/tap-click-binder.directive';
+import {ClickOrTapsBinderDirective} from './directives/taps-clicks-binder.directive';
 
 
 /**
@@ -124,6 +127,9 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
     MouseupBinderDirective,
     SwipeBinderDirective,
     TapsBinderDirective,
+    TapBinderDirective,
+    ClickOrTapBinderDirective,
+    ClickOrTapsBinderDirective,
     TextAreaBinderDirective,
     TextInputBinderDirective,
     ButtonBinderDirective,
@@ -164,6 +170,9 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
     MouseupBinderDirective,
     SwipeBinderDirective,
     TapsBinderDirective,
+    TapBinderDirective,
+    ClickOrTapBinderDirective,
+    ClickOrTapsBinderDirective,
     TextAreaBinderDirective,
     TextInputBinderDirective,
     ButtonBinderDirective,

@@ -1,14 +1,14 @@
 import {ChangeDetectorRef, Directive, ElementRef, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from '@angular/core';
-import {Binding, Bindings, PartialTapsTypedBinder, UndoHistoryBase} from 'interacto';
+import {Binding, Bindings, UndoHistoryBase, type PartialPointsOrTapsTypedBinder} from 'interacto';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioTaps]'
+  selector: '[ioClicksOrTaps]'
 })
-export class TapsBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapsTypedBinder> {
+export class ClickOrTapsBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointsOrTapsTypedBinder> {
   @Output()
-  private readonly tapsBinder: EventEmitter<PartialTapsTypedBinder>;
+  private readonly clicksOrTapsBinder: EventEmitter<PartialPointsOrTapsTypedBinder>;
 
   /**
    * The number of taps expected to end the interaction.
@@ -23,23 +23,23 @@ export class TapsBinderDirective extends InteractoBinderDirective<HTMLElement, P
               changeDetectorRef: ChangeDetectorRef,
               private bindings: Bindings<UndoHistoryBase>) {
     super(onDyn, element, viewContainerRef, changeDetectorRef);
-    this.tapsBinder = new EventEmitter<PartialTapsTypedBinder>();
+    this.clicksOrTapsBinder = new EventEmitter<PartialPointsOrTapsTypedBinder>();
   }
 
   /**
-   * Starts the creation of a binding using the taps interaction.
+   * Starts the creation of a binding using the taps or clicks interaction.
    * @param fn - The function of the component that will be called to configure the binding.
    */
   @Input()
-  set ioTaps(fn: ((partialBinder: PartialTapsTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
+  set ioClicksOrTaps(fn: ((partialBinder: PartialPointsOrTapsTypedBinder, widget: HTMLElement) => Binding<any, any, unknown, any> | Array<Binding<any, any, unknown, any>> | void) | undefined | string)  {
     this.callBinder(fn);
   }
 
-  protected createPartialBinder(): PartialTapsTypedBinder {
-    return this.bindings.tapsBinder(this.nbTaps);
+  protected createPartialBinder(): PartialPointsOrTapsTypedBinder {
+    return this.bindings.tapsOrClicksBinder(this.nbTaps);
   }
 
-  protected getOutputEvent(): EventEmitter<PartialTapsTypedBinder> {
-    return this.tapsBinder;
+  protected getOutputEvent(): EventEmitter<PartialPointsOrTapsTypedBinder> {
+    return this.clicksOrTapsBinder;
   }
 }
