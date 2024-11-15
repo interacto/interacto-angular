@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioDnd]'
+  selector: '[ioDnd]',
+  standalone: true
 })
 export class DndBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointSrcTgtTypedBinder> {
   @Output()

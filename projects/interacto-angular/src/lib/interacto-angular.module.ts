@@ -100,7 +100,8 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
 
 
 @NgModule({
-  declarations: [
+  imports: [
+    CommonModule,
     LinearHistoryComponent,
     TreeHistoryComponent,
     DwellSpringComponent,
@@ -139,9 +140,6 @@ export function interactoTreeUndoProviders(keepHistoryTraces: boolean = false): 
     MatSelectBinderDirective,
     FocusOnMouseEnterDirective,
     OnDynamicDirective
-  ],
-  imports: [
-    CommonModule
   ],
   exports: [
     LinearHistoryComponent,

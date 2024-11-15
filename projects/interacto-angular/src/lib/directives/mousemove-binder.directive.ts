@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioMousemove]'
+  selector: '[ioMousemove]',
+  standalone: true
 })
 export class MousemoveBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointTypedBinder> {
   @Output()

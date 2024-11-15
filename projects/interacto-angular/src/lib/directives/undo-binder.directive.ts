@@ -6,7 +6,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 export type PartialUndoButtonBinder = InteractionCmdBinder<Undo, Interaction<WidgetData<HTMLButtonElement>>, unknown, WidgetData<HTMLButtonElement>>;
 
 @Directive({
-  selector: 'button:ioUndo,button:[ioUndo]'
+  selector: 'button:ioUndo,button:[ioUndo]',
+  standalone: true
 })
 export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElement, PartialUndoButtonBinder>
   implements AfterContentInit, OnDestroy {

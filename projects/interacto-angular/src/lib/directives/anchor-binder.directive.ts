@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'a:[ioAnchor],[ioAnchor] [ioOnDynamic]'
+  selector: 'a:[ioAnchor],[ioAnchor] [ioOnDynamic]',
+  standalone: true
 })
 export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorElement, PartialAnchorTypedBinder> {
   @Output()

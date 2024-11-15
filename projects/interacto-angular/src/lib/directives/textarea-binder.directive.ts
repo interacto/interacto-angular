@@ -5,7 +5,8 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 
 
 @Directive({
-  selector: 'textarea:[ioTextarea], [ioTextarea] [ioOnDynamic]'
+  selector: 'textarea:[ioTextarea], [ioTextarea] [ioOnDynamic]',
+  standalone: true
 })
 export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAreaElement, PartialTextInputTypedBinder> {
   @Output()

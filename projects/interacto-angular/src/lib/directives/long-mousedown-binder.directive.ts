@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioLongMousedown]'
+  selector: '[ioLongMousedown]',
+  standalone: true
 })
 export class LongMousedownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointTypedBinder> {
   @Output()

@@ -4,7 +4,8 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
-  selector: '[ioLongTouch]'
+  selector: '[ioLongTouch]',
+  standalone: true
 })
 export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchTypedBinder> {
   @Output()

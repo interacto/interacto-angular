@@ -20,7 +20,9 @@ let ctx: BindingsContext;
     <div id="b2" ioOnDynamic [ioButton]="m2"><button id="b4">B</button></div>
     <button id="b3" [ioButton] (buttonBinder)="m3($event, 123)">b3</button>
     <button ioButton>Bad</button>
-    <button [ioButton]="rr">Bad2</button>`
+    <button [ioButton]="rr">Bad2</button>`,
+  standalone: true,
+  imports: [ButtonBinderDirective, OnDynamicDirective]
 })
 class TestComponent {
   public param: number = 0;
@@ -53,8 +55,7 @@ class TestComponent {
 describe('button directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      imports: [TestingInteractoModule],
-      declarations: [ButtonBinderDirective, OnDynamicDirective, TestComponent]
+      imports: [TestingInteractoModule, ButtonBinderDirective, OnDynamicDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();

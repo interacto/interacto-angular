@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioKeysType]'
+  selector: '[ioKeysType]',
+  standalone: true
 })
 export class KeysTypeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeysTypedBinder> {
   @Output()

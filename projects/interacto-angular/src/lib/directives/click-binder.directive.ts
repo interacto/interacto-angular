@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioClick]'
+  selector: '[ioClick]',
+  standalone: true
 })
 export class ClickBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointTypedBinder> implements AfterContentInit {
   @Output()

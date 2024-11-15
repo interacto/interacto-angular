@@ -6,7 +6,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 export type PartialRedoButtonBinder = InteractionCmdBinder<Redo, Interaction<WidgetData<HTMLButtonElement>>, unknown, WidgetData<HTMLButtonElement>>;
 
 @Directive({
-  selector: 'button:ioRedo,button:[ioRedo]'
+  selector: 'button:ioRedo,button:[ioRedo]',
+  standalone: true
 })
 export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElement, PartialRedoButtonBinder>
   implements AfterContentInit, OnDestroy {

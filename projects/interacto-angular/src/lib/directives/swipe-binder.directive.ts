@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioSwipe]'
+  selector: '[ioSwipe]',
+  standalone: true
 })
 export class SwipeBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchSrcTgtTypedBinder> {
   @Output()

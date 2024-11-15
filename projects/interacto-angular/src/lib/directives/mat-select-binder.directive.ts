@@ -6,7 +6,8 @@ import {AngularBindings, PartialMatSelectBinder} from '../base/angular-bindings'
 import {MatSelect} from '@angular/material/select';
 
 @Directive({
-  selector: 'mat-select:[ioMatSelect],[ioMatSelect] [ioOnDynamic]'
+  selector: 'mat-select:[ioMatSelect],[ioMatSelect] [ioOnDynamic]',
+  standalone: true
 })
 export class MatSelectBinderDirective extends InteractoBinderDirective<MatSelect, PartialMatSelectBinder> {
   @Output()

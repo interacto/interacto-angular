@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'input:[ioTextinput][type=text], [ioTextinput] [ioOnDynamic]'
+  selector: 'input:[ioTextinput][type=text], [ioTextinput] [ioOnDynamic]',
+  standalone: true
 })
 export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInputElement, PartialTextInputTypedBinder> {
   @Output()

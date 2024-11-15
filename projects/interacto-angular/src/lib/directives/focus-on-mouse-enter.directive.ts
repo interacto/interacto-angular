@@ -2,7 +2,8 @@ import {AfterContentInit, Directive, ElementRef, OnDestroy} from '@angular/core'
 import {Binding, Bindings, FocusHTMLElement, Interaction, PointData, UndoHistoryBase} from 'interacto';
 
 @Directive({
-  selector: '[ioFocusOnMouseEnter]'
+  selector: '[ioFocusOnMouseEnter]',
+  standalone: true
 })
 export class FocusOnMouseEnterDirective implements AfterContentInit, OnDestroy {
   private binding: Binding<FocusHTMLElement, Interaction<PointData>, unknown, PointData> | undefined;

@@ -4,7 +4,8 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
-  selector: '[ioDoubleClick]'
+  selector: '[ioDoubleClick]',
+  standalone: true
 })
 export class DoubleClickBinderDirective extends InteractoBinderDirective<HTMLElement, PartialUpdatePointTypedBinder> {
   @Output()

@@ -22,7 +22,9 @@ let ctx: BindingsContext;
     <div id="b" ioOnDynamic [ioClick]="methodDyn"><b id="b1">B</b></div>
     <b id="b2" [ioClick] (clickBinder)="methodParam($event, 'foo')"></b>
     <b ioClick>bad</b>
-    <b [ioClick]="fff">bad2</b>`
+    <b [ioClick]="fff">bad2</b>`,
+  standalone: true,
+  imports: [ClickBinderDirective, OnDynamicDirective]
 })
 class TestComponent {
   public param: string = "";
@@ -62,8 +64,7 @@ class TestComponent {
 describe('click directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      imports: [TestingInteractoModule],
-      declarations: [ClickBinderDirective, OnDynamicDirective, TestComponent]
+      imports: [TestingInteractoModule, ClickBinderDirective, OnDynamicDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();

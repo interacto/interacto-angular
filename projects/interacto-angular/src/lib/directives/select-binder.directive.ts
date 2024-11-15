@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'select:[ioSelect], [ioSelect] [ioOnDynamic]'
+  selector: 'select:[ioSelect], [ioSelect] [ioOnDynamic]',
+  standalone: true
 })
 export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectElement, PartialSelectTypedBinder> {
   @Output()

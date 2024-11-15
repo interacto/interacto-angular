@@ -1,4 +1,4 @@
-import type {KeyValue} from '@angular/common';
+import {CommonModule, KeyValue} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -10,6 +10,11 @@ import {
 } from '@angular/core';
 import { Binding, PartialPointTypedBinder, PartialTapsTypedBinder, PartialTouchTypedBinder, TreeUndoHistory, UndoableSnapshot, UndoableTreeNode } from 'interacto';
 import { Subscription } from "rxjs";
+import {UndoBinderDirective} from '../../directives/undo-binder.directive';
+import {RedoBinderDirective} from '../../directives/redo-binder.directive';
+import {ClickBinderDirective} from '../../directives/click-binder.directive';
+import {TapsBinderDirective} from '../../directives/taps-binder.directive';
+import {LongTouchBinderDirective} from '../../directives/long-touch-binder.directive';
 
 /**
  * The Angular component for display a tree-based undo/redo history
@@ -18,6 +23,15 @@ import { Subscription } from "rxjs";
   selector: 'io-tree-history',
   templateUrl: './tree-history.component.html',
   styleUrls: ['./tree-history.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    UndoBinderDirective,
+    RedoBinderDirective,
+    ClickBinderDirective,
+    TapsBinderDirective,
+    LongTouchBinderDirective
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TreeHistoryComponent implements OnDestroy, AfterViewInit {

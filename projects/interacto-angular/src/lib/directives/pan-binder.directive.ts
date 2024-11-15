@@ -4,7 +4,8 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
-  selector: '[ioPan]'
+  selector: '[ioPan]',
+  standalone: true
 })
 export class PanBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTouchSrcTgtTypedBinder> {
   @Output()

@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: 'button:[ioButton],[ioButton] [ioOnDynamic]'
+  selector: 'button:[ioButton],[ioButton] [ioOnDynamic]',
+  standalone: true
 })
 export class ButtonBinderDirective extends InteractoBinderDirective<HTMLButtonElement | HTMLElement, PartialButtonTypedBinder> {
   @Output()

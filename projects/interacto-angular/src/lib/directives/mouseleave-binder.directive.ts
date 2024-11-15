@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioMouseleave]'
+  selector: '[ioMouseleave]',
+  standalone: true
 })
 export class MouseleaveBinderDirective extends InteractoBinderDirective<HTMLElement, PartialPointTypedBinder> {
   @Output()

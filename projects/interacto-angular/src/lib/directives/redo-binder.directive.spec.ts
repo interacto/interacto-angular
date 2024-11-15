@@ -16,7 +16,9 @@ let fn: () => void;
 @Component({
   template: `
     <button id="b1" ioRedo>1</button>
-    <button id="b2" [ioRedo]="m2">2</button>`
+    <button id="b2" [ioRedo]="m2">2</button>`,
+  standalone: true,
+  imports: [RedoBinderDirective]
 })
 class TestComponent {
   public widget?: HTMLButtonElement = undefined;
@@ -35,8 +37,7 @@ describe('redo directive', () => {
     fn = jasmine.createSpy();
 
     fixture = TestBed.configureTestingModule({
-      imports: [TestingInteractoModule],
-      declarations: [RedoBinderDirective, TestComponent]
+      imports: [TestingInteractoModule, RedoBinderDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();

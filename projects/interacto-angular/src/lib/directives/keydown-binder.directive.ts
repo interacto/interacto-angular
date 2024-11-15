@@ -4,7 +4,8 @@ import {OnDynamicDirective} from './on-dynamic.directive';
 import {InteractoBinderDirective} from './interacto-binder-directive';
 
 @Directive({
-  selector: '[ioKeydown]'
+  selector: '[ioKeydown]',
+  standalone: true
 })
 export class KeydownBinderDirective extends InteractoBinderDirective<HTMLElement, PartialKeyTypedBinder> {
   @Output()

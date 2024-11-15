@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioTaps]'
+  selector: '[ioTaps]',
+  standalone: true
 })
 export class TapsBinderDirective extends InteractoBinderDirective<HTMLElement, PartialTapsTypedBinder> {
   @Output()

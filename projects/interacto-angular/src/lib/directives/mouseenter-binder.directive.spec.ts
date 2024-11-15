@@ -20,7 +20,9 @@ let ctx: BindingsContext;
     <div [ioMouseenter]="methodDiv">1</div>
     <button [ioMouseenter]="methodBut">2</button>
     <div id="b" ioOnDynamic [ioMouseenter]="methodDyn"><b id="b1">B</b></div>
-    <b id="b2" [ioMouseenter] (mouseenterBinder)="methodParam($event, 'bar')"></b>`
+    <b id="b2" [ioMouseenter] (mouseenterBinder)="methodParam($event, 'bar')"></b>`,
+  standalone: true,
+  imports: [MouseenterBinderDirective, OnDynamicDirective]
 })
 class TestComponent {
   public param: string = "";
@@ -60,8 +62,7 @@ class TestComponent {
 describe('mouseenter directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      imports: [TestingInteractoModule],
-      declarations: [MouseenterBinderDirective, OnDynamicDirective, TestComponent]
+      imports: [TestingInteractoModule, MouseenterBinderDirective, OnDynamicDirective, TestComponent]
     }).createComponent(TestComponent);
 
     fixture.detectChanges();

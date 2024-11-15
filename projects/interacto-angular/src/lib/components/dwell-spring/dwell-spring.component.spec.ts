@@ -8,7 +8,7 @@ describe('DwellSpringComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DwellSpringComponent]
+      imports: [DwellSpringComponent]
     });
     fixture = TestBed.createComponent(DwellSpringComponent);
     component = fixture.componentInstance;

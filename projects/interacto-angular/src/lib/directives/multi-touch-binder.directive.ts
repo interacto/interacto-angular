@@ -4,7 +4,8 @@ import {InteractoBinderDirective} from './interacto-binder-directive';
 import {OnDynamicDirective} from './on-dynamic.directive';
 
 @Directive({
-  selector: '[ioMultiTouch]'
+  selector: '[ioMultiTouch]',
+  standalone: true
 })
 export class MultiTouchBinderDirective extends InteractoBinderDirective<HTMLElement, PartialMultiTouchTypedBinder> {
   @Output()

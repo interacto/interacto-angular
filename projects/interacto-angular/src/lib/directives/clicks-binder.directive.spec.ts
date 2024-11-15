@@ -23,7 +23,9 @@ let param: string | undefined;
     <button id="b4" ioClicks (clicksBinder)="m4($event, 'y')">2</button>
     <div id="b" ioOnDynamic [ioClicks]="methodDyn"><b id="b1">B</b></div>
     <p id="p1" [ioClicks]="method3Clicks" count="3"></p>
-    <p id="p2" [ioClicks]="methodDiv" count="a"></p>`
+    <p id="p2" [ioClicks]="methodDiv" count="a"></p>`,
+  standalone: true,
+  imports: [ClicksBinderDirective, OnDynamicDirective]
 })
 class TestComponentClicks {
   public methodDiv(binder: PartialPointsTypedBinder): void {
@@ -66,8 +68,7 @@ class TestComponentClicks {
 describe('clicks directive', () => {
   beforeEach(() => {
     fixture = TestBed.configureTestingModule({
-      imports: [TestingInteractoModule],
-      declarations: [ClicksBinderDirective, OnDynamicDirective, TestComponentClicks]
+      imports: [TestingInteractoModule, ClicksBinderDirective, OnDynamicDirective, TestComponentClicks]
     }).createComponent(TestComponentClicks);
 
     fixture.detectChanges();

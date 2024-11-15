@@ -16,7 +16,9 @@ let fn: () => void;
 @Component({
   template: `
     <button id="b1" ioUndo>1</button>
-    <button id="b2" [ioUndo]="m2">2</button>`
+    <button id="b2" [ioUndo]="m2">2</button>`,
+  standalone: true,
+  imports: [UndoBinderDirective]
 })
 class TestComponent {
   public widget?: HTMLButtonElement = undefined;
@@ -35,8 +37,7 @@ describe('undo directive', () => {
     fn = jasmine.createSpy();
 
     fixture = TestBed.configureTestingModule({
-      imports: [TestingInteractoModule],
-      declarations: [UndoBinderDirective, TestComponent]
+      imports: [TestingInteractoModule, UndoBinderDirective, TestComponent],
     }).createComponent(TestComponent);
 
     fixture.detectChanges();
