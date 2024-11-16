@@ -1,4 +1,4 @@
-import {CommonModule, KeyValue} from '@angular/common';
+import {KeyValue, KeyValuePipe, NgClass, NgFor, NgStyle} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -25,7 +25,10 @@ import {LongTouchBinderDirective} from '../../directives/long-touch-binder.direc
   styleUrls: ['./tree-history.component.css'],
   standalone: true,
   imports: [
-    CommonModule,
+    NgClass,
+    NgStyle,
+    NgFor,
+    KeyValuePipe,
     UndoBinderDirective,
     RedoBinderDirective,
     ClickBinderDirective,

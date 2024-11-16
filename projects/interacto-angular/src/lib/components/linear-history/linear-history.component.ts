@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, ElementRef, Input, Optional, ViewChild} from '@angular/core';
 import {Bindings, RedoNTimes, Undoable, UndoHistory, UndoHistoryBase, UndoNTimes} from 'interacto';
-import {CommonModule} from '@angular/common';
 import {UndoBinderDirective} from '../../directives/undo-binder.directive';
 import {RedoBinderDirective} from '../../directives/redo-binder.directive';
+import {NgFor, NgIf} from '@angular/common';
 
 @Component({
   selector: 'io-linear-history',
@@ -10,7 +10,8 @@ import {RedoBinderDirective} from '../../directives/redo-binder.directive';
   styleUrls: ['./linear-history.component.css'],
   standalone: true,
   imports: [
-    CommonModule,
+    NgFor,
+    NgIf,
     UndoBinderDirective,
     RedoBinderDirective
   ]
