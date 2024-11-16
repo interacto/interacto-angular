@@ -5,12 +5,14 @@
 </div>
 
 <div class="tree" oncontextmenu="return false;">
-  <div #d class="tree-node-history" *ngFor="let position of history.getPositions() | keyvalue"
-       [ngStyle]="{left: getLeft(position) + 'px', top: getTop(position) + 'px'}"
-       [ngClass]="history.currentNode.id === position.key ? 'current-node' : ''"
-       [ioClick] (clickBinder)="clickBinders($event, position.key)"
-       [ioTaps] (tapsBinder)="tapsBinder($event, position.key)" [nbTaps]="1"
-       [ioLongTouch] (longTouchBinder)="longTouchBinder($event, position.key)">
-    {{undoButtonSnapshot(history.undoableNodes[position.key], d)}}
-  </div>
+  @for (position of history.getPositions() ; track $index) {
+    <div #d class="tree-node-history"
+         [ngStyle]="{left: getLeft(position[1]) + 'px', top: getTop(position[0]) + 'px'}"
+         [ngClass]="history.currentNode.id === position[0] ? 'current-node' : ''"
+         [ioClick] (clickBinder)="clickBinders($event, position[0])"
+         [ioTaps] (tapsBinder)="tapsBinder($event, position[0])" [nbTaps]="1"
+         [ioLongTouch] (longTouchBinder)="longTouchBinder($event, position[0])">
+      {{undoButtonSnapshot(history.undoableNodes[position[0]], d)}}
+    </div>
+  }
 </div>

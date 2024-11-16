@@ -1,4 +1,4 @@
-import {KeyValue, KeyValuePipe, NgClass, NgFor, NgStyle} from '@angular/common';
+import {NgClass, NgFor, NgStyle} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -28,7 +28,6 @@ import {LongTouchBinderDirective} from '../../directives/long-touch-binder.direc
     NgClass,
     NgStyle,
     NgFor,
-    KeyValuePipe,
     UndoBinderDirective,
     RedoBinderDirective,
     ClickBinderDirective,
@@ -102,12 +101,12 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     return Math.max(0, depth);
   }
 
-  public getTop(position: KeyValue<number, number>): number {
-    return this.depth(this.history.undoableNodes[position.key]) * (this.cmdViewHeight + 30) + 5;
+  public getTop(position: number): number {
+    return this.depth(this.history.undoableNodes[position]) * (this.cmdViewHeight + 30) + 5;
   }
 
-  public getLeft(position: KeyValue<number, number>): number {
-    return position.value * (this.cmdViewWidth + 15) + 5;
+  public getLeft(position: number): number {
+    return position * (this.cmdViewWidth + 15) + 5;
   }
 
 

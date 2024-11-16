@@ -7,19 +7,23 @@
 
 <div class="buttons">
   <div #undoButtonContainer>
-    <button #b *ngFor="let undoable of undoHistory.getUndo(); index as i"
-            class="history-button-active" [attr.data-index]="undoHistory.getUndo().length - i">
-      {{undoButtonSnapshot(undoable, b)}}
-    </button>
+    @for (undoable of undoHistory.getUndo(); track $index) {
+      <button #b class="history-button-active" [attr.data-index]="undoHistory.getUndo().length - $index">
+        {{undoButtonSnapshot(undoable, b)}}
+      </button>
+    }
     <br/>
   </div>
 
   <div #redoButtonContainer>
-    <p *ngIf="undoHistory.getRedo().length > 0">Redo:</p>
-    <button #b *ngFor="let _ of undoHistory.getRedo(); index as i"
-            class="history-button-inactive" [attr.data-index]="i + 1">
-      {{undoButtonSnapshot(undoHistory.getRedo()[undoHistory.getRedo().length - i - 1], b)}}
-    </button>
+    @if (undoHistory.getRedo().length > 0) {
+      <p>Redo:</p>
+    }
+    @for (_ of undoHistory.getRedo(); track $index) {
+      <button #b class="history-button-inactive" [attr.data-index]="$index + 1">
+        {{undoButtonSnapshot(undoHistory.getRedo()[undoHistory.getRedo().length - $index - 1], b)}}
+      </button>
+    }
     <br/>
   </div>
 </div>
