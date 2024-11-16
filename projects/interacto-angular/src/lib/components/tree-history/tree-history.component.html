@@ -5,7 +5,7 @@
 </div>
 
 <div class="tree" oncontextmenu="return false;">
-  @for (position of history.getPositions() ; track $index) {
+  @for (position of history.getPositions() ; track position) {
     <div #d class="tree-node-history"
          [ngStyle]="{left: getLeft(position[1]) + 'px', top: getTop(position[0]) + 'px'}"
          [ngClass]="history.currentNode.id === position[0] ? 'current-node' : ''"
