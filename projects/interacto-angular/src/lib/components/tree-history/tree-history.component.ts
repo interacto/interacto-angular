@@ -57,18 +57,18 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
   public rootRenderer: UndoableSnapshot = undefined;
 
   @HostBinding('style.width')
-  widthcss = "";
+  public widthcss = "";
 
-  public cache: Record<number, unknown> = {};
+  protected cache: Record<number, unknown> = {};
 
-  public cacheRoot: unknown;
+  protected cacheRoot: unknown;
 
   private subscriptionUndos: Subscription;
 
   private subscriptionRedos: Subscription;
 
 
-  public constructor(public history: TreeUndoHistory,
+  public constructor(protected history: TreeUndoHistory,
                      private changeDetect: ChangeDetectorRef) {
     // Only updating the view on history changes
     this.subscriptionUndos = history.undosObservable().subscribe(() => {

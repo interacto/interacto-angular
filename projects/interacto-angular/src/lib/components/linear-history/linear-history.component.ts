@@ -18,10 +18,10 @@ import {NgFor, NgIf} from '@angular/common';
 })
 export class LinearHistoryComponent implements AfterViewInit {
   @ViewChild('undoButtonContainer')
-  public undoButtonContainer: ElementRef<HTMLElement>;
+  protected undoButtonContainer: ElementRef<HTMLElement>;
 
   @ViewChild('redoButtonContainer')
-  public redoButtonContainer: ElementRef<HTMLElement>;
+  protected redoButtonContainer: ElementRef<HTMLElement>;
 
   @Input()
   @Optional()
@@ -36,7 +36,7 @@ export class LinearHistoryComponent implements AfterViewInit {
   public svgIconSize: number = 50;
 
 
-  public constructor(public undoHistory: UndoHistory, public bindings: Bindings<UndoHistoryBase>) {
+  public constructor(protected undoHistory: UndoHistory, protected bindings: Bindings<UndoHistoryBase>) {
   }
 
 
