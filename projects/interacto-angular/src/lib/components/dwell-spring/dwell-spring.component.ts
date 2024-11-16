@@ -8,8 +8,16 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 })
 export class DwellSpringComponent {
   @ViewChild('handle')
-  protected handle: ElementRef<SVGCircleElement>;
+  protected handleView: ElementRef<SVGCircleElement>;
 
   @ViewChild('spring')
-  protected spring: ElementRef<SVGLineElement>;
+  protected springView: ElementRef<SVGLineElement>;
+
+  public get handle(): ElementRef<SVGCircleElement> {
+    return this.handleView;
+  }
+
+  public get spring(): ElementRef<SVGLineElement> {
+    return this.springView;
+  }
 }
