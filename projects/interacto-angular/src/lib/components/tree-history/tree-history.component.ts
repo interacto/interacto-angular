@@ -1,4 +1,4 @@
-import {NgClass, NgFor, NgStyle} from '@angular/common';
+import {KeyValuePipe, NgClass, NgFor, NgStyle} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -28,6 +28,7 @@ import {LongTouchBinderDirective} from '../../directives/long-touch-binder.direc
     NgClass,
     NgStyle,
     NgFor,
+    KeyValuePipe,
     UndoBinderDirective,
     RedoBinderDirective,
     ClickBinderDirective,
@@ -159,14 +160,21 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
       }
     }
 
+    console.log("snap")
+    console.log(node?.id);
+
+
     const snapshot = node === undefined ? this.cacheRoot : this.cache[node.id];
     const txt = node === undefined ? "Root" : node.undoable.getUndoName();
+
+    console.log(snapshot);
 
     if (snapshot === undefined) {
       return txt;
     }
 
     if (snapshot instanceof Promise) {
+      console.log("promise")
       void snapshot.then((res: unknown) => {
         if (node !== undefined) {
           this.cache[node.id] = res;
