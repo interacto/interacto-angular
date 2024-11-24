@@ -26,7 +26,7 @@ export abstract class InteractoBinderDirective<E,
 
   protected abstract createPartialBinder(): B;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
   protected checkFnName(fn: Function | undefined | string): string | undefined {
     if (fn === undefined || typeof fn === "string") {
       return undefined;
