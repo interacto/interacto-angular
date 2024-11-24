@@ -8,15 +8,13 @@ import {
 import { Binding, Undoable, PartialPointTypedBinder, PartialTapsTypedBinder, PartialTouchTypedBinder,
   TreeUndoHistory, UndoableSnapshot, UndoableTreeNode, Command, Interaction } from 'interacto';
 import {concat, throttleTime} from 'rxjs';
-import {
-  ClickBinderDirective,
-  LongTouchBinderDirective,
-  RedoBinderDirective,
-  TapsBinderDirective,
-  UndoBinderDirective
-} from 'interacto-angular';
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {toSignal} from '@angular/core/rxjs-interop';
+import {UndoBinderDirective} from '../../directives/undo-binder.directive';
+import {RedoBinderDirective} from '../../directives/redo-binder.directive';
+import {ClickBinderDirective} from '../../directives/click-binder.directive';
+import {TapsBinderDirective} from '../../directives/taps-binder.directive';
+import {LongTouchBinderDirective} from '../../directives/long-touch-binder.directive';
 
 interface Thumbnail {
   value: number;
