@@ -1,20 +1,28 @@
-import {KeyValuePipe, NgClass, NgFor, NgStyle} from '@angular/common';
+import {AsyncPipe, KeyValuePipe, NgClass, NgFor, NgStyle} from '@angular/common';
 import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  HostBinding,
-  Input,
-  OnDestroy
+  Component, computed, ElementRef,
+  input,
+  InputSignal, numberAttribute,
+  Signal, untracked, ViewChild
 } from '@angular/core';
-import { Binding, PartialPointTypedBinder, PartialTapsTypedBinder, PartialTouchTypedBinder, TreeUndoHistory, UndoableSnapshot, UndoableTreeNode } from 'interacto';
-import { Subscription } from "rxjs";
-import {UndoBinderDirective} from '../../directives/undo-binder.directive';
-import {RedoBinderDirective} from '../../directives/redo-binder.directive';
-import {ClickBinderDirective} from '../../directives/click-binder.directive';
-import {TapsBinderDirective} from '../../directives/taps-binder.directive';
-import {LongTouchBinderDirective} from '../../directives/long-touch-binder.directive';
+import { Binding, Undoable, PartialPointTypedBinder, PartialTapsTypedBinder, PartialTouchTypedBinder,
+  TreeUndoHistory, UndoableSnapshot, UndoableTreeNode, Command, Interaction } from 'interacto';
+import {concat, throttleTime} from 'rxjs';
+import {
+  ClickBinderDirective,
+  LongTouchBinderDirective,
+  RedoBinderDirective,
+  TapsBinderDirective,
+  UndoBinderDirective
+} from 'interacto-angular';
+import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
+import {toSignal} from '@angular/core/rxjs-interop';
+
+interface Thumbnail {
+  value: number;
+  thumbnail: Promise<unknown>;
+  key: number;
+}
 
 /**
  * The Angular component for display a tree-based undo/redo history
@@ -28,69 +36,75 @@ import {LongTouchBinderDirective} from '../../directives/long-touch-binder.direc
     NgClass,
     NgStyle,
     NgFor,
+    AsyncPipe,
     KeyValuePipe,
     UndoBinderDirective,
     RedoBinderDirective,
     ClickBinderDirective,
     TapsBinderDirective,
     LongTouchBinderDirective
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  ]
 })
-export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
-  @Input()
-  public width?: string;
+export class TreeHistoryComponent {
+  public readonly svgViewportWidth = input(50, {transform: numberAttribute});
 
-  @Input()
-  public svgViewportWidth: number = 50;
+  public readonly svgViewportHeight = input(50, {transform: numberAttribute});
 
-  @Input()
-  public svgViewportHeight: number = this.svgViewportWidth;
+  public readonly cmdViewWidth = input(50, {transform: numberAttribute});
 
-  @Input()
-  public cmdViewWidth: number = 50;
+  public readonly cmdViewHeight = input(50, {transform: numberAttribute});
 
-  @Input()
-  public cmdViewHeight: number = this.cmdViewWidth;
+  public readonly rootRenderer: InputSignal<UndoableSnapshot | undefined> = input();
 
-  @Input()
-  public rootRenderer: UndoableSnapshot = undefined;
+  protected readonly cmdViewWidthPx = computed(() => `${this.cmdViewWidth()}px`);
 
-  @HostBinding('style.width')
-  public widthcss = "";
+  protected readonly cmdViewHeightPx = computed(() => `${this.cmdViewHeight()}px`);
 
   protected cache: Record<number, unknown> = {};
 
   protected cacheRoot: unknown;
 
-  private subscriptionUndos: Subscription;
+  protected readonly thumbnails: Signal<Array<Thumbnail>>;
 
-  private subscriptionRedos: Subscription;
+  private readonly undos: Signal<Undoable | number | undefined>;
+
+  @ViewChild("divHistory")
+  protected divHistory: ElementRef<HTMLDivElement>;
 
 
   public constructor(protected history: TreeUndoHistory,
-                     private changeDetect: ChangeDetectorRef) {
-    // Only updating the view on history changes
-    this.subscriptionUndos = history.undosObservable().subscribe(() => {
-      changeDetect.detectChanges();
+                     // private changeDetect: ChangeDetectorRef,
+                     private sanitizer: DomSanitizer) {
+    // Observing the undo history, but with a throttle to avoid useless updates.
+    this.undos = toSignal<Undoable | number | undefined>(
+      concat(this.history.sizeObservable(), this.history.undosObservable(), this.history.redosObservable())
+        .pipe(throttleTime(200)));
+
+    // Computing the list of thumnbails
+    this.thumbnails = computed(() => {
+      // Do not need to observe rootRendered.
+      this.cacheRoot = untracked(this.rootRenderer);
+
+      return [...this.history.getPositions().entries()].map(entry => ({
+        "key": entry[0],
+        "value": entry[1],
+        // The use of undos() here is useless, but required to trigger the computation.
+        "thumbnail": this.undoButtonSnapshot(this.history.undoableNodes[entry[0]], this.undos())
+      } satisfies Thumbnail));
     });
-
-    this.subscriptionRedos = history.redosObservable().subscribe(() => {
-      changeDetect.detectChanges();
-    });
   }
 
-  public ngAfterViewInit() {
-    // Preventing the input attributes to update the view
-    this.changeDetect.detach();
+  protected getContent(elt: unknown): string | SafeHtml {
+    if(typeof elt === 'string') {
+      return elt;
+    }
+    if(elt instanceof Element) {
+      return this.sanitizer.bypassSecurityTrustHtml(elt.outerHTML);
+    }
+    return "";
   }
 
-  public ngOnDestroy(): void {
-    this.subscriptionUndos.unsubscribe();
-    this.subscriptionRedos.unsubscribe();
-  }
-
-  public depth(undoableNode: UndoableTreeNode | undefined): number {
+  private depth(undoableNode: UndoableTreeNode | undefined): number {
     let depth = -1;
     let n = undoableNode;
 
@@ -102,57 +116,47 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     return Math.max(0, depth);
   }
 
-  public getTop(position: number): number {
-    return this.depth(this.history.undoableNodes[position]) * (this.cmdViewHeight + 30) + 5;
+  protected getTop(position: number): number {
+    return this.depth(this.history.undoableNodes[position]) * (untracked(this.cmdViewHeight) + 30) + 5;
   }
 
-  public getLeft(position: number): number {
-    return position * (this.cmdViewWidth + 15) + 5;
+  protected getLeft(position: number): number {
+    return position * (this.cmdViewWidth() + 15) + 5;
   }
 
-
-  private createHtmlTag(snapshot: Element, div: HTMLDivElement, svg: boolean): void {
-    div.querySelectorAll('div')[0]?.remove();
-    const width = `${this.cmdViewWidth}px`;
-    const height = `${this.cmdViewHeight}px`;
-    const divpic = document.createElement("div");
-    divpic.appendChild(snapshot);
-    divpic.style.width = width;
-    divpic.style.height = height;
-
+  private configureHtmlSvgTag(snapshot: Element, svg: boolean): Element {
     if (svg) {
-      snapshot.setAttribute("viewBox", `0 0 ${this.svgViewportWidth} ${this.svgViewportHeight}`);
+      snapshot.setAttribute("viewBox", `0 0 ${untracked(this.svgViewportWidth)} ${untracked(this.svgViewportHeight)}`);
     }
 
-    snapshot.setAttribute("width", width);
-    snapshot.setAttribute("height", height);
-    div.appendChild(divpic);
+    snapshot.setAttribute("width", untracked(this.cmdViewWidthPx));
+    snapshot.setAttribute("height", untracked(this.cmdViewHeightPx));
+
+    return snapshot;
   }
 
 
-  private undoButtonSnapshot_(snapshot: unknown,
-                              txt: string, div: HTMLDivElement): string | undefined {
+  private undoButtonSnapshot_(snapshot: unknown, txt: string): string | Element {
     if (typeof snapshot === 'string') {
       return `${txt}: ${snapshot}`;
     }
 
     if (snapshot instanceof SVGElement) {
-      this.createHtmlTag(snapshot, div, true);
-      return txt;
+      return this.configureHtmlSvgTag(snapshot, true);
     }
 
     if (snapshot instanceof HTMLElement) {
-      this.createHtmlTag(snapshot, div, false);
-      return undefined;
+      return this.configureHtmlSvgTag(snapshot, false);
     }
 
     return txt;
   }
 
-  public undoButtonSnapshot(node: UndoableTreeNode | undefined, div: HTMLDivElement): string | undefined {
+  protected async undoButtonSnapshot(node: UndoableTreeNode | undefined, _: Undoable | number | undefined):
+    Promise<string | HTMLDivElement | unknown> {
     if(node === undefined) {
       if (this.cacheRoot === undefined) {
-        this.cacheRoot = this.rootRenderer;
+        this.cacheRoot = this.rootRenderer();
       }
     }else {
       if (this.cache[node.id] === undefined) {
@@ -160,54 +164,47 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
       }
     }
 
-    console.log("snap")
-    console.log(node?.id);
-
-
     const snapshot = node === undefined ? this.cacheRoot : this.cache[node.id];
     const txt = node === undefined ? "Root" : node.undoable.getUndoName();
 
-    console.log(snapshot);
-
     if (snapshot === undefined) {
-      return txt;
+      return new Promise<string>(resolve => {
+        resolve(txt);
+      });
     }
 
     if (snapshot instanceof Promise) {
-      console.log("promise")
-      void snapshot.then((res: unknown) => {
-        if (node !== undefined) {
-          this.cache[node.id] = res;
-        } else {
-          this.cacheRoot = res;
-        }
-        return this.undoButtonSnapshot_(res, txt, div);
-      });
-      return txt;
+      return snapshot
+        .then((res: unknown) => {
+          if (node !== undefined) {
+            this.cache[node.id] = res;
+          }
+          else {
+            this.cacheRoot = res;
+          }
+          return this.undoButtonSnapshot_(res, txt);
+        });
     }
 
     if(node?.id === this.history.currentNode.id) {
-      div.scrollIntoView();
+      this.divHistory.nativeElement?.scrollIntoView();
     }
 
-    return this.undoButtonSnapshot_(snapshot, txt, div);
+    return this.undoButtonSnapshot_(snapshot, txt);
   }
 
-  public longTouchBinder(binder: PartialTouchTypedBinder, position: number): Array<Binding<any, any, unknown, any>> {
+  protected longTouchBinder(binder: PartialTouchTypedBinder, position: number): Array<Binding<Command, Interaction<object>, unknown>> {
     return [
       binder
         .toProduceAnon(() => {
           this.history.delete(position);
         })
         .when(() => !this.history.keepPath)
-        .ifHadEffects(() => {
-          this.changeDetect.detectChanges();
-        })
         .bind()
     ];
   }
 
-  public tapsBinder(binder: PartialTapsTypedBinder, position: number): Array<Binding<any, any, unknown, any>> {
+  protected tapsBinder(binder: PartialTapsTypedBinder, position: number): Array<Binding<Command, Interaction<object>, unknown>> {
     return [
       binder
         .toProduceAnon(() => {
@@ -217,7 +214,7 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
     ];
   }
 
-  public clickBinders(binder: PartialPointTypedBinder, position: number): Array<Binding<any, any, unknown, any>> {
+  protected clickBinders(binder: PartialPointTypedBinder, position: number): Array<Binding<Command, Interaction<object>, unknown>> {
     return [
       binder
         .toProduceAnon(() => {
@@ -230,9 +227,6 @@ export class TreeHistoryComponent implements OnDestroy, AfterViewInit {
           this.history.delete(position);
         })
         .when(i => !this.history.keepPath && i.button === 2)
-        .ifHadEffects(() => {
-          this.changeDetect.detectChanges();
-        })
         .bind()
     ];
   }
