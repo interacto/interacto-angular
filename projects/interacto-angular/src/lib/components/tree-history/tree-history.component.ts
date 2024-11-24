@@ -150,8 +150,8 @@ export class TreeHistoryComponent {
     return txt;
   }
 
-  protected async undoButtonSnapshot(node: UndoableTreeNode | undefined, _: Undoable | number | undefined):
-    Promise<string | HTMLDivElement | unknown> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  protected async undoButtonSnapshot(node: UndoableTreeNode | undefined, _ignore: Undoable | number | undefined): Promise<unknown> {
     if(node === undefined) {
       if (this.cacheRoot === undefined) {
         this.cacheRoot = this.rootRenderer();
