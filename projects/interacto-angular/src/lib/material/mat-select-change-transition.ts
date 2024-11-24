@@ -1,21 +1,16 @@
-import {EventType, InputState, OutputState, TransitionBase} from 'interacto';
-import {MatSelectChange} from '@angular/material/select';
-import {MatEvent} from './mat-event';
+import {MatEvent} from "./mat-event";
+import {MatSelectChange} from "@angular/material/select";
+import {TransitionBase, EventType} from "interacto";
 
 export class MatSelectChangeTransition extends TransitionBase<MatEvent<MatSelectChange>> {
-  //FIXME: remove as
-  private static events: ReadonlySet<EventType> = new Set(["material" as EventType]);
+    // FIXME: remove as
+    private static readonly events: ReadonlySet<EventType> = new Set(["material" as EventType]);
 
-  public constructor(srcState: OutputState, tgtState: InputState,
-                     action: (evt: MatEvent<MatSelectChange>) => void, guard?: (evt: MatEvent<MatSelectChange>) => boolean) {
-    super(srcState, tgtState, action, guard);
-  }
+    public override accept(event: Event): event is MatEvent<MatSelectChange> {
+        return event instanceof MatEvent && event.change instanceof MatSelectChange;
+    }
 
-  public accept(event: Event): event is MatEvent<MatSelectChange> {
-    return event instanceof MatEvent && event.change instanceof MatSelectChange;
-  }
-
-  public getAcceptedEvents(): ReadonlySet<EventType> {
-    return MatSelectChangeTransition.events;
-  }
+    public override getAcceptedEvents(): ReadonlySet<EventType> {
+        return MatSelectChangeTransition.events;
+    }
 }

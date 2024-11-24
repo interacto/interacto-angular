@@ -1,21 +1,20 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {DwellSpringComponent} from "./dwell-spring.component";
+import {TestBed, ComponentFixture} from "@angular/core/testing";
 
-import { DwellSpringComponent } from './dwell-spring.component';
+describe("DwellSpringComponent", () => {
+    let component: DwellSpringComponent;
+    let fixture: ComponentFixture<DwellSpringComponent>;
 
-describe('DwellSpringComponent', () => {
-  let component: DwellSpringComponent;
-  let fixture: ComponentFixture<DwellSpringComponent>;
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [DwellSpringComponent]
+    beforeEach(() => {
+        TestBed.configureTestingModule({
+            imports: [DwellSpringComponent]
+        });
+        fixture = TestBed.createComponent(DwellSpringComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
     });
-    fixture = TestBed.createComponent(DwellSpringComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it("should create", () => {
+        expect(component).toBeTruthy();
+    });
 });

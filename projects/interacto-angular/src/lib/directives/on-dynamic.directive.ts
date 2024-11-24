@@ -1,8 +1,8 @@
-import {Directive} from '@angular/core';
+import {Directive} from "@angular/core";
 
 @Directive({
-  selector: '[ioOnDynamic]',
-  standalone: true
+    selector: "[ioOnDynamic]",
+    standalone: true
 })
 export class OnDynamicDirective {
 }
