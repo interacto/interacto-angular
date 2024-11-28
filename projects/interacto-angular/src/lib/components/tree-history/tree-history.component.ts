@@ -69,23 +69,23 @@ export class TreeHistoryComponent {
     protected divHistory: ElementRef<HTMLDivElement>;
 
     public constructor(protected history: TreeUndoHistory,
-        // private changeDetect: ChangeDetectorRef,
                        private readonly sanitizer: DomSanitizer) {
-    // Observing the undo history, but with a throttle to avoid useless updates.
+        // Observing the undo history, but with a throttle to avoid useless updates.
         this.undos = toSignal<Undoable | number | undefined>(
             concat(this.history.sizeObservable(), this.history.undosObservable(), this.history.redosObservable())
                 .pipe(throttleTime(200)));
 
-        // Computing the list of thumnbails
+        // Computing the list of thumbnails
         this.thumbnails = computed(() => {
+            // The use of undos() here is useless, but required to trigger the computation.
+            this.undos();
             // Do not need to observe rootRendered.
             this.cacheRoot = untracked(this.rootRenderer);
 
             return [...this.history.getPositions().entries()].map(entry => ({
                 "key": entry[0],
                 "value": entry[1],
-                // The use of undos() here is useless, but required to trigger the computation.
-                "thumbnail": this.undoButtonSnapshot(this.history.undoableNodes[entry[0]], this.undos())
+                "thumbnail": this.undoButtonSnapshot(this.history.undoableNodes[entry[0]])
             } satisfies Thumbnail));
         });
     }
@@ -147,7 +147,7 @@ export class TreeHistoryComponent {
         return txt;
     }
 
-    protected async undoButtonSnapshot(node: UndoableTreeNode | undefined, _ignore: Undoable | number | undefined): Promise<unknown> {
+    protected async undoButtonSnapshot(node: UndoableTreeNode | undefined): Promise<unknown> {
         if (node === undefined) {
             if (this.cacheRoot === undefined) {
                 this.cacheRoot = this.rootRenderer();
