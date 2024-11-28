@@ -7,21 +7,21 @@
 
 <div class="buttons">
   <div #undoButtonContainer>
-    @for (undoable of undoHistory.getUndo(); track $index) {
-      <button #b class="history-button-active" [attr.data-index]="undoHistory.getUndo().length - $index">
-        {{undoButtonSnapshot(undoable, b)}}
+    @for (thumbnail of thumbnailsUndo(); track $index) {
+      <button class="history-button-active" [attr.data-index]="history.getUndo().length - $index"
+              [innerHTML]="getContent(thumbnail | async)">
       </button>
     }
     <br/>
   </div>
 
   <div #redoButtonContainer>
-    @if (undoHistory.getRedo().length > 0) {
+    @if (history.getRedo().length > 0) {
       <p>Redo:</p>
     }
-    @for (_ of undoHistory.getRedo(); track $index) {
-      <button #b class="history-button-inactive" [attr.data-index]="$index + 1">
-        {{undoButtonSnapshot(undoHistory.getRedo()[undoHistory.getRedo().length - $index - 1], b)}}
+    @for (thumbnail of thumbnailsRedo().slice().reverse(); track $index) {
+      <button class="history-button-inactive" [attr.data-index]="$index + 1"
+              [innerHTML]="getContent(thumbnail | async)">
       </button>
     }
     <br/>
