@@ -16,12 +16,15 @@ let ctx: BindingsContext;
 
 @Component({
     template: `
-    <div [ioClick]="methodDiv">1</div>
-    <button [ioClick]="methodBut">2</button>
-    <div id="b" ioOnDynamic [ioClick]="methodDyn"><b id="b1">B</b></div>
-    <b id="b2" [ioClick] (clickBinder)="methodParam($event, 'foo')"></b>
-    <b ioClick>bad</b>
-    <b [ioClick]="fff">bad2</b>`,
+      <div id="d1" [ioClick]="methodDiv">1</div>
+      <button [ioClick]="methodBut">2</button>
+      <div id="b" ioOnDynamic [ioClick]="methodDyn"><b id="b1">B</b></div>
+      <b id="b2" ioClick (clickBinder)="methodParam($event, 'foo')"></b>
+      <b ioClick>bad</b>
+      <b [ioClick]="fff">bad2</b>,
+      @if(true) {<div id="d3" [ioClick]="methodDiv">3</div>}
+      @switch(true) { @case(true) {<div id="d4" [ioClick]="methodDiv">4</div>} }
+      @switch(true) { @case(false) {} @default{ <div id="d5" [ioClick]="methodDiv">5</div>} }`,
     standalone: true,
     imports: [ClickBinderDirective, OnDynamicDirective]
 })
@@ -103,14 +106,35 @@ describe("click directive", () => {
     });
 
     it("should produce a StubCmd1 on a click on the div", () => {
-        const div = fixture.debugElement.query(By.css("div")).nativeElement as HTMLElement;
+        const div = fixture.debugElement.query(By.css("#d1")).nativeElement as HTMLElement;
+        robot(div).click();
+        expect(ctx.commands.length).toEqual(1);
+        expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
+    });
+
+    it("should produce a StubCmd1 on a click on the div in a if statement", () => {
+        const div = fixture.debugElement.query(By.css("#d3")).nativeElement as HTMLElement;
+        robot(div).click();
+        expect(ctx.commands.length).toEqual(1);
+        expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
+    });
+
+    it("should produce a StubCmd1 on a click on the div in a switch case statement", () => {
+        const div = fixture.debugElement.query(By.css("#d4")).nativeElement as HTMLElement;
+        robot(div).click();
+        expect(ctx.commands.length).toEqual(1);
+        expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
+    });
+
+    it("should produce a StubCmd1 on a click on the div in a switch default statement", () => {
+        const div = fixture.debugElement.query(By.css("#d5")).nativeElement as HTMLElement;
         robot(div).click();
         expect(ctx.commands.length).toEqual(1);
         expect(ctx.commands[0]).toBeInstanceOf(StubCmd1);
     });
 
     it("should produce two StubCmd1 on two click on the div", () => {
-        const div = fixture.debugElement.query(By.css("div")).nativeElement as HTMLElement;
+        const div = fixture.debugElement.query(By.css("#d1")).nativeElement as HTMLElement;
         robot().click(div, 2);
         expect(ctx.commands.length).toEqual(2);
     });

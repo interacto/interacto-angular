@@ -73,18 +73,25 @@ implements AfterContentInit, OnDestroy {
      */
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     protected getComponent(fnName: string): any {
-    /*
-     * Finding the component. Warning: #horriblehack
-     * https://github.com/angular/angular/issues/8277
-     * Do not know why '8' (found by inspecting the object at run time)
-     */
+        /*
+         * Finding the component. Warning: #horriblehack
+         * https://github.com/angular/angular/issues/8277
+         * Do not know why '8' (found by inspecting the object at run time)
+         */
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        return (this.viewContainerRef as any)._hostLView[8][fnName] === undefined
-        // When the directive is used on a template (eg ng For), have to go deeper in the object
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            ? (this.viewContainerRef as any)._hostLView[16][8]
+        if ((this.viewContainerRef as any)._hostLView[8] === undefined) {
+            // When the directive is used on a template (here ngif), have to go deeper in the object
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            : (this.viewContainerRef as any)._hostLView[8];
+            return (this.viewContainerRef as any)._hostLView[14][8];
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        if ((this.viewContainerRef as any)._hostLView[8]?.[fnName] === undefined) {
+            // When the directive is used on a template (eg ngFor), have to go deeper in the object
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+            return (this.viewContainerRef as any)._hostLView[16][8];
+        }
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
+        return (this.viewContainerRef as any)._hostLView[8];
     }
 
     public ngAfterContentInit(): void {
