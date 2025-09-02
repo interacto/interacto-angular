@@ -123,8 +123,8 @@ export class TreeHistoryComponent {
             snapshot.setAttribute("viewBox", `0 0 ${String(untracked(this.svgViewportWidth))} ${String(untracked(this.svgViewportHeight))}`);
         }
 
-        snapshot.setAttribute("width", String(untracked(this.cmdViewWidthPx)));
-        snapshot.setAttribute("height", String(untracked(this.cmdViewHeightPx)));
+        snapshot.setAttribute("width", untracked(this.cmdViewWidthPx));
+        snapshot.setAttribute("height", untracked(this.cmdViewHeightPx));
 
         return snapshot;
     }

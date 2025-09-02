@@ -140,8 +140,8 @@ export class LinearHistoryComponent implements AfterViewInit {
         }
 
         snapshot.setAttribute("pointer-events", "none");
-        snapshot.setAttribute("width", String(untracked(this.cmdViewWidthPx)));
-        snapshot.setAttribute("height", String(untracked(this.cmdViewHeightPx)));
+        snapshot.setAttribute("width", untracked(this.cmdViewWidthPx));
+        snapshot.setAttribute("height", untracked(this.cmdViewHeightPx));
 
         return snapshot;
     }

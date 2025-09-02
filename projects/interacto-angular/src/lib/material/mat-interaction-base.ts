@@ -13,11 +13,9 @@ export abstract class MatInteractionBase<T extends SupportedMaterialChange> exte
 
     protected registerEventToMatObject(node: SupportedMaterial): void {
         if (node instanceof MatSelect) {
-            if (this.currentSubscription === undefined) {
-                this.currentSubscription = node.selectionChange.subscribe(value => {
-                    this.processEvent(new MatEvent(value));
-                });
-            }
+            this.currentSubscription ??= node.selectionChange.subscribe(value => {
+                this.processEvent(new MatEvent(value));
+            });
         }
     }
 
