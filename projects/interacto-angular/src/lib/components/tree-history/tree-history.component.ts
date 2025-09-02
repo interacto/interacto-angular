@@ -3,7 +3,7 @@ import {LongTouchBinderDirective} from "../../directives/long-touch-binder.direc
 import {RedoBinderDirective} from "../../directives/redo-binder.directive";
 import {TapsBinderDirective} from "../../directives/taps-binder.directive";
 import {UndoBinderDirective} from "../../directives/undo-binder.directive";
-import {AsyncPipe, KeyValuePipe, NgClass, NgFor, NgStyle} from "@angular/common";
+import {AsyncPipe, NgClass, NgStyle} from "@angular/common";
 import {Component, computed,
     input, numberAttribute, untracked, ViewChild
     , ElementRef,
@@ -32,9 +32,7 @@ interface Thumbnail {
     imports: [
         NgClass,
         NgStyle,
-        NgFor,
         AsyncPipe,
-        KeyValuePipe,
         UndoBinderDirective,
         RedoBinderDirective,
         ClickBinderDirective,

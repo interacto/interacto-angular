@@ -1,7 +1,6 @@
-import {ClickBinderDirective} from "../../directives/click-binder.directive";
 import {RedoBinderDirective} from "../../directives/redo-binder.directive";
 import {UndoBinderDirective} from "../../directives/undo-binder.directive";
-import {AsyncPipe, NgFor, NgIf, NgStyle} from "@angular/common";
+import {AsyncPipe} from "@angular/common";
 import {Component, AfterViewInit, input, numberAttribute, untracked, inject, viewChild, Signal, computed} from "@angular/core";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
@@ -14,13 +13,9 @@ import {throttleTime} from "rxjs";
     styleUrls: ["./linear-history.component.css"],
     standalone: true,
     imports: [
-        NgFor,
-        NgIf,
         UndoBinderDirective,
         RedoBinderDirective,
-        AsyncPipe,
-        NgStyle,
-        ClickBinderDirective
+        AsyncPipe
     ]
 })
 export class LinearHistoryComponent implements AfterViewInit {
