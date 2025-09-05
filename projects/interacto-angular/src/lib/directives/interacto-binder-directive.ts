@@ -51,7 +51,6 @@ implements AfterContentInit, OnDestroy {
 
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
         const binding: unknown = this.getComponent(fnName)[fnName](this.completePartialBinder(), this.getElementContent());
-
         if (binding instanceof BindingImpl) {
             this.binding = [binding];
         } else {
@@ -76,22 +75,36 @@ implements AfterContentInit, OnDestroy {
         /*
          * Finding the component. Warning: #horriblehack
          * https://github.com/angular/angular/issues/8277
-         * Do not know why '8' (found by inspecting the object at run time)
+         * So, very back code. In previous releases we checked several locations.
+         * Here, we explore the structure up to two levels deep to find out the method.
          */
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        if ((this.viewContainerRef as any)._hostLView[8] === undefined) {
-            // When the directive is used on a template (here ngif), have to go deeper in the object
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            return (this.viewContainerRef as any)._hostLView[14][8];
+        // eslint-disable-next-line max-len
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access
+        return this.explore((this.viewContainerRef as any)._hostLView, fnName);
+    }
+
+    // eslint-disable-next-line complexity
+    private explore(array: Array<unknown>, name: string, deep = 0): unknown {
+        if (deep === 2) {
+            return undefined;
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        if ((this.viewContainerRef as any)._hostLView[8]?.[fnName] === undefined) {
-            // When the directive is used on a template (eg ngFor), have to go deeper in the object
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-            return (this.viewContainerRef as any)._hostLView[16][8];
+        for (const item of array) {
+            // eslint-disable-next-line max-len
+            // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-explicit-any
+            if (item && typeof (item) === "object" && (item as any)[name] !== undefined) {
+                return item;
+            }
         }
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-explicit-any
-        return (this.viewContainerRef as any)._hostLView[8];
+        for (const item of array) {
+            if (item?.constructor === Array) {
+                const res = this.explore(item, name, deep + 1);
+                // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+                if (res) {
+                    return res;
+                }
+            }
+        }
+        return undefined;
     }
 
     public ngAfterContentInit(): void {

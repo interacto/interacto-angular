@@ -1,7 +1,7 @@
 {
   "name": "interacto-angular",
   "description": "Front-end framework for processing user interface events in Angular",
-  "version": "8.18.4",
+  "version": "8.20.0",
   "author": "Arnaud Blouin",
   "contributors": [
     "Rémi Daniel"
@@ -35,6 +35,7 @@
     "start": "ng serve",
     "build": "npm run clean && ng build",
     "build-prod": "npm run build && ng lint && ng build --configuration production",
+    "build-explore-mode": "npm run build && ng build --configuration production",
     "test": "ng test",
     "test-headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
