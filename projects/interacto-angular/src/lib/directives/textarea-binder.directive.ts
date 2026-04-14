@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, UndoHistoryBase, PartialTextInputTypedBinder} from "interacto";
+import {Binding, Bindings, Command, Interaction, LinearHistoryBase, PartialTextInputTypedBinder} from "interacto";
 
 @Directive({
     selector: "textarea:[ioTextarea], [ioTextarea] [ioOnDynamic]",
@@ -14,7 +14,7 @@ export class TextAreaBinderDirective extends InteractoBinderDirective<HTMLTextAr
     public constructor(@Optional() @Host() onDyn: OnDynamicDirective,
                                            element: ElementRef<HTMLTextAreaElement>,
                                            viewContainerRef: ViewContainerRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef);
         this.textareaBinder = new EventEmitter<PartialTextInputTypedBinder>();
     }

@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, PartialSelectTypedBinder, UndoHistoryBase} from "interacto";
+import {Binding, Bindings, Command, Interaction, PartialSelectTypedBinder, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "select:[ioSelect], [ioSelect] [ioOnDynamic]",
@@ -14,7 +14,7 @@ export class SelectBinderDirective extends InteractoBinderDirective<HTMLSelectEl
     public constructor(@Optional() @Host() onDyn: OnDynamicDirective,
                                            element: ElementRef<HTMLSelectElement>,
                                            viewContainerRef: ViewContainerRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef);
         this.selectBinder = new EventEmitter<PartialSelectTypedBinder>();
     }

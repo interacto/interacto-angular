@@ -4,7 +4,7 @@ import {AsyncPipe} from "@angular/common";
 import {Component, AfterViewInit, input, numberAttribute, untracked, inject, viewChild, Signal, computed} from "@angular/core";
 import {toSignal} from "@angular/core/rxjs-interop";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
-import {RedoNTimes, UndoNTimes, Bindings, Undoable, UndoHistory, UndoHistoryBase} from "interacto";
+import {RedoNTimes, UndoNTimes, Bindings, Undoable, LinearHistory, LinearHistoryBase} from "interacto";
 import {throttleTime} from "rxjs";
 
 @Component({
@@ -33,9 +33,9 @@ export class LinearHistoryComponent implements AfterViewInit {
 
     protected readonly redoButtonContainer: Signal<HTMLElement> = viewChild.required<HTMLElement>("redoButtonContainer");
 
-    protected readonly history: UndoHistory = inject(UndoHistory);
+    protected readonly history: LinearHistory = inject(LinearHistory);
 
-    protected readonly bindings: Bindings<UndoHistoryBase> = inject<Bindings<UndoHistoryBase>>(Bindings<UndoHistoryBase>);
+    protected readonly bindings: Bindings<LinearHistoryBase> = inject<Bindings<LinearHistoryBase>>(Bindings<LinearHistoryBase>);
 
     protected readonly cmdViewWidthPx = computed(() => `${String(this.cmdViewWidth())}px`);
 

@@ -12,7 +12,7 @@ import {Component, computed,
 import {toSignal} from "@angular/core/rxjs-interop";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 import {Binding, Undoable, PartialPointTypedBinder, PartialTapsTypedBinder, PartialTouchTypedBinder,
-    TreeUndoHistory, UndoableSnapshot, UndoableTreeNode, Command, Interaction} from "interacto";
+    TreeHistory, UndoableSnapshot, TreeHistoryNode, Command, Interaction} from "interacto";
 import {concat, throttleTime} from "rxjs";
 
 interface Thumbnail {
@@ -66,7 +66,7 @@ export class TreeHistoryComponent {
     @ViewChild("divHistory")
     protected divHistory: ElementRef<HTMLDivElement>;
 
-    public constructor(protected history: TreeUndoHistory,
+    public constructor(protected history: TreeHistory,
                        private readonly sanitizer: DomSanitizer) {
         // Observing the undo history, but with a throttle to avoid useless updates.
         this.undos = toSignal<Undoable | number | undefined>(
@@ -98,7 +98,7 @@ export class TreeHistoryComponent {
         return "";
     }
 
-    private depth(undoableNode: UndoableTreeNode | undefined): number {
+    private depth(undoableNode: TreeHistoryNode | undefined): number {
         let depth = -1;
         let node = undoableNode;
 
@@ -145,7 +145,7 @@ export class TreeHistoryComponent {
         return txt;
     }
 
-    protected async undoButtonSnapshot(node: UndoableTreeNode | undefined): Promise<unknown> {
+    protected async undoButtonSnapshot(node: TreeHistoryNode | undefined): Promise<unknown> {
         if (node === undefined) {
             if (this.cacheRoot === undefined) {
                 this.cacheRoot = this.rootRenderer();
@@ -188,7 +188,7 @@ export class TreeHistoryComponent {
         return [
             binder
                 .toProduceAnon(() => {
-                    this.history.delete(position);
+                    this.history.deleteFrom(position);
                 })
                 .when(() => !this.history.keepPath)
                 .bind()
@@ -215,7 +215,7 @@ export class TreeHistoryComponent {
                 .bind(),
             binder
                 .toProduceAnon(() => {
-                    this.history.delete(position);
+                    this.history.deleteFrom(position);
                 })
                 .when(i => !this.history.keepPath && i.button === 2)
                 .bind()

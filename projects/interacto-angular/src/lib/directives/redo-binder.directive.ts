@@ -1,6 +1,6 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {Directive, Input, AfterContentInit, ElementRef, EventEmitter, OnDestroy, ViewContainerRef} from "@angular/core";
-import {Redo, Binding, Bindings, Command, Interaction, InteractionCmdBinder, UndoHistoryBase, WidgetData} from "interacto";
+import {Redo, Binding, Bindings, Command, Interaction, InteractionCmdBinder, LinearHistoryBase, WidgetData} from "interacto";
 import {Subscription} from "rxjs";
 
 export type PartialRedoButtonBinder = InteractionCmdBinder<Redo, Interaction<WidgetData<HTMLButtonElement>>, unknown, WidgetData<HTMLButtonElement>>;
@@ -16,7 +16,7 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
     public constructor(
         element: ElementRef<HTMLButtonElement>,
         viewContainerRef: ViewContainerRef,
-        private readonly bindings: Bindings<UndoHistoryBase>) {
+        private readonly bindings: Bindings<LinearHistoryBase>) {
         super(undefined, element, viewContainerRef);
         this.redoObs = bindings.undoHistory
             .redosObservable()

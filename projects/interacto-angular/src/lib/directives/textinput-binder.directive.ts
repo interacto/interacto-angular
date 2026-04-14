@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, UndoHistoryBase, PartialTextInputTypedBinder} from "interacto";
+import {Binding, Bindings, Command, Interaction, LinearHistoryBase, PartialTextInputTypedBinder} from "interacto";
 
 @Directive({
     selector: "input:[ioTextinput][type=text], [ioTextinput] [ioOnDynamic]",
@@ -14,7 +14,7 @@ export class TextInputBinderDirective extends InteractoBinderDirective<HTMLInput
     public constructor(@Optional() @Host() onDyn: OnDynamicDirective,
                                            element: ElementRef<HTMLInputElement>,
                                            viewContainerRef: ViewContainerRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef);
         this.textinputBinder = new EventEmitter<PartialTextInputTypedBinder>();
     }

@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, PartialKeysTypedBinder, UndoHistoryBase} from "interacto";
+import {Binding, Bindings, Command, Interaction, PartialKeysTypedBinder, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "[ioKeysdown]",
@@ -14,7 +14,7 @@ export class KeysdownBinderDirective extends InteractoBinderDirective<HTMLElemen
     public constructor(@Optional() @Host() onDyn: OnDynamicDirective,
                                            element: ElementRef<HTMLElement>,
                                            viewContainerRef: ViewContainerRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef);
         this.keysdownBinder = new EventEmitter<PartialKeysTypedBinder>();
     }

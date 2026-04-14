@@ -1,5 +1,5 @@
 import {Directive, AfterContentInit, ElementRef, OnDestroy} from "@angular/core";
-import {FocusHTMLElement, Binding, Bindings, Interaction, PointData, UndoHistoryBase} from "interacto";
+import {FocusHTMLElement, Binding, Bindings, Interaction, PointData, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "[ioFocusOnMouseEnter]",
@@ -9,7 +9,7 @@ export class FocusOnMouseEnterDirective implements AfterContentInit, OnDestroy {
     private binding: Binding<FocusHTMLElement, Interaction<PointData>, unknown, PointData> | undefined;
 
     public constructor(private readonly element: ElementRef<HTMLElement>,
-                       private readonly bindings: Bindings<UndoHistoryBase>) {
+                       private readonly bindings: Bindings<LinearHistoryBase>) {
     }
 
     public ngAfterContentInit(): void {

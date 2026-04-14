@@ -1,6 +1,6 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {Directive, Input, AfterContentInit, ElementRef, EventEmitter, OnDestroy, ViewContainerRef} from "@angular/core";
-import {Undo, Binding, Bindings, Command, Interaction, InteractionCmdBinder, UndoHistoryBase, WidgetData} from "interacto";
+import {Undo, Binding, Bindings, Command, Interaction, InteractionCmdBinder, LinearHistoryBase, WidgetData} from "interacto";
 import {Subscription} from "rxjs";
 
 export type PartialUndoButtonBinder = InteractionCmdBinder<Undo, Interaction<WidgetData<HTMLButtonElement>>, unknown, WidgetData<HTMLButtonElement>>;
@@ -17,7 +17,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
     public constructor(
         element: ElementRef<HTMLButtonElement>,
         viewContainerRef: ViewContainerRef,
-        private readonly bindings: Bindings<UndoHistoryBase>) {
+        private readonly bindings: Bindings<LinearHistoryBase>) {
         super(undefined, element, viewContainerRef);
         this.undoObs = bindings.undoHistory
             .undosObservable()

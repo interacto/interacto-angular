@@ -39,29 +39,29 @@ import {TextInputBinderDirective} from "./directives/textinput-binder.directive"
 import {UndoBinderDirective} from "./directives/undo-binder.directive";
 import {CommonModule} from "@angular/common";
 import {NgModule, Provider} from "@angular/core";
-import {Bindings, TreeUndoHistory, TreeUndoHistoryImpl, UndoHistory, UndoHistoryImpl, UndoHistoryBase} from "interacto";
+import {Bindings, TreeHistory, TreeHistoryImpl, LinearHistory, LinearHistoryImpl, LinearHistoryBase} from "interacto";
 
 /**
- * Provides an undo history of the provided Bindings object
+ * Provides a command history of the provided Bindings object
  * @param ctx The bindings object that contains the history
  * @typeParam T -- The type of the undo history
  */
-export function undoHistoryFactory<T extends UndoHistoryBase>(ctx: AngularBindings<T>): T {
+export function historyFactory<T extends LinearHistoryBase>(ctx: AngularBindings<T>): T {
     return ctx.undoHistory;
 }
 
 /**
- * Provides a Bindings object that uses a standard linear undo history
+ * Provides a Bindings object that uses a standard linear command history
  */
-export function bindingsLinearUndoHistoryFactory(): AngularBindings<UndoHistory> {
-    return new AngularBindings(new UndoHistoryImpl());
+export function bindingsLinearHistoryFactory(): AngularBindings<LinearHistory> {
+    return new AngularBindings(new LinearHistoryImpl());
 }
 
 /**
- * Provides a Bindings object that uses a standard linear undo history
+ * Provides a Bindings object that uses a tree-based history
  */
-export function bindingsTreeUndoHistoryFactory(keepHistoryTraces: boolean): AngularBindings<TreeUndoHistory> {
-    return new AngularBindings(new TreeUndoHistoryImpl(keepHistoryTraces));
+export function bindingsTreeHistoryFactory(keepHistoryTraces: boolean): AngularBindings<TreeHistory> {
+    return new AngularBindings(new TreeHistoryImpl(keepHistoryTraces));
 
 }
 
@@ -72,11 +72,11 @@ export function bindingsTreeUndoHistoryFactory(keepHistoryTraces: boolean): Angu
  * the other providers.
  * This undo algorithm is the default one Interacto uses.
  */
-export function interactoProviders(): Array<Provider> {
+export function interactoLinearHistoryProviders(): Array<Provider> {
     return [
-        {provide: AngularBindings, useFactory: bindingsLinearUndoHistoryFactory},
+        {provide: AngularBindings, useFactory: bindingsLinearHistoryFactory},
         {provide: Bindings, useExisting: AngularBindings},
-        {provide: UndoHistory, useFactory: undoHistoryFactory, deps: [AngularBindings]}
+        {provide: LinearHistory, useFactory: historyFactory, deps: [AngularBindings]}
     ];
 }
 
@@ -89,11 +89,11 @@ export function interactoProviders(): Array<Provider> {
  * sequence of commands the users performed. This allows to keep traces about the design process.
  * If set to true, users would not be able to delete history elements.
  */
-export function interactoTreeUndoProviders(keepHistoryTraces = false): Array<Provider> {
+export function interactoTreeHistoryProviders(keepHistoryTraces = false): Array<Provider> {
     return [
-        {provide: AngularBindings, useFactory: () => bindingsTreeUndoHistoryFactory(keepHistoryTraces)},
+        {provide: AngularBindings, useFactory: () => bindingsTreeHistoryFactory(keepHistoryTraces)},
         {provide: Bindings, useExisting: AngularBindings},
-        {provide: TreeUndoHistory, useFactory: undoHistoryFactory, deps: [AngularBindings]}
+        {provide: TreeHistory, useFactory: historyFactory, deps: [AngularBindings]}
     ];
 }
 
@@ -179,7 +179,7 @@ export function interactoTreeUndoProviders(keepHistoryTraces = false): Array<Pro
         FocusOnMouseEnterDirective,
         OnDynamicDirective
     ],
-    providers: [interactoProviders()]
+    providers: [interactoLinearHistoryProviders()]
 })
 export class InteractoModule {
 }

@@ -4,12 +4,12 @@ import {TestingInteractoModule} from "../testing-interacto-angular.module";
 import {Component} from "@angular/core";
 import {TestBed, ComponentFixture} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
-import {BindingsContext, Redo, UndoHistory} from "interacto";
+import {BindingsContext, Redo, LinearHistory} from "interacto";
 import {robot} from "interacto-nono";
 
 let b2: PartialRedoButtonBinder;
 let ctx: BindingsContext;
-let history: UndoHistory;
+let history: LinearHistory;
 let fn: () => void;
 
 @Component({
@@ -44,7 +44,7 @@ describe("redo directive", () => {
         fixture.detectChanges();
 
         ctx = TestBed.inject(BindingsContext);
-        history = TestBed.inject(UndoHistory);
+        history = TestBed.inject(LinearHistory);
     });
 
     afterEach(() => {

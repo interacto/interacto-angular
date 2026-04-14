@@ -3,7 +3,7 @@ import {OnDynamicDirective} from "./on-dynamic.directive";
 import {AngularBindings, PartialMatSelectBinder} from "../base/angular-bindings";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ViewContainerRef} from "@angular/core";
 import {MatSelect} from "@angular/material/select";
-import {Binding, Command, Interaction, UndoHistoryBase} from "interacto";
+import {Binding, Command, Interaction, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "mat-select:[ioMatSelect],[ioMatSelect] [ioOnDynamic]",
@@ -16,7 +16,7 @@ export class MatSelectBinderDirective extends InteractoBinderDirective<MatSelect
     public constructor(@Optional() @Host() onDyn: OnDynamicDirective,
         // element: ElementRef<HTMLElement>,
                                            viewContainerRef: ViewContainerRef,
-                                           private readonly bindings: AngularBindings<UndoHistoryBase>,
+                                           private readonly bindings: AngularBindings<LinearHistoryBase>,
         // The MatSelect component
                                            select: MatSelect) {
         super(onDyn, select, viewContainerRef);

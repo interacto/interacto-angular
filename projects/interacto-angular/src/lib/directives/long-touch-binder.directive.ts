@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ChangeDetectorRef, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, PartialTouchTypedBinder, UndoHistoryBase} from "interacto";
+import {Binding, Bindings, Command, Interaction, PartialTouchTypedBinder, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "[ioLongTouch]",
@@ -15,7 +15,7 @@ export class LongTouchBinderDirective extends InteractoBinderDirective<HTMLEleme
                                            element: ElementRef<HTMLElement>,
                                            viewContainerRef: ViewContainerRef,
                                            changeDetectorRef: ChangeDetectorRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef, changeDetectorRef);
         this.longTouchBinder = new EventEmitter<PartialTouchTypedBinder>();
     }

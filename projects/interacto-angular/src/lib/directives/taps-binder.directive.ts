@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ChangeDetectorRef, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, PartialTapsTypedBinder, UndoHistoryBase} from "interacto";
+import {Binding, Bindings, Command, Interaction, PartialTapsTypedBinder, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "[ioTaps]",
@@ -22,7 +22,7 @@ export class TapsBinderDirective extends InteractoBinderDirective<HTMLElement, P
                                            element: ElementRef<HTMLElement>,
                                            viewContainerRef: ViewContainerRef,
                                            changeDetectorRef: ChangeDetectorRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef, changeDetectorRef);
         this.tapsBinder = new EventEmitter<PartialTapsTypedBinder>();
     }

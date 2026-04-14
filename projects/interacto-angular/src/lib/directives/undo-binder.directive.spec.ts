@@ -4,7 +4,7 @@ import {TestingInteractoModule} from "../testing-interacto-angular.module";
 import {Component} from "@angular/core";
 import {TestBed, ComponentFixture} from "@angular/core/testing";
 import {By} from "@angular/platform-browser";
-import {BindingsContext, Undo, UndoHistory} from "interacto";
+import {BindingsContext, Undo, LinearHistory} from "interacto";
 import {robot} from "interacto-nono";
 
 let b2: PartialUndoButtonBinder;
@@ -31,7 +31,7 @@ class TestComponent {
 
 let fixture: ComponentFixture<TestComponent>;
 let ctx: BindingsContext;
-let history: UndoHistory;
+let history: LinearHistory;
 
 describe("undo directive", () => {
     beforeEach(() => {
@@ -44,7 +44,7 @@ describe("undo directive", () => {
         fixture.detectChanges();
 
         ctx = TestBed.inject(BindingsContext);
-        history = TestBed.inject(UndoHistory);
+        history = TestBed.inject(LinearHistory);
     });
 
     afterEach(() => {

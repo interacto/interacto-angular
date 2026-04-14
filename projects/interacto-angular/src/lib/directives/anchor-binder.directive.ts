@@ -1,7 +1,7 @@
 import {InteractoBinderDirective} from "./interacto-binder-directive";
 import {OnDynamicDirective} from "./on-dynamic.directive";
 import {Directive, EventEmitter, Host, Input, Optional, Output, ElementRef, ViewContainerRef} from "@angular/core";
-import {Binding, Bindings, Command, Interaction, PartialAnchorTypedBinder, UndoHistoryBase} from "interacto";
+import {Binding, Bindings, Command, Interaction, PartialAnchorTypedBinder, LinearHistoryBase} from "interacto";
 
 @Directive({
     selector: "a:[ioAnchor],[ioAnchor] [ioOnDynamic]",
@@ -14,7 +14,7 @@ export class AnchorBinderDirective extends InteractoBinderDirective<HTMLAnchorEl
     public constructor(@Optional() @Host() onDyn: OnDynamicDirective,
                                            element: ElementRef<HTMLAnchorElement>,
                                            viewContainerRef: ViewContainerRef,
-                                           private readonly bindings: Bindings<UndoHistoryBase>) {
+                                           private readonly bindings: Bindings<LinearHistoryBase>) {
         super(onDyn, element, viewContainerRef);
         this.aBinder = new EventEmitter<PartialAnchorTypedBinder>();
     }
