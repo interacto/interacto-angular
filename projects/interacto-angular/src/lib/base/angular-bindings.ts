@@ -14,7 +14,7 @@ export type PartialMatSelectBinder = PartialMatSelectTypedBinder<unknown>;
  */
 export class AngularBindings<H extends LinearHistoryBase> extends BindingsImpl<H> {
     public matSelectBinder<A>(accInit?: A): PartialMatSelectTypedBinder<A> {
-        return new UpdateBinder(this.undoHistory, this.logger, this.observer, undefined, accInit)
+        return new UpdateBinder(this.cmdhistory, this.logger, this.observer, undefined, accInit)
             .usingInteraction<MatSelectInteraction, A, MatChange<MatSelectChange>>(() => new MatSelectInteraction(this.logger));
     }
 }

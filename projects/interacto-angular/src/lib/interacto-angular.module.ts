@@ -47,7 +47,7 @@ import {Bindings, TreeHistory, TreeHistoryImpl, LinearHistory, LinearHistoryImpl
  * @typeParam T -- The type of the undo history
  */
 export function historyFactory<T extends LinearHistoryBase>(ctx: AngularBindings<T>): T {
-    return ctx.undoHistory;
+    return ctx.cmdhistory;
 }
 
 /**

@@ -19,7 +19,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
         viewContainerRef: ViewContainerRef,
         private readonly bindings: Bindings<LinearHistoryBase>) {
         super(undefined, element, viewContainerRef);
-        this.undoObs = bindings.undoHistory
+        this.undoObs = bindings.cmdhistory
             .undosObservable()
             .subscribe(() => {
                 this.updateUndo();
@@ -34,8 +34,8 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
 
     private updateUndo(): void {
         const elt = this.getElementContent();
-        elt.disabled = this.bindings.undoHistory.getLastUndo() === undefined;
-        elt.title = this.bindings.undoHistory.getLastOrEmptyUndoMessage();
+        elt.disabled = this.bindings.cmdhistory.getLastUndo() === undefined;
+        elt.title = this.bindings.cmdhistory.getLastOrEmptyUndoMessage();
     }
 
     public override ngAfterContentInit(): void {
@@ -56,7 +56,7 @@ export class UndoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
         return this.bindings
             .buttonBinder()
             .on(this.element)
-            .toProduce(() => new Undo(this.bindings.undoHistory));
+            .toProduce(() => new Undo(this.bindings.cmdhistory));
     }
 
     public override ngOnDestroy(): void {

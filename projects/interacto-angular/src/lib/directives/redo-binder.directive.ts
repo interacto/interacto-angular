@@ -18,7 +18,7 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
         viewContainerRef: ViewContainerRef,
         private readonly bindings: Bindings<LinearHistoryBase>) {
         super(undefined, element, viewContainerRef);
-        this.redoObs = bindings.undoHistory
+        this.redoObs = bindings.cmdhistory
             .redosObservable()
             .subscribe(() => {
                 this.updateRedo();
@@ -33,8 +33,8 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
 
     private updateRedo(): void {
         const elt = this.getElementContent();
-        elt.disabled = this.bindings.undoHistory.getLastRedo() === undefined;
-        elt.title = this.bindings.undoHistory.getLastOrEmptyRedoMessage();
+        elt.disabled = this.bindings.cmdhistory.getLastRedo() === undefined;
+        elt.title = this.bindings.cmdhistory.getLastOrEmptyRedoMessage();
     }
 
     public override ngAfterContentInit(): void {
@@ -55,7 +55,7 @@ export class RedoBinderDirective extends InteractoBinderDirective<HTMLButtonElem
         return this.bindings
             .buttonBinder()
             .on(this.element)
-            .toProduce(() => new Redo(this.bindings.undoHistory));
+            .toProduce(() => new Redo(this.bindings.cmdhistory));
     }
 
     public override ngOnDestroy(): void {
