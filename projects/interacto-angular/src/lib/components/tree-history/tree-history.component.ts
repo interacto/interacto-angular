@@ -22,7 +22,7 @@ interface Thumbnail {
 }
 
 /**
- * The Angular component for display a tree-based undo/redo history
+ * The Angular component for display a tree-based command history
  */
 @Component({
     selector: "io-tree-history",

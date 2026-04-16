@@ -4,7 +4,7 @@ import {MatSelectChange} from "@angular/material/select";
 import {BindingsImpl, UpdateBinder, Interaction, InteractionBinder, LinearHistoryBase} from "interacto";
 
 /**
- * The tyoe for partial bindings based on  the Angular Material Select widget (selection changed)
+ * The type for partial bindings based on the Angular Material Select widget (selection changed)
  */
 export type PartialMatSelectTypedBinder<A> = InteractionBinder<Interaction<MatChange<MatSelectChange>>, A, MatChange<MatSelectChange>>;
 export type PartialMatSelectBinder = PartialMatSelectTypedBinder<unknown>;
